@@ -1,0 +1,884 @@
+<title>Бампер для RAV4</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=PT+Mono&family=Russo+One&display=swap">
+<style>
+/* Layout: одна узкая колонка; «дорога» из 7 остановок, каждая открывает свой экран */
+:root{
+  --bg:#ECF0F3; --surface:#FFFFFF; --surface-2:#F4F7F9; --ink:#14202A; --muted:#55636F; --line:#D1D9DF;
+  --road:#34414B; --mark:#F2C230; --accent:#1F5BB5; --accent-ink:#FFFFFF; --accent-soft:#E2EBF8;
+  --go:#1C7F45; --go-soft:#E0F2E7; --stop:#BD3A2C; --stop-soft:#F8E3DF; --wait:#9C5F00; --wait-soft:#FAEED6;
+  --on-strong:#FFFFFF; --on-mark:#14202A;
+  --font-display:"Russo One","Arial Black",system-ui,sans-serif;
+  --font-body:"Golos Text","Segoe UI",Roboto,system-ui,sans-serif;
+  --font-mono:"PT Mono",ui-monospace,Menlo,Consolas,monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F161C; --surface:#18222A; --surface-2:#1F2A33; --ink:#E7EDF1; --muted:#A3B0BA; --line:#2D3A44;
+    --road:#3D4B56; --mark:#E8B923; --accent:#69A3FF; --accent-ink:#09121F; --accent-soft:#1B2D45;
+    --go:#4CC781; --go-soft:#153021; --stop:#FF7A6B; --stop-soft:#3A1F1B; --wait:#F2AF48; --wait-soft:#382A12;
+    --on-strong:#0B1418; --on-mark:#14202A;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F161C; --surface:#18222A; --surface-2:#1F2A33; --ink:#E7EDF1; --muted:#A3B0BA; --line:#2D3A44;
+  --road:#3D4B56; --mark:#E8B923; --accent:#69A3FF; --accent-ink:#09121F; --accent-soft:#1B2D45;
+  --go:#4CC781; --go-soft:#153021; --stop:#FF7A6B; --stop-soft:#3A1F1B; --wait:#F2AF48; --wait-soft:#382A12;
+  --on-strong:#0B1418; --on-mark:#14202A;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:var(--font-body); font-size:18px; line-height:1.5;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+  padding-block:14px 96px;
+}
+.wrap{max-width:600px; margin:0 auto; display:flex; flex-direction:column; gap:18px}
+h1,h2,h3{margin:0; text-wrap:balance; line-height:1.15}
+h1{font-family:var(--font-display); font-weight:400; font-size:34px; letter-spacing:.01em}
+h2{font-family:var(--font-display); font-weight:400; font-size:27px}
+h3{font-size:20px; font-weight:700}
+p{margin:0}
+a{color:var(--accent)}
+.muted{color:var(--muted)}
+.small{font-size:15px}
+.mono{font-family:var(--font-mono)}
+.stack{display:flex; flex-direction:column; gap:12px}
+.row{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:18px; display:flex; flex-direction:column; gap:12px; min-width:0}
+.card.soft{background:var(--surface-2)}
+.card.accent{border:2px solid var(--accent)}
+.eyebrow{font-size:14px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
+
+/* Кнопки */
+.btn{
+  -webkit-appearance:none; appearance:none; border:0; cursor:pointer;
+  min-height:54px; padding:12px 20px; border-radius:12px;
+  font:600 18px/1.2 var(--font-body); text-decoration:none; text-align:center;
+  display:inline-flex; align-items:center; justify-content:center; gap:10px;
+  background:var(--accent); color:var(--accent-ink);
+}
+.btn.block{width:100%}
+.btn.ghost{background:transparent; color:var(--accent); box-shadow:inset 0 0 0 2px var(--accent)}
+.btn.quiet{background:var(--surface-2); color:var(--ink); box-shadow:inset 0 0 0 1px var(--line); min-height:46px; font-size:16px; padding:10px 14px}
+.btn:focus-visible,.opt:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--mark); outline-offset:2px}
+.btn svg{flex:none}
+
+/* Варианты ответа */
+.opts{display:grid; grid-template-columns:repeat(auto-fit,minmax(96px,1fr)); gap:10px}
+.opt{
+  -webkit-appearance:none; appearance:none; cursor:pointer; min-height:54px; padding:10px 8px; border-radius:12px;
+  font:600 17px/1.2 var(--font-body); color:var(--ink); background:var(--surface); box-shadow:inset 0 0 0 2px var(--line); border:0;
+}
+.opt[aria-pressed="true"]{background:var(--accent); color:var(--accent-ink); box-shadow:none}
+.opt.yes[aria-pressed="true"]{background:var(--go); color:var(--on-strong)}
+.opt.no[aria-pressed="true"]{background:var(--stop); color:var(--on-strong)}
+.opt.later[aria-pressed="true"]{background:var(--wait); color:var(--on-strong)}
+
+/* Шапка и прогресс */
+.hero{display:flex; flex-direction:column; gap:10px}
+.progress{display:flex; flex-direction:column; gap:8px}
+.bar{height:14px; border-radius:999px; background:var(--line); overflow:hidden}
+.bar > i{display:block; height:100%; background:var(--go); border-radius:999px; transition:width .4s ease}
+.stars{display:flex; gap:4px; color:var(--mark)}
+.stars .off{color:var(--line)}
+.photo{display:grid; grid-template-columns:120px 1fr; gap:14px; align-items:center}
+.photo img{width:120px; height:116px; object-fit:cover; border-radius:12px; display:block}
+@media (max-width:360px){.photo{grid-template-columns:1fr}.photo img{width:100%; height:auto}}
+
+/* Дорога */
+.road{position:relative; display:flex; flex-direction:column; gap:12px; padding-left:62px}
+.road::before{content:""; position:absolute; left:10px; top:8px; bottom:8px; width:34px; border-radius:17px; background:var(--road)}
+.road::after{content:""; position:absolute; left:26px; top:22px; bottom:22px; width:2px;
+  background:repeating-linear-gradient(to bottom, var(--mark) 0 12px, transparent 12px 24px)}
+.stop{position:relative}
+.stop .btn-step{
+  -webkit-appearance:none; appearance:none; border:0; cursor:pointer; width:100%; text-align:left;
+  background:var(--surface); color:var(--ink); border-radius:var(--r); box-shadow:inset 0 0 0 1px var(--line);
+  padding:14px 16px; display:flex; flex-direction:column; gap:2px; font:inherit; min-height:64px;
+}
+.stop.current .btn-step{box-shadow:inset 0 0 0 2px var(--accent); background:var(--accent-soft)}
+.stop .dot{
+  position:absolute; left:-56px; top:50%; transform:translateY(-50%); z-index:1;
+  width:42px; height:42px; border-radius:50%; display:grid; place-items:center;
+  background:var(--surface); color:var(--ink); box-shadow:0 0 0 3px var(--road);
+  font-family:var(--font-display); font-size:18px;
+}
+.stop.done .dot{background:var(--go); color:var(--on-strong)}
+.stop.current .dot{background:var(--mark); color:var(--on-mark)}
+.stop .st{font-size:15px; color:var(--muted)}
+.stop.done .st{color:var(--go)}
+@media (prefers-reduced-motion:no-preference){
+  .stop.current .dot svg{animation:hop 1.6s ease-in-out infinite}
+  @keyframes hop{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+}
+
+/* Экран шага */
+.topbar{display:flex; justify-content:space-between; align-items:center; gap:10px}
+.lead{font-size:19px}
+.navrow{display:grid; grid-template-columns:1fr 2fr; gap:10px}
+.note{border-radius:12px; padding:12px 14px; font-size:16px; display:flex; gap:10px; align-items:flex-start}
+.note.warn{background:var(--wait-soft); color:var(--ink); box-shadow:inset 3px 0 0 var(--wait)}
+.note.good{background:var(--go-soft); color:var(--ink); box-shadow:inset 3px 0 0 var(--go)}
+.note.bad{background:var(--stop-soft); color:var(--ink); box-shadow:inset 3px 0 0 var(--stop)}
+.note.info{background:var(--accent-soft); color:var(--ink); box-shadow:inset 3px 0 0 var(--accent)}
+ol.plain,ul.plain{margin:0; padding-left:22px; display:flex; flex-direction:column; gap:6px}
+.check{display:flex; gap:10px; align-items:flex-start}
+.check input{width:24px; height:24px; margin-top:2px; flex:none; accent-color:var(--go)}
+label.field{display:flex; flex-direction:column; gap:6px; font-weight:600; font-size:16px}
+input[type=text],input[type=number],input[type=tel],input[type=url],select{
+  font:500 18px/1.2 var(--font-body); color:var(--ink); background:var(--surface);
+  border:2px solid var(--line); border-radius:10px; padding:12px; min-height:52px; width:100%; box-sizing:border-box;
+}
+input.code{font-family:var(--font-mono); font-size:22px; letter-spacing:.06em; text-transform:uppercase}
+.figure{background:var(--surface-2); border-radius:12px; padding:10px; overflow-x:auto}
+.figure svg{display:block; width:100%; height:auto; max-width:520px; margin:0 auto}
+.svg-t{font-family:var(--font-mono); font-size:13px; fill:var(--muted)}
+.svg-b{font-family:var(--font-mono); font-size:19px; fill:var(--ink); font-weight:700}
+.svg-l{font-family:var(--font-display); font-size:16px; fill:var(--accent-ink)}
+
+/* Карточки продавцов */
+.chip{display:inline-flex; align-self:flex-start; align-items:center; gap:6px; border-radius:999px; padding:4px 10px; font-size:14px; font-weight:600; line-height:1.2}
+.g-asm{background:var(--go-soft); color:var(--go)}
+.g-cov{background:var(--accent-soft); color:var(--accent)}
+.g-new{background:var(--wait-soft); color:var(--wait)}
+.g-don{background:var(--surface-2); color:var(--muted); box-shadow:inset 0 0 0 1px var(--line)}
+.offer{gap:10px}
+.offer.st-yes{box-shadow:inset 0 0 0 2px var(--go)}
+.offer.st-no{opacity:.72}
+.offer-head{display:flex; justify-content:space-between; gap:12px; align-items:flex-start}
+.offer-head > div{min-width:0}
+.price{font-family:var(--font-display); font-size:26px; white-space:nowrap; text-align:right; line-height:1.1}
+.price small{display:block; font-family:var(--font-body); font-size:14px; color:var(--muted); font-weight:500}
+.phones{display:flex; flex-direction:column; gap:8px}
+.phone{display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; background:var(--surface-2); border-radius:12px; padding:10px 12px}
+.phone .num{font-family:var(--font-mono); font-size:23px; font-weight:700; color:var(--ink); text-decoration:none; user-select:all; -webkit-user-select:all; letter-spacing:.01em}
+.phone .lbl{font-size:14px; color:var(--muted); flex-basis:100%}
+.phone .acts{display:flex; gap:8px; margin-left:auto}
+.say{font-size:16px; background:var(--accent-soft); border-radius:10px; padding:8px 12px}
+.meta{font-size:15px; color:var(--muted); display:flex; flex-direction:column; gap:2px}
+details.more summary{cursor:pointer; color:var(--accent); font-weight:600; font-size:16px; padding:6px 0}
+details.more[open] summary{margin-bottom:6px}
+.result{border-top:1px dashed var(--line); padding-top:12px; display:flex; flex-direction:column; gap:10px}
+.result .opts{grid-template-columns:1fr 1fr}
+.result .opt.later{grid-column:1 / -1}
+.flags{display:flex; flex-direction:column; gap:6px}
+.total{display:flex; justify-content:space-between; gap:10px; align-items:baseline; font-weight:700}
+.total b{font-family:var(--font-display); font-weight:400; font-size:22px; white-space:nowrap}
+.tabs{display:flex; gap:8px; flex-wrap:wrap}
+
+/* Сравнение */
+.cmp{display:flex; flex-direction:column; gap:10px}
+.cmp-item{display:grid; grid-template-columns:1fr auto; gap:6px 12px; align-items:center}
+.cmp-item .sum{font-family:var(--font-display); font-size:24px; white-space:nowrap; text-align:right}
+.cmp-item .break{grid-column:1 / -1; font-size:15px; color:var(--muted); font-variant-numeric:tabular-nums}
+.cmp-item.chosen{box-shadow:inset 0 0 0 3px var(--go)}
+.badge{display:inline-block; background:var(--mark); color:var(--on-mark); border-radius:6px; padding:2px 8px; font-size:13px; font-weight:700; letter-spacing:.04em; text-transform:uppercase}
+.costs{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px}
+
+/* Тост и конфетти */
+.toast{position:fixed; left:0; right:0; margin-inline:auto; width:fit-content; bottom:calc(18px + env(safe-area-inset-bottom, 0px)); z-index:20;
+  background:var(--ink); color:var(--bg); border-radius:12px; padding:12px 18px; font-weight:600; max-width:calc(100% - 32px); box-shadow:0 8px 24px rgba(0,0,0,.25)}
+#confetti{position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:30}
+.foot{font-size:15px; color:var(--muted); display:flex; flex-direction:column; gap:10px; align-items:flex-start}
+.linkbtn{background:none; border:0; padding:0; font:inherit; color:var(--accent); text-decoration:underline; cursor:pointer}
+.big-win{font-family:var(--font-display); font-size:44px; line-height:1.05}
+
+/* Чат */
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)}
+.chat-fab{position:fixed; z-index:15; right:max(16px, env(safe-area-inset-right, 0px)); bottom:calc(16px + env(safe-area-inset-bottom, 0px)); box-shadow:0 8px 24px rgba(0,0,0,.25); border-radius:999px}
+.chat{position:fixed; z-index:25; left:max(10px, env(safe-area-inset-left, 0px)); right:max(10px, env(safe-area-inset-right, 0px)); bottom:calc(10px + env(safe-area-inset-bottom, 0px));
+  max-width:520px; margin-left:auto; height:min(80vh, 640px); background:var(--surface); color:var(--ink); border:1px solid var(--line); border-radius:16px;
+  box-shadow:0 14px 44px rgba(0,0,0,.3); display:flex; flex-direction:column; overflow:hidden}
+.chat-head{display:flex; justify-content:space-between; align-items:center; gap:8px; padding:10px 12px; border-bottom:1px solid var(--line)}
+.chat-head .row{flex-wrap:nowrap}
+.chat-head .btn{min-height:40px; padding:6px 10px; font-size:15px}
+.chat-log{flex:1; overflow-y:auto; padding:12px; display:flex; flex-direction:column; gap:10px}
+.msg{max-width:88%; padding:10px 12px; border-radius:14px; font-size:17px; line-height:1.4; overflow-wrap:anywhere}
+.msg.me{align-self:flex-end; background:var(--accent); color:var(--accent-ink)}
+.msg.bot{align-self:flex-start; background:var(--surface-2); box-shadow:inset 0 0 0 1px var(--line)}
+.chat-form{display:flex; gap:8px; padding:10px 12px; border-top:1px solid var(--line)}
+.chat-form input{flex:1; min-width:0}
+.chat-note{padding:0 12px 10px}
+</style>
+
+<div class="wrap" id="app" lang="ru"></div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<button id="chat-open" class="btn chat-fab" hidden>Спросить помощника</button>
+<section id="chat" class="chat" hidden aria-label="Помощник по бамперу">
+  <div class="chat-head"><strong>Помощник по бамперу</strong><span class="row" style="gap:6px"><button class="btn quiet" id="chat-clear" type="button">Очистить</button><button class="btn quiet" id="chat-close" type="button">Закрыть</button></span></div>
+  <div id="chat-log" class="chat-log" aria-live="polite"></div>
+  <form id="chat-form" class="chat-form"><label for="chat-input" class="sr">Вопрос</label><input id="chat-input" type="text" placeholder="Напишите вопрос…" autocomplete="off"><button class="btn" type="submit">Отправить</button></form>
+  <p class="small muted chat-note">Помощник может ошибаться. Цены и наличие уточняйте по телефону.</p>
+</section>
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<script type="application/json" id="quest-data">__DATA__</script>
+<script>
+(() => {
+'use strict';
+
+/* ---------- Данные (проверены 16.10.2026) ---------- */
+const RATE = 3.0091;           // BYN за 1 USD, курс НБРБ на 16.10.2026
+let DATA = {offers:[], fresh:[], vin:{}};
+try{ DATA = JSON.parse(document.getElementById('quest-data').textContent); }catch(e){}
+let VIN, CHECKED, OFFERS, FRESH;
+function applyData(d){
+  DATA = d || DATA; VIN = DATA.vin || {}; CHECKED = DATA.checked || '';
+  OFFERS = DATA.offers || [];
+  FRESH = (DATA.fresh || []).map(o => Object.assign({holes:{washers:null, pdc:null}, phones:[]}, o, {auto:true}));
+}
+applyData(DATA);
+const BASELINE = 3568;         // первый найденный вариант «из Москвы», только деталь
+const DAMAGE_IMG = 'data:image/jpeg;base64,__DAMAGE_B64__';
+
+const GROUPS = {
+  assembly:{label:'Б/у оригинал в сборе', cls:'g-asm'},
+  cover:{label:'Б/у оригинал, только бампер', cls:'g-cov'},
+  copy:{label:'Новый, неоригинал', cls:'g-new'},
+  donor:{label:'Разборка, спросить', cls:'g-don'}
+};
+
+
+const SHOPS = [
+  {name:'KUZOV.BY', note:'Если бампер берёте у них — сами и поставят. Спросите про покраску.', phones:['+375 29 655-10-47','+375 29 776-61-80'], addr:'ул. Куприянова, 4', price:''},
+  {name:'Лак и Мастер', note:'Сами найдут и закажут детали, работают со страховыми.', phones:['+375 29 329-40-00','+375 17 388-40-40'], addr:'ул. Свердлова, 23', price:'«Бампер — 750 BYN» под ключ'},
+  {name:'JDM Motors', note:'Специализируются на Toyota и Lexus, красят пластиковые бамперы.', phones:['+375 29 130-85-85','+375 29 633-33-96'], addr:'Брилевский тупик, 16', price:'цены по телефону'},
+  {name:'СТО Миура', note:'Гарантия на покраску 6 месяцев.', phones:['+375 29 555-11-88'], addr:'пер. Промышленный, 11/2', price:'покраска бампера от 600 BYN'},
+  {name:'pokrasimavto.by', note:'Помогают найти запчасть.', phones:['+375 29 388-08-60'], addr:'ул. Рогачевская, 16 к8', price:'покраска элемента 450 BYN, снять-поставить бампер ≈ 80 BYN'}
+];
+
+const DEALERS = [
+  {name:'Тойота Центр Минск Восток («Атлант-М»)', phones:['+375 44 561-77-77'], addr:'пр. Независимости, 202/1', hours:'ежедневно 8:00–20:30'},
+  {name:'Тойота Центр Минск («Эмир Моторс»)', phones:['+375 17 356-65-55'], addr:'ул. Орловская, 88', hours:''}
+];
+
+const LIVE = [
+  {name:'Kufar: RAV4 рестайлинг, «бампер»', url:'https://auto.kufar.by/l/zapchasti/z~toyota-rav4-iv-ca40-restajling?query=%D0%B1%D0%B0%D0%BC%D0%BF%D0%B5%D1%80'},
+  {name:'bamper.by: RAV4, бампер передний, 2016–2017', url:'https://bamper.by/zchbu/zapchast_bamper-peredniy/marka_toyota/model_rav4/god_2016-2017/'},
+  {name:'av.by: запчасти (в поиске: RAV4 IV рестайлинг, бампер передний)', url:'https://parts.av.by/'}
+];
+
+const STEPS = [
+  {n:1, title:'Страховка', sub:'Есть ли КАСКО — одна минута'},
+  {n:2, title:'Паспорт машины', sub:'Код краски и три вопроса у машины'},
+  {n:3, title:'Выберите путь', sub:'Дёшево, оригинал или без хлопот'},
+  {n:4, title:'Обзвон продавцов', sub:'Звоним и отмечаем ответы'},
+  {n:5, title:'Сравнить и выбрать', sub:'Итог с покраской и установкой'},
+  {n:6, title:'Покраска и установка', sub:'Кому отдать бампер'},
+  {n:7, title:'Радар у дилера', sub:'Настройка после замены'}
+];
+
+const ROUTES = [
+  {id:'copy', title:'Дёшево', what:'Новый неоригинальный бампер + покраска', time:'2–5 дней', plus:'Самый дешёвый новый вариант. У KUZOV.BY купить и поставить можно в одном месте.', minus:'Копия может встать с зазорами хуже оригинала.'},
+  {id:'cover', title:'Оригинал под покраску', what:'Б/у оригинальный бампер без решёток + покраска', time:'3–7 дней', plus:'Оригинальная посадка. Если цвет совпадёт — можно не красить.', minus:'Бывают царапины и сломанные крепления. Решётки и мелочи переставляют со старого.'},
+  {id:'assembly', title:'Без хлопот', what:'Б/у оригинал в сборе, в идеале вашего цвета', time:'1 день, если цвет совпал', plus:'Всё уже собрано: решётки, накладки, площадка под номер.', minus:'Дороже. Цвет нужно сверить по коду краски.'}
+];
+
+/* ---------- Состояние ---------- */
+const KEY = 'rav4-bumper-quest-v1';
+const fresh = () => ({v:1, screen:'home', done:{}, kasko:null, paint:VIN.paint || '', washers:VIN.washers || null, pdc:VIN.pdc || null, fog:VIN.fog || null, partno:VIN.partno || '',
+  checks:{}, route:null, calls:{}, custom:[], costs:{paint:500, install:60, extras:150}, choice:null, finished:false, filter:'mine'});
+let S = fresh();
+const U = {confirmReset:false, confirmDel:null, showAdd:false};
+
+function load(){
+  try{
+    const raw = localStorage.getItem(KEY);
+    if(raw){ const o = JSON.parse(raw); if(o && o.v === 1){ const d = fresh(), r = Object.assign(fresh(), o, {costs:Object.assign(d.costs, o.costs || {})});
+      ['paint','partno'].forEach(k => { if(!r[k]) r[k] = d[k]; }); ['washers','pdc','fog'].forEach(k => { if(r[k] == null) r[k] = d[k]; });
+      return r; } }
+  }catch(e){}
+  return fresh();
+}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+
+/* ---------- Помощники ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt = n => Math.round(n).toLocaleString('ru-RU');
+const usd = byn => '≈ $' + fmt(byn / RATE);
+const digits = p => String(p).replace(/[^\d+]/g, '');
+const doneCount = () => STEPS.filter(s => S.done[s.n]).length;
+const allOffers = () => OFFERS.concat(FRESH, S.custom || []);
+const findOffer = id => allOffers().find(o => o.id === id);
+const nextStep = () => { const s = STEPS.find(x => !S.done[x.n]); return s ? s.n : null; };
+
+const I = {
+  phone:'<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>',
+  ext:'<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 3h7v7h-2V6.4l-9.3 9.3-1.4-1.4L17.6 5H14zM5 5h6v2H7v10h10v-4h2v6H5z"/></svg>',
+  check:'<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9.5 16.2 5.3 12l-1.4 1.4 5.6 5.6L20.1 8.4 18.7 7z"/></svg>',
+  star:'<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.8l2.8 5.7 6.3.9-4.6 4.4 1.1 6.3L12 17.1l-5.6 3 1.1-6.3L2.9 9.4l6.3-.9z"/></svg>',
+  car:'<svg width="30" height="20" viewBox="0 0 40 26" aria-hidden="true"><path fill="currentColor" d="M3 17.5 5.6 9.3C6.3 7.2 8 6 10.2 6h17.4c2 0 3.6 1 4.5 2.8l2.3 4.4c2.5.4 3.6 1.7 3.6 3.6V20h-3.3a4.6 4.6 0 0 0-9 0H14.4a4.6 4.6 0 0 0-9 0H1.8v-1.5c0-.6.5-1 1.2-1z"/><path fill="#fff" opacity=".85" d="M10.4 8.6h6.4v4.6H8.9zm8.6 0h7.6c1.1 0 2 .5 2.6 1.5l1.6 3.1H19z"/><circle cx="9.9" cy="20.3" r="3.3" fill="currentColor"/><circle cx="29.8" cy="20.3" r="3.3" fill="currentColor"/></svg>',
+  flag:'<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 21V3h2v1h12l-2 4 2 4H7v9z"/></svg>'
+};
+
+function toast(msg){
+  const t = $('#toast'); t.textContent = msg; t.hidden = false;
+  clearTimeout(toast._t); toast._t = setTimeout(() => { t.hidden = true; }, 2600);
+}
+
+function copyText(text){
+  try{
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(() => toast('Скопировано'), () => fallbackCopy(text));
+      return;
+    }
+  }catch(e){}
+  fallbackCopy(text);
+}
+function fallbackCopy(text){
+  try{
+    const ta = document.createElement('textarea'); ta.value = text; ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed'; ta.style.top = '0'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select(); const ok = document.execCommand('copy'); ta.remove();
+    toast(ok ? 'Скопировано' : 'Не получилось скопировать — выделите текст пальцем и скопируйте');
+  }catch(e){ toast('Не получилось скопировать — выделите текст пальцем и скопируйте'); }
+}
+
+/* ---------- Анализ: подходит ли вариант к машине ---------- */
+function issues(o){
+  const out = [], h = o.holes || {};
+  if(S.washers === 'no' && h.washers === true) out.push({t:'Есть прорези под омыватели фар, а у вас их нет — их нужно заделать', cost:80});
+  if(S.washers === 'yes' && h.washers === false) out.push({t:'Нет прорезей под омыватели фар — мастеру нужно прорезать', cost:40});
+  if(S.pdc === 'no' && h.pdc === true) out.push({t:'Есть отверстия под парктроники, а у вас их нет — их нужно заделать', cost:80});
+  if(S.pdc === 'yes' && h.pdc === false) out.push({t: o.pricePdc ? ('Вам нужна ' + o.pdcNote + ' (посчитано по ней)') : 'Нет отверстий под парктроники — спросите версию с отверстиями', cost:0});
+  if(S.fog === 'grilles' && o.fogLamps) out.push({t:'В комплекте противотуманки, а у вас решётки — поставьте свои решётки или попросите цену без фар', cost:0});
+  return out;
+}
+function asks(o){
+  const a = [], h = o.holes || {};
+  if(o.group === 'donor') return a;
+  if(h.washers == null && S.washers !== 'unknown') a.push('есть ли прорези под омыватели фар');
+  if(h.pdc == null && S.pdc !== 'unknown') a.push('есть ли отверстия под парктроники');
+  if(o.group !== 'copy' && !o.mustPaint) a.push('какой код краски' + (S.paint ? ' (у вас ' + S.paint + ')' : ''));
+  return a;
+}
+function basePrice(o){
+  const c = S.calls[o.id];
+  if(c && c.status === 'yes' && +c.price > 0) return +c.price;
+  if(S.pdc === 'yes' && o.pricePdc) return o.pricePdc;
+  return o.price;
+}
+function total(o){
+  const p = basePrice(o);
+  if(!(p > 0)) return null;
+  const c = S.calls[o.id] || {}, k = S.costs;
+  let pMin, pMax;
+  if(o.group === 'copy' || o.mustPaint || c.color === 'nomatch'){ pMin = pMax = +k.paint || 0; }
+  else if(c.color === 'match'){ pMin = pMax = 0; }
+  else { pMin = 0; pMax = +k.paint || 0; }
+  const extras = o.group === 'assembly' ? 20 : (+k.extras || 0);
+  const fix = issues(o).reduce((s, i) => s + i.cost, 0);
+  const ship = +o.shipping || 0;
+  const base = p + (+k.install || 0) + extras + fix + ship;
+  return {price:p, pMin, pMax, install:+k.install || 0, extras, fix, ship, min:base + pMin, max:base + pMax};
+}
+const rangeTxt = t => t.min === t.max ? fmt(t.min) : fmt(t.min) + '–' + fmt(t.max);
+
+/* ---------- Отчёт для Вани ---------- */
+const yn = v => ({yes:'есть', no:'нет', unknown:'не знаю'})[v] || 'не отмечено';
+const fogTxt = v => ({lamps:'фары', grilles:'решётки', unknown:'не знаю'})[v] || 'не отмечено';
+const statusTxt = v => ({yes:'есть', no:'нет', later:'перезвонят'})[v] || '';
+const colorTxt = v => ({match:'совпадает', nomatch:'не совпадает', unknown:'не знаю'})[v] || '';
+function report(){
+  const L = [];
+  L.push('Шагов пройдено: ' + doneCount() + ' из 7');
+  L.push('КАСКО: ' + yn(S.kasko));
+  L.push('Код краски: ' + (S.paint || '—') + '; омыватели: ' + yn(S.washers) + '; парктроники: ' + yn(S.pdc) + '; противотуманки: ' + fogTxt(S.fog) + (S.partno ? '; номер детали: ' + S.partno : ''));
+  const called = allOffers().filter(o => S.calls[o.id] && S.calls[o.id].status);
+  if(called.length){
+    L.push('Звонки:');
+    called.forEach(o => {
+      const c = S.calls[o.id];
+      L.push((c.status === 'yes' ? '✅ ' : c.status === 'no' ? '❌ ' : '⏳ ') + o.seller + ' — ' + statusTxt(c.status) +
+        (c.status === 'yes' && basePrice(o) > 0 ? ', ' + fmt(basePrice(o)) + ' BYN' : '') + (c.color ? ', цвет: ' + colorTxt(c.color) : '') + (c.note ? '. ' + c.note : ''));
+    });
+  } else L.push('Звонков пока не было.');
+  const ch = S.choice && findOffer(S.choice);
+  if(ch){ const t = total(ch); L.push('Выбрано: ' + ch.seller + (t ? ', итого ≈ ' + rangeTxt(t) + ' BYN' : '')); }
+  return L.join('\n');
+}
+function tgLink(){
+  return 'https://t.me/share/url?url=' + encodeURIComponent('Бампер RAV4 — отчёт от ' + new Date().toLocaleDateString('ru-RU')) + '&text=' + encodeURIComponent(report());
+}
+
+/* ---------- Куски интерфейса ---------- */
+function stars(){
+  let h = '';
+  STEPS.forEach(s => { h += '<span class="' + (S.done[s.n] ? '' : 'off') + '">' + I.star + '</span>'; });
+  return '<div class="stars" aria-hidden="true">' + h + '</div>';
+}
+function phoneRow(p, label, wa){
+  return '<div class="phone">' +
+    '<a class="num" href="tel:' + esc(digits(p)) + '">' + esc(p) + '</a>' +
+    '<span class="acts"><button class="btn quiet" data-act="copy" data-text="' + esc(p) + '">Копировать</button></span>' +
+    (label ? '<span class="lbl">' + esc(label) + (wa ? ' · <a href="https://wa.me/' + esc(wa) + '" target="_blank" rel="noopener">написать в WhatsApp</a>' : '') + '</span>' : '') +
+  '</div>';
+}
+function reportBlock(){
+  return '<div class="card soft">' +
+    '<h3>Отправить отчёт Ване</h3>' +
+    '<p class="small muted">Что отмечено на этой странице: шаги, звонки, выбор. Ваня увидит всё в Telegram.</p>' +
+    '<a class="btn block" data-act="tg" href="' + esc(tgLink()) + '" target="_blank" rel="noopener">Отправить в Telegram</a>' +
+    '<button class="btn ghost block" data-act="copyreport">Скопировать отчёт</button>' +
+  '</div>';
+}
+function liveBlock(){
+  return '<div class="card">' +
+    '<h3>Свежие объявления</h3>' +
+    '<p class="small muted">Если в списке всё продали — посмотрите новые. Подходит только RAV4 «IV рестайлинг» 2016–2019. Не подходит: 2013–2015 и 2019+ (другая модель).</p>' +
+    '<div class="stack">' + LIVE.map(l => '<a class="btn ghost block" href="' + esc(l.url) + '" target="_blank" rel="noopener">' + esc(l.name) + ' ' + I.ext + '</a>').join('') + '</div>' +
+    '<p class="small muted">Нашли новое объявление — добавьте его в шаге 4 кнопкой «Добавить свой вариант».</p>' +
+  '</div>';
+}
+function choice(key, value, label, extra){
+  return '<button class="opt ' + (extra || '') + '" data-act="set" data-key="' + key + '" data-v="' + value + '" aria-pressed="' + (S[key] === value) + '">' + label + '</button>';
+}
+
+/* ---------- Экраны ---------- */
+function home(){
+  const n = nextStep(), d = doneCount();
+  let h = '<header class="hero">' +
+    '<p class="eyebrow">Toyota RAV4 2018 · гибрид</p>' +
+    '<h1>Бампер для RAV4</h1>' +
+    '<p class="lead">Семь шагов от разбитого бампера до целого. Идите по дороге сверху вниз — на каждом шаге всё подскажем.</p>' +
+  '</header>';
+  h += '<div class="card photo"><img src="' + DAMAGE_IMG + '" alt="Разбитый правый передний угол бампера"><div class="stack">' +
+    '<p class="eyebrow">Что чиним</p><p>Правый передний угол бампера, нижняя решётка и площадка под номер.</p></div></div>';
+  h += '<div class="card progress"><div class="row" style="justify-content:space-between"><strong>Пройдено ' + d + ' из 7</strong>' + stars() + '</div>' +
+    '<div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="7" aria-valuenow="' + d + '"><i style="width:' + (d / 7 * 100) + '%"></i></div></div>';
+  if(n){
+    const s = STEPS[n - 1];
+    h += '<div class="card accent"><p class="eyebrow">Ваш следующий шаг</p><h2>Шаг ' + n + '. ' + esc(s.title) + '</h2><p class="muted">' + esc(s.sub) + '</p>' +
+      '<button class="btn block" data-act="go" data-to="' + n + '">Начать шаг ' + n + '</button></div>';
+  } else {
+    h += '<div class="card accent"><p class="eyebrow">Всё пройдено</p><h2>Бампер на месте</h2><button class="btn block" data-act="go" data-to="finish">Посмотреть итог</button></div>';
+  }
+  h += '<section class="road" aria-label="Дорога к новому бамперу">';
+  STEPS.forEach(s => {
+    const cls = S.done[s.n] ? 'done' : (s.n === n ? 'current' : '');
+    const dot = S.done[s.n] ? I.check : (s.n === n ? I.car : s.n);
+    h += '<div class="stop ' + cls + '"><span class="dot">' + dot + '</span>' +
+      '<button class="btn-step" data-act="go" data-to="' + s.n + '"><strong>' + s.n + '. ' + esc(s.title) + '</strong>' +
+      '<span class="st">' + (S.done[s.n] ? 'Готово' : esc(s.sub)) + '</span></button></div>';
+  });
+  h += '<div class="stop ' + (S.finished ? 'done' : '') + '"><span class="dot">' + I.flag + '</span><button class="btn-step" data-act="go" data-to="finish"><strong>Финиш</strong><span class="st">' + (S.finished ? 'Готово' : 'Машина снова целая') + '</span></button></div>';
+  h += '</section>';
+  h += reportBlock() + liveBlock();
+  h += '<footer class="foot"><p>Список обновлён: ' + esc(DATA.updated || CHECKED) + '. Обновляется автоматически каждое утро' + (FRESH.length ? '; новых объявлений: ' + FRESH.length : '') + '. Цены и наличие меняются — уточняйте по телефону.</p>' +
+    (U.confirmReset
+      ? '<div class="row"><span>Стереть все отметки?</span><button class="btn quiet" data-act="resetyes">Да, стереть</button><button class="btn quiet" data-act="resetno">Нет</button></div>'
+      : '<button class="linkbtn" data-act="reset">Начать заново</button>') +
+  '</footer>';
+  return h;
+}
+
+function stepShell(n, body, opts){
+  opts = opts || {};
+  const s = STEPS[n - 1];
+  let h = '<div class="topbar"><button class="btn quiet" data-act="go" data-to="home">← К дороге</button><span class="muted small">Шаг ' + n + ' из 7</span></div>';
+  h += '<header class="stack"><h2>' + esc(s.title) + '</h2>' + (opts.lead ? '<p class="lead">' + opts.lead + '</p>' : '') + '</header>';
+  if(S.done[n]) h += '<div class="note good">' + I.check + '<span>Этот шаг уже пройден. Можно вернуться и поменять ответы.</span></div>';
+  h += body;
+  const nextLabel = n === 7 ? 'Бампер на месте!' : 'Готово, дальше →';
+  h += '<div class="navrow">' +
+    (n > 1 ? '<button class="btn ghost" data-act="go" data-to="' + (n - 1) + '">← Назад</button>' : '<button class="btn ghost" data-act="go" data-to="home">← Дорога</button>') +
+    '<button class="btn" data-act="next" data-n="' + n + '">' + nextLabel + '</button></div>';
+  return h;
+}
+
+function s1(){
+  let b = '<div class="card"><h3>Есть ли у машины КАСКО?</h3><p class="muted small">КАСКО — добровольная страховка своей машины. Обязательная страховка (ОСГО) есть у всех, но за свою машину она не платит.</p>' +
+    '<div class="opts">' + choice('kasko', 'yes', 'Есть') + choice('kasko', 'no', 'Нет') + choice('kasko', 'unknown', 'Не знаю') + '</div></div>';
+  if(S.kasko === 'yes') b += '<div class="card accent"><h3>Сначала страховая, потом ремонт</h3><ol class="plain">' +
+    '<li>Позвоните в свою страховую и скажите: «наезд на косулю».</li>' +
+    '<li>Подайте заявление: в Белгосстрах — письменно в течение 3 рабочих дней, в ТАСК — в течение 72 часов.</li>' +
+    '<li>Покажите машину оценщику <strong>до</strong> ремонта.</li></ol>' +
+    '<p class="small muted">Если ГАИ не вызывали, Белгосстрах по обычным программам платит не больше 7% страховой суммы. Если страховая оплачивает ремонт, она его и организует — дальше по шагам можно не идти.</p></div>';
+  if(S.kasko === 'no') b += '<div class="note good">' + I.check + '<span>Тогда ищем бампер сами, как можно дешевле. Штрафа за случайно сбитую косулю нет.</span></div>';
+  if(S.kasko === 'unknown') b += '<div class="note info"><span>Посмотрите полисы в бардачке или спросите Ваню. Если КАСКО нет — просто идите дальше.</span></div>';
+  return stepShell(1, b, {lead:'Если есть КАСКО, ремонт может оплатить страховая. Но только если позвонить ей до ремонта.'});
+}
+
+function vinCard(){
+  if(!VIN.paint) return '';
+  const yes = v => v === 'yes' ? '<strong>есть</strong>' : v === 'no' ? '<strong>нет</strong>' : 'не знаю';
+  return '<div class="card accent"><p class="eyebrow">Уже узнали по техпаспорту</p><h3>' + esc(VIN.model || 'RAV4') + '</h3><ul class="plain">' +
+    '<li>Код краски: <strong class="mono">' + esc(VIN.paint) + '</strong> (тёмно-серый)</li>' +
+    '<li>Парктроники спереди: ' + yes(VIN.pdc) + '</li><li>Омыватели фар: ' + yes(VIN.washers) + '</li>' +
+    '<li>Противотуманки: ' + (VIN.fog === 'grilles' ? '<strong>нет</strong>, стоят заглушки' : VIN.fog === 'lamps' ? '<strong>есть</strong>' : 'не знаю') + '</li>' +
+    (VIN.radar ? '<li>Радар защиты от столкновения: <strong>есть</strong></li>' : '') +
+    '<li>Номер бампера: <strong class="mono">' + esc(VIN.partno || '') + '</strong></li></ul>' +
+    '<details class="more"><summary>Номера всех деталей бампера</summary><div class="stack small">' + (VIN.parts || []).map(p => '<div><span class="mono">' + esc(p[0]) + '</span> — ' + esc(p[1]) + '</div>').join('') + '</div></details>' +
+    '<p class="small muted">Ниже всё уже отмечено. Если на машине видите иначе — поменяйте ответ.</p></div>';
+}
+function s2(){
+  let b = vinCard() + '<div class="card"><h3>1. Код краски</h3><p>Код краски стоит на наклейке на стойке водительской двери, в строке <span class="mono">C/TR</span> — три знака до «/».</p>' +
+    '<details class="more"' + (VIN.paint ? '' : ' open') + '><summary>Показать, где наклейка</summary><div class="figure"><svg viewBox="0 0 330 150" role="img" aria-label="Наклейка с кодом краски на стойке водительской двери">' +
+      '<rect x="12" y="12" width="118" height="126" rx="12" fill="none" stroke="var(--muted)" stroke-width="3"/>' +
+      '<rect x="112" y="12" width="20" height="126" fill="var(--line)"/>' +
+      '<rect x="115" y="58" width="14" height="22" rx="2" fill="var(--mark)"/>' +
+      '<path d="M129 69 H172" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="5 4"/>' +
+      '<text x="30" y="80" class="svg-t">проём двери</text>' +
+      '<rect x="172" y="16" width="148" height="118" rx="10" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/>' +
+      '<text x="184" y="42" class="svg-t">MODEL AVA44L-...</text>' +
+      '<text x="184" y="64" class="svg-t">ENGINE 2AR</text>' +
+      '<text x="184" y="104" class="svg-b">C/TR</text>' +
+      '<rect x="234" y="84" width="46" height="28" rx="6" fill="none" stroke="var(--stop)" stroke-width="3"/>' +
+      '<text x="240" y="104" class="svg-b">1G3</text>' +
+      '<text x="284" y="104" class="svg-b">/..</text>' +
+      '<text x="184" y="126" class="svg-t">пример</text>' +
+    '</svg></div></details>' +
+    '<label class="field" for="f-paint">Код краски вашей машины<input id="f-paint" class="code" type="text" maxlength="6" autocomplete="off" placeholder="например 1G3" data-act="field" data-key="paint" value="' + esc(S.paint) + '"></label></div>';
+
+  b += '<div class="card"><h3>2. Три вопроса у машины</h3><p class="muted small">Посмотрите на целую левую сторону бампера.</p>' +
+    '<div class="figure"><svg viewBox="0 0 340 176" role="img" aria-label="Где на бампере омыватели фар, парктроники и противотуманки">' +
+      '<path d="M18 40 L124 54 L114 70 L26 62 Z" fill="var(--surface)" stroke="var(--muted)" stroke-width="2"/>' +
+      '<path d="M322 40 L216 54 L226 70 L314 62 Z" fill="var(--surface)" stroke="var(--muted)" stroke-width="2"/>' +
+      '<ellipse cx="170" cy="58" rx="17" ry="11" fill="none" stroke="var(--muted)" stroke-width="2"/>' +
+      '<path d="M12 66 Q8 124 30 156 H310 Q332 124 328 66 L232 76 Q170 92 108 76 Z" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5"/>' +
+      '<path d="M92 116 H248 L234 146 H106 Z" fill="var(--line)"/>' +
+      '<rect x="132" y="96" width="76" height="14" rx="2" fill="var(--surface-2)" stroke="var(--muted)"/>' +
+      '<rect x="30" y="114" width="26" height="24" rx="6" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="2"/>' +
+      '<rect x="284" y="114" width="26" height="24" rx="6" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="2"/>' +
+      '<circle cx="74" cy="74" r="4" fill="var(--ink)"/><circle cx="266" cy="74" r="4" fill="var(--ink)"/>' +
+      '<circle cx="120" cy="103" r="4.5" fill="none" stroke="var(--ink)" stroke-width="2"/><circle cx="220" cy="103" r="4.5" fill="none" stroke="var(--ink)" stroke-width="2"/>' +
+      '<circle cx="66" cy="110" r="4.5" fill="none" stroke="var(--ink)" stroke-width="2"/><circle cx="274" cy="110" r="4.5" fill="none" stroke="var(--ink)" stroke-width="2"/>' +
+      '<circle cx="74" cy="26" r="13" fill="var(--accent)"/><text x="68" y="32" class="svg-l">А</text><path d="M74 39 V68" stroke="var(--accent)" stroke-width="2"/>' +
+            '<circle cx="150" cy="22" r="13" fill="var(--accent)"/><text x="144" y="28" class="svg-l">Б</text><path d="M146 34 L122 97" stroke="var(--accent)" stroke-width="2"/>' +
+            '<circle cx="306" cy="22" r="13" fill="var(--accent)"/><text x="300" y="28" class="svg-l">В</text><path d="M304 35 L298 112" stroke="var(--accent)" stroke-width="2"/>' +
+    '</svg></div>' +
+    '<div class="stack"><p><strong>А. Омыватели фар.</strong> Под фарами на бампере есть маленькие крышечки?</p><div class="opts">' +
+      choice('washers', 'yes', 'Есть') + choice('washers', 'no', 'Нет') + choice('washers', 'unknown', 'Не знаю') + '</div></div>' +
+    '<div class="stack"><p><strong>Б. Парктроники.</strong> На бампере есть круглые «пуговки» размером с монету?</p><div class="opts">' +
+      choice('pdc', 'yes', 'Есть') + choice('pdc', 'no', 'Нет') + choice('pdc', 'unknown', 'Не знаю') + '</div></div>' +
+    '<div class="stack"><p><strong>В. Нижние углы.</strong> Там противотуманные фары или пластиковые решётки?</p><div class="opts">' +
+      choice('fog', 'lamps', 'Фары') + choice('fog', 'grilles', 'Решётки') + choice('fog', 'unknown', 'Не знаю') + '</div></div>' +
+  '</div>';
+
+  const chk = [['brace','Железная балка за бампером (усилитель) не погнута'],['brackets','Пластиковые держатели бампера по бокам целы'],['washer','Бачок омывателя и шланги целы, не текут'],['lamp','«Уши» крепления правой фары целы'],['rad','Радиаторы не текут'],['wires','Провода в правом углу целы']];
+  b += '<div class="card"><h3>3. Попросите мастера снять бампер</h3>' +
+    '<p>Это стоит 40–80 BYN. Сразу станет видно, что ещё сломано за ним, а на внутренней стороне будет номер детали (начинается на 52119).</p>' +
+    '<label class="field" for="f-partno">Номер с внутренней стороны бампера<input id="f-partno" class="code" type="text" maxlength="16" autocomplete="off" placeholder="52119-…" data-act="field" data-key="partno" value="' + esc(S.partno) + '"></label>' +
+    '<p class="small muted">Что спросить у мастера:</p><div class="stack">' +
+    chk.map(c => '<label class="check" for="c-' + c[0] + '"><input type="checkbox" id="c-' + c[0] + '" data-act="chk" data-key="' + c[0] + '"' + (S.checks[c[0]] ? ' checked' : '') + '><span>' + c[1] + '</span></label>').join('') +
+    '</div><p class="small muted">Если что-то сломано, скажите продавцу бампера — у разборок эти детали часто есть с той же машины.</p></div>';
+  return stepShell(2, b, {lead:'Эти ответы помогут сразу отсеять неподходящие бамперы. Не знаете ответа — нажмите «Не знаю», это нормально.'});
+}
+
+function routeRange(g){
+  const ts = OFFERS.filter(o => o.group === g).map(total).filter(Boolean);
+  if(!ts.length) return null;
+  return {min:Math.min.apply(null, ts.map(t => t.min)), max:Math.max.apply(null, ts.map(t => t.max))};
+}
+function s3(){
+  let b = '<div class="stack">';
+  ROUTES.forEach(r => {
+    const rg = routeRange(r.id), on = S.route === r.id;
+    b += '<div class="card' + (on ? ' accent' : '') + '"><div class="offer-head"><div><span class="chip ' + GROUPS[r.id].cls + '">' + esc(GROUPS[r.id].label) + '</span><h3 style="margin-top:8px">' + esc(r.title) + '</h3></div>' +
+      (rg ? '<div class="price">' + fmt(rg.min) + '–' + fmt(rg.max) + '<small>BYN всего · ' + usd(rg.min) + '–' + fmt(rg.max / RATE) + '</small></div>' : '') + '</div>' +
+      '<p>' + esc(r.what) + '</p><p class="small"><strong>Срок:</strong> ' + esc(r.time) + '</p>' +
+      '<p class="small"><strong>Плюс:</strong> ' + esc(r.plus) + '</p><p class="small"><strong>Минус:</strong> ' + esc(r.minus) + '</p>' +
+      '<button class="btn ' + (on ? '' : 'ghost') + ' block" data-act="route" data-v="' + r.id + '">' + (on ? 'Выбран этот путь' : 'Выбрать этот путь') + '</button></div>';
+  });
+  b += '</div><p class="small muted">«Всего» — это бампер, покраска, снятие-установка и мелочи (нижняя решётка, клипсы, заглушка). Звонить можно всем — в шаге 5 сравним честно.</p>';
+  return stepShell(3, b, {lead:'Выберите, что вам важнее: цена, оригинал или чтобы быстрее и без хлопот.'});
+}
+
+function script(){
+  let t = 'Здравствуйте! Мне нужен передний бампер на Toyota RAV4 2018 года, рестайлинг, 40 кузов, гибрид.';
+  if(S.partno) t += ' Номер детали ' + S.partno + '.';
+  if(S.paint) t += ' Код краски ' + S.paint + '.';
+  const feat = []; if(S.pdc === 'yes') feat.push('под парктроники'); if(S.washers === 'no') feat.push('без омывателей фар');
+  if(feat.length) t += ' Нужен ' + feat.join(', ') + '.';
+  t += ' Он есть в наличии? Какого цвета? Есть ли отверстия под омыватели фар и под парктроники? Целы ли крепления, нет ли трещин? Что входит в комплект и сколько стоит? Пришлите, пожалуйста, фото внутренней стороны в Viber.';
+  return t;
+}
+function offerCard(o){
+  const c = S.calls[o.id] || {}, g = GROUPS[o.group] || GROUPS.cover, iss = issues(o), ask = asks(o), t = total(o);
+  const p = basePrice(o);
+  let h = '<article class="card offer' + (c.status ? ' st-' + c.status : '') + '">';
+  h += '<div class="offer-head"><div class="stack" style="gap:6px"><div class="row" style="gap:6px"><span class="chip ' + g.cls + '">' + esc(g.label) + '</span>' + (o.exact ? '<span class="chip g-asm">Номер совпадает</span>' : '') + (o.auto ? '<span class="chip g-new">Новое' + (o.found ? ', ' + esc(o.found) : '') + '</span>' : '') + '</div><h3>' + esc(o.seller) + '</h3><p class="small">' + esc(o.what) + '</p></div>' +
+    (p > 0 ? '<div class="price">' + fmt(p) + '<small>BYN · ' + usd(p) + '</small></div>' : '<div class="price small" style="font-size:18px">цена<small>спросить</small></div>') + '</div>';
+  if(o.priceNote) h += '<p class="small muted">' + esc(o.priceNote) + '</p>';
+  if(o.gone) h += '<div class="note bad"><span>Похоже, объявление снято (проверка ' + esc(o.gone) + '). Можно позвонить — вдруг ещё есть.</span></div>';
+  if(o.say) h += '<p class="say">' + esc(o.say) + '</p>';
+  h += (o.phones && o.phones.length ? '' : '<p class="small muted">Телефон — в объявлении, кнопка «Открыть объявление» ниже.</p>') + '<div class="phones">' + (o.phones || []).map((ph, i) => phoneRow(ph[0], ph[1] || (i === 0 && o.phones.length > 1 ? 'основной' : ''), /WhatsApp/.test(ph[1] || '') ? o.wa : '')).join('') + '</div>';
+  if(iss.length || ask.length){
+    h += '<div class="flags">' + iss.map(i => '<div class="note warn"><span>' + esc(i.t) + (i.cost ? ' (≈ +' + i.cost + ' BYN)' : '') + '</span></div>').join('') +
+      (ask.length ? '<div class="note info"><span>Спросите: ' + esc(ask.join(', ')) + '.</span></div>' : '') + '</div>';
+  }
+  h += '<details class="more"><summary>Подробнее: что в комплекте, адрес</summary><div class="stack small">' +
+    '<p>' + esc(o.includes || '') + '</p><div class="meta">' + (o.address ? '<span>Адрес: ' + esc(o.address) + '</span>' : '') +
+    (o.hours ? '<span>Часы: ' + esc(o.hours) + '</span>' : '') + (o.delivery ? '<span>Наличие: ' + esc(o.delivery) + '</span>' : '') +
+    (o.custom ? '<span>Добавлено вами</span>' : o.auto ? '<span>Найдено автоматически' + (o.found ? ' ' + esc(o.found) : '') + '</span>' : '<span>Проверено ' + CHECKED + '</span>') + '</div>' +
+    (o.link ? '<a href="' + esc(o.link) + '" target="_blank" rel="noopener">Открыть объявление ' + I.ext + '</a>' : '') +
+    (o.custom ? (U.confirmDel === o.id
+      ? '<div class="row"><span>Удалить этот вариант?</span><button class="btn quiet" data-act="delyes" data-id="' + esc(o.id) + '">Да, удалить</button><button class="btn quiet" data-act="delno">Нет</button></div>'
+      : '<button class="linkbtn" data-act="del" data-id="' + esc(o.id) + '">Удалить этот вариант</button>') : '') +
+    '</div></details>';
+  h += '<div class="result"><p><strong>Что ответили?</strong></p><div class="opts">' +
+    ['yes','no','later'].map(v => '<button class="opt ' + v + '" data-act="call" data-id="' + esc(o.id) + '" data-v="' + v + '" aria-pressed="' + (c.status === v) + '">' + statusTxt(v).replace(/^./, m => m.toUpperCase()) + '</button>').join('') + '</div>';
+  if(c.status === 'yes'){
+    h += '<label class="field" for="p-' + esc(o.id) + '">Цена, которую назвали (BYN)<input id="p-' + esc(o.id) + '" type="number" inputmode="decimal" min="0" step="1" data-act="price" data-id="' + esc(o.id) + '" value="' + esc(c.price != null ? c.price : (p > 0 ? p : '')) + '"></label>';
+    if(o.group !== 'copy' && !o.mustPaint){
+      h += '<div class="stack"><p class="small"><strong>Цвет совпадает с вашим?</strong></p><div class="opts">' +
+        [['match','Да'],['nomatch','Нет'],['unknown','Не знаю']].map(v => '<button class="opt" data-act="color" data-id="' + esc(o.id) + '" data-v="' + v[0] + '" aria-pressed="' + (c.color === v[0]) + '">' + v[1] + '</button>').join('') + '</div></div>';
+    }
+  }
+  if(c.status) h += '<label class="field" for="n-' + esc(o.id) + '">Заметка (срок, что сказали)<input id="n-' + esc(o.id) + '" type="text" data-act="note" data-id="' + esc(o.id) + '" value="' + esc(c.note || '') + '" placeholder="например: привезут во вторник"></label>';
+  if(t && c.status !== 'no') h += '<div class="total"><span>Всего с покраской и установкой</span><b>≈ ' + rangeTxt(t) + ' BYN</b></div>';
+  h += '</div></article>';
+  return h;
+}
+function addForm(){
+  if(!U.showAdd) return '<button class="btn ghost block" data-act="showadd">+ Добавить свой вариант</button>';
+  return '<form class="card" id="addform"><h3>Новый вариант</h3>' +
+    '<label class="field" for="a-seller">Продавец<input id="a-seller" type="text" required placeholder="например: разборка на Тимирязева"></label>' +
+    '<label class="field" for="a-phone">Телефон<input id="a-phone" type="tel" required placeholder="+375 29 ..."></label>' +
+    '<label class="field" for="a-price">Цена, BYN<input id="a-price" type="number" inputmode="decimal" min="0" step="1" placeholder="например 900"></label>' +
+    '<label class="field" for="a-group">Что это<select id="a-group"><option value="assembly">Б/у оригинал в сборе</option><option value="cover" selected>Б/у оригинал, только бампер</option><option value="copy">Новый, неоригинал</option></select></label>' +
+    '<label class="field" for="a-link">Ссылка на объявление (если есть)<input id="a-link" type="url" placeholder="https://..."></label>' +
+    '<div class="navrow"><button class="btn ghost" type="button" data-act="hideadd">Отмена</button><button class="btn" type="submit">Добавить</button></div></form>';
+}
+function s4(){
+  const mine = S.route;
+  let list = allOffers();
+  if(S.filter === 'mine' && mine){ list = list.filter(o => o.group === mine || o.group === 'donor'); }
+  list = list.slice().sort((a, b) => (a.top || 99) - (b.top || 99));
+  let b = '<p class="small muted">Список обновлён: ' + esc(DATA.updated || CHECKED) + '. Обновляется автоматически каждое утро.' + (FRESH.length ? ' Новых объявлений: ' + FRESH.length + '.' : '') + '</p>';
+  b += '<div class="card soft"><h3>Что сказать продавцу</h3><p id="script-text">' + esc(script()) + '</p>' +
+    '<button class="btn quiet" data-act="copy" data-text="' + esc(script()) + '">Скопировать текст</button>' +
+    '<p class="small muted">Номер телефона можно нажать — на телефоне откроется звонок. Если не открылся, нажмите «Копировать» и вставьте номер в звонилку.</p></div>';
+  b += '<div class="note info"><span><strong>С чего начать:</strong> в воскресенье работают MultiMotor (до 16:00, в сборе, на фото тёмно-серый) и МоторЛэнд (до 20:00, такой же гибрид на разборке). В будни — KUZOV.BY (новый с отверстиями под парктроники и установка) и Ореховская.</span></div>';
+  if(mine){
+    b += '<div class="tabs"><button class="opt" data-act="filter" data-v="mine" aria-pressed="' + (S.filter === 'mine') + '">Мой путь</button><button class="opt" data-act="filter" data-v="all" aria-pressed="' + (S.filter !== 'mine') + '">Все варианты</button></div>';
+  }
+  b += '<div class="stack">' + list.map(offerCard).join('') + '</div>';
+  b += addForm();
+  b += liveBlock();
+  return stepShell(4, b, {lead:'Позвоните, спросите по тексту ниже и отметьте ответ. Нашёлся бампер в наличии — уже победа.'});
+}
+
+function s5(){
+  const k = S.costs;
+  const rows = allOffers().map(o => ({o, t:total(o), c:S.calls[o.id] || {}})).filter(r => r.t && r.c.status !== 'no');
+  const conf = rows.filter(r => r.c.status === 'yes').sort((a, b) => a.t.min - b.t.min);
+  const rest = rows.filter(r => r.c.status !== 'yes').sort((a, b) => a.t.min - b.t.min);
+  const best = conf.length ? conf[0].o.id : null;
+  const item = r => {
+    const t = r.t, on = S.choice === r.o.id;
+    const paint = t.pMin === t.pMax ? fmt(t.pMin) : fmt(t.pMin) + '–' + fmt(t.pMax);
+    return '<div class="card cmp-item' + (on ? ' chosen' : '') + '"><div class="stack" style="gap:4px">' +
+      (r.o.id === best ? '<span><span class="badge">Самый дешёвый</span></span>' : '') +
+      '<strong>' + esc(r.o.seller) + '</strong><span class="chip ' + (GROUPS[r.o.group] || GROUPS.cover).cls + '" style="align-self:flex-start">' + esc((GROUPS[r.o.group] || GROUPS.cover).label) + '</span></div>' +
+      '<div class="sum">' + rangeTxt(t) + '<small class="small muted" style="display:block;font-family:var(--font-body)">BYN · ' + usd(t.min) + '</small></div>' +
+      '<div class="break">Бампер ' + fmt(t.price) + ' + покраска ' + paint + ' + установка ' + fmt(t.install) + ' + мелочи ' + fmt(t.extras) + (t.fix ? ' + заделать отверстия ' + fmt(t.fix) : '') + (t.ship ? ' + доставка ' + fmt(t.ship) : '') + '</div>' +
+      '<button class="btn ' + (on ? '' : 'ghost') + ' block" style="grid-column:1/-1" data-act="choose" data-id="' + esc(r.o.id) + '">' + (on ? 'Выбрано ' : 'Выбрать этот') + '</button></div>';
+  };
+  let b = '';
+  if(conf.length){ b += '<h3>Есть в наличии (по вашим звонкам)</h3><div class="cmp">' + conf.map(item).join('') + '</div>'; }
+  else { b += '<div class="note warn"><span>Пока никто не подтвердил наличие. Ниже — примерные итоги по ценам из объявлений. Отметьте звонки в шаге 4, и здесь появятся точные цифры.</span></div>'; }
+  if(rest.length){ b += '<details class="more"' + (conf.length ? '' : ' open') + '><summary>' + (conf.length ? 'Ещё не звонили (' + rest.length + ')' : 'Все варианты по ценам из объявлений') + '</summary><div class="cmp">' + rest.map(item).join('') + '</div></details>'; }
+  b += '<div class="card soft"><h3>Цены работ</h3><p class="small muted">Средние цены минских СТО. Знаете точную — поменяйте.</p><div class="costs">' +
+    '<label class="field" for="k-paint">Покраска бампера, BYN<input id="k-paint" type="number" inputmode="decimal" min="0" step="10" data-act="cost" data-key="paint" value="' + esc(k.paint) + '"></label>' +
+    '<label class="field" for="k-install">Снять и поставить, BYN<input id="k-install" type="number" inputmode="decimal" min="0" step="5" data-act="cost" data-key="install" value="' + esc(k.install) + '"></label>' +
+    '<label class="field" for="k-extras">Мелочи для неполного бампера, BYN<input id="k-extras" type="number" inputmode="decimal" min="0" step="10" data-act="cost" data-key="extras" value="' + esc(k.extras) + '"></label></div>' +
+    '<p class="small muted">Мелочи — нижняя решётка, площадка под номер, заглушка и клипсы, если старые сломаны. Для бампера в сборе считаем только клипсы, 20 BYN.</p></div>';
+  b += '<div class="note info"><span>Платите, когда увидели деталь своими глазами. За «под заказ» — при получении или после фото и номера накладной.</span></div>';
+  return stepShell(5, b, {lead:'Считаем честно: бампер плюс покраска, установка и мелочи. Самый дешёвый в наличии — сверху.'});
+}
+
+function s6(){
+  const ch = S.choice && findOffer(S.choice);
+  let b = '';
+  if(ch && ch.id === 'kuzov') b += '<div class="note good">' + I.check + '<span>Вы выбрали KUZOV.BY — они сами ставят на своём СТО. Спросите, красят ли тоже.</span></div>';
+  if(ch && ch.group === 'assembly') b += '<div class="note info"><span>Бампер в сборе. Если код краски совпал, красить не нужно — только поставить.</span></div>';
+  b += '<div class="stack">' + SHOPS.map(s => '<div class="card"><h3>' + esc(s.name) + '</h3><p class="small">' + esc(s.note) + '</p>' +
+    (s.price ? '<p class="small muted">' + esc(s.price) + '</p>' : '') +
+    '<div class="phones">' + s.phones.map(p => phoneRow(p, '')).join('') + '</div><p class="small muted">' + esc(s.addr) + '</p></div>').join('') + '</div>';
+  const memo = 'Для мастера: 1) Значок Toyota на решётке не красить — за ним радар. 2) Лишние отверстия заделать до покраски. 3) Клипсы поставить новые. 4) Решётку со значком и серебристую накладку перенести со старого бампера, если целы. 5) Проверить держатели бампера и бачок омывателя.';
+  b += '<div class="card soft"><h3>Памятка для мастера</h3><ol class="plain">' +
+    '<li>Значок Toyota на решётке <strong>не красить</strong> — за ним может стоять радар.</li>' +
+    '<li>Лишние отверстия заделать до покраски.</li><li>Клипсы поставить новые.</li>' +
+    '<li>Решётку со значком и серебристую накладку перенести со старого бампера, если целы.</li>' +
+    '<li>Проверить держатели бампера и бачок омывателя.</li></ol>' +
+    '<button class="btn quiet" data-act="copy" data-text="' + esc(memo) + '">Скопировать памятку</button></div>';
+  return stepShell(6, b, {lead:'Отдайте бампер на покраску и установку. Покраска обычно 2–3 дня.'});
+}
+
+function s7(){
+  let b = VIN.radar ? '<div class="note good">' + I.check + '<span>По VIN у вашей машины есть радар защиты от столкновения — после замены бампера настройка нужна.</span></div>' : '';
+  b += '<div class="card"><h3>Нужно ли это вам?</h3><p>Если машина сама держит дистанцию на круизе или пищит перед столкновением — у неё есть радар. После замены бампера его настраивают у дилера.</p>' +
+    '<p class="small muted">Запишитесь на «Настройку датчиков Safety Sense» и спросите цену при записи. Если таких функций нет — этот шаг просто отметьте.</p></div>';
+  b += '<div class="stack">' + DEALERS.map(d => '<div class="card"><h3>' + esc(d.name) + '</h3><div class="phones">' + d.phones.map(p => phoneRow(p, '')).join('') + '</div><p class="small muted">' + esc(d.addr) + (d.hours ? ' · ' + esc(d.hours) : '') + '</p></div>').join('') + '</div>';
+  return stepShell(7, b, {lead:'Последний шаг. После него машина снова целая и всё работает как раньше.'});
+}
+
+function finish(){
+  const ch = S.choice && findOffer(S.choice), t = ch ? total(ch) : null;
+  let h = '<div class="topbar"><button class="btn quiet" data-act="go" data-to="home">← К дороге</button><span></span></div>';
+  h += '<div class="card accent"><p class="eyebrow">Финиш</p><p class="big-win">Ура! Машина снова целая</p>' + stars() +
+    '<p>Пройдено шагов: ' + doneCount() + ' из 7. Звонков сделано: ' + Object.values(S.calls).filter(c => c.status).length + '.</p>';
+  if(ch && t){
+    h += '<p>Ваш выбор: <strong>' + esc(ch.seller) + '</strong>, всего ≈ <strong>' + rangeTxt(t) + ' BYN</strong> (' + usd(t.min) + ').</p>';
+    h += '<p class="small muted">Для сравнения: первый найденный бампер стоил ' + fmt(BASELINE) + ' BYN только за деталь, без покраски и доставки.</p>';
+  }
+  h += '</div>' + reportBlock();
+  return h;
+}
+
+/* ---------- Отрисовка ---------- */
+function render(){
+  const v = S.screen;
+  let h;
+  if(v === 'home') h = home();
+  else if(v === 'finish') h = finish();
+  else h = [null, s1, s2, s3, s4, s5, s6, s7][+v] ? [null, s1, s2, s3, s4, s5, s6, s7][+v]() : home();
+  $('#app').innerHTML = h;
+}
+function go(to){
+  S.screen = String(to); U.confirmReset = false; U.confirmDel = null; U.showAdd = false;
+  save(); render(); window.scrollTo(0, 0);
+}
+
+/* ---------- События ---------- */
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]');
+  if(!el) return;
+  const a = el.dataset.act;
+  if(a === 'tg'){ el.href = tgLink(); return; }
+  if(a === 'copy'){ copyText(el.dataset.text || ''); return; }
+  if(a === 'copyreport'){ copyText('Бампер RAV4 — отчёт от ' + new Date().toLocaleDateString('ru-RU') + '\n' + report()); return; }
+  if(a === 'go'){ go(el.dataset.to); return; }
+  if(a === 'next'){
+    const n = +el.dataset.n; const first = !S.done[n]; S.done[n] = true;
+    if(n === 7){ S.finished = true; go('finish'); confetti(); return; }
+    go(n + 1); if(first) toast('Шаг ' + n + ' пройден! Звёздочка ваша');
+    return;
+  }
+  if(a === 'set'){ S[el.dataset.key] = el.dataset.v; save(); render(); return; }
+  if(a === 'route'){ S.route = el.dataset.v; S.filter = 'mine'; save(); render(); toast('Путь выбран'); return; }
+  if(a === 'filter'){ S.filter = el.dataset.v; save(); render(); return; }
+  if(a === 'call'){
+    const id = el.dataset.id, c = S.calls[id] || {};
+    c.status = c.status === el.dataset.v ? null : el.dataset.v; S.calls[id] = c; save(); render();
+    if(c.status === 'yes') toast('Нашёлся! Проверьте цену и цвет');
+    return;
+  }
+  if(a === 'color'){ const c = S.calls[el.dataset.id] || {}; c.color = el.dataset.v; S.calls[el.dataset.id] = c; save(); render(); return; }
+  if(a === 'choose'){ S.choice = el.dataset.id; save(); render(); toast('Выбор сохранён'); return; }
+  if(a === 'showadd'){ U.showAdd = true; render(); const f = $('#a-seller'); if(f) f.focus(); return; }
+  if(a === 'hideadd'){ U.showAdd = false; render(); return; }
+  if(a === 'del'){ U.confirmDel = el.dataset.id; render(); return; }
+  if(a === 'delno'){ U.confirmDel = null; render(); return; }
+  if(a === 'delyes'){ const id = el.dataset.id; S.custom = S.custom.filter(o => o.id !== id); delete S.calls[id]; if(S.choice === id) S.choice = null; U.confirmDel = null; save(); render(); toast('Удалено'); return; }
+  if(a === 'reset'){ U.confirmReset = true; render(); return; }
+  if(a === 'resetno'){ U.confirmReset = false; render(); return; }
+  if(a === 'resetyes'){ S = fresh(); U.confirmReset = false; save(); render(); window.scrollTo(0, 0); toast('Начинаем заново'); return; }
+});
+document.addEventListener('input', e => {
+  const el = e.target, a = el.dataset && el.dataset.act;
+  if(!a) return;
+  if(a === 'field'){ S[el.dataset.key] = el.value.trim().toUpperCase(); save(); return; }
+  if(a === 'price' || a === 'note'){ const c = S.calls[el.dataset.id] || {}; if(a === 'price') c.price = el.value === '' ? null : +el.value; else c.note = el.value; S.calls[el.dataset.id] = c; save(); return; }
+  if(a === 'cost'){ S.costs[el.dataset.key] = el.value === '' ? 0 : +el.value; save(); return; }
+});
+document.addEventListener('change', e => {
+  const el = e.target, a = el.dataset && el.dataset.act;
+  if(!a) return;
+  if(a === 'chk'){ S.checks[el.dataset.key] = el.checked; save(); return; }
+  if(a === 'price' || a === 'cost' || a === 'field'){ const y = window.scrollY; render(); window.scrollTo(0, y); }
+});
+document.addEventListener('submit', e => {
+  if(e.target.id !== 'addform') return;
+  e.preventDefault();
+  const seller = $('#a-seller').value.trim(), phone = $('#a-phone').value.trim();
+  if(!seller || !phone){ toast('Впишите продавца и телефон'); return; }
+  const price = +$('#a-price').value || null, group = $('#a-group').value, link = $('#a-link').value.trim();
+  S.custom.push({id:'c' + Date.now(), custom:true, group, seller, what:GROUPS[group].label, price, phones:[[phone, '']],
+    includes:'', holes:{washers:null, pdc:null}, address:'', hours:'', delivery:'', link:/^https?:\/\//.test(link) ? link : ''});
+  U.showAdd = false; save(); render(); toast('Вариант добавлен');
+});
+
+/* ---------- Конфетти ---------- */
+function confetti(){
+  try{ if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; }catch(e){}
+  const cv = $('#confetti'), ctx = cv.getContext && cv.getContext('2d'); if(!ctx) return;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  cv.width = innerWidth * dpr; cv.height = innerHeight * dpr; ctx.scale(dpr, dpr);
+  const cs = getComputedStyle(document.documentElement);
+  const cols = ['--mark', '--accent', '--go', '--stop'].map(v => cs.getPropertyValue(v).trim() || '#f2c230');
+  const P = Array.from({length:140}, () => ({x:Math.random() * innerWidth, y:-20 - Math.random() * innerHeight * .5, vx:(Math.random() - .5) * 3, vy:2 + Math.random() * 3.5, r:4 + Math.random() * 5, a:Math.random() * 6, va:(Math.random() - .5) * .3, c:cols[(Math.random() * cols.length) | 0]}));
+  const t0 = performance.now();
+  (function frame(t){
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    P.forEach(p => { p.x += p.vx; p.y += p.vy; p.vy += .03; p.a += p.va; ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a); ctx.fillStyle = p.c; ctx.fillRect(-p.r / 2, -p.r / 3, p.r, p.r * .66); ctx.restore(); });
+    if(t - t0 < 3200) requestAnimationFrame(frame); else ctx.clearRect(0, 0, innerWidth, innerHeight);
+  })(t0);
+}
+
+/* ---------- Запуск ---------- */
+function start(data){
+  S = (data && data.S && data.S.v === 1) ? data.S : load();
+  render(); renderChat();
+  fetch('data.json?t=' + Date.now(), {cache:'no-store'}).then(r => r.ok ? r.json() : null).then(d => {
+    if(d && d.offers){ applyData(d); render(); renderChat(); }
+  }).catch(() => {});
+}
+
+/* ---------- Чат-помощник ---------- */
+const CHAT_KEY = 'rav4-bumper-chat-v1';
+let CHAT = [];
+try{ CHAT = JSON.parse(localStorage.getItem(CHAT_KEY) || '[]') || []; }catch(e){ CHAT = []; }
+let chatBusy = false;
+function chatSave(){ try{ localStorage.setItem(CHAT_KEY, JSON.stringify(CHAT.slice(-30))); }catch(e){} }
+function renderChat(){
+  const box = $('#chat'), fab = $('#chat-open');
+  if(!box || !fab) return;
+  const on = !!DATA.chatEndpoint;
+  if(!on){ box.hidden = true; fab.hidden = true; return; }
+  fab.hidden = !box.hidden;
+  const log = $('#chat-log');
+  log.innerHTML = (CHAT.length ? '' : '<div class="msg bot">Здравствуйте! Я знаю всё про ваш бампер: продавцов, цены, номер детали и шаги. Спросите, например: «Что сказать продавцу?» или «Какой вариант дешевле?»</div>') +
+    CHAT.map(m => '<div class="msg ' + (m.role === 'user' ? 'me' : 'bot') + '">' + esc(m.content).replace(/\n/g, '<br>') + '</div>').join('') +
+    (chatBusy ? '<div class="msg bot">Думаю…</div>' : '');
+  log.scrollTop = log.scrollHeight;
+}
+async function chatSend(text){
+  text = (text || '').trim();
+  if(!text || chatBusy) return;
+  CHAT.push({role:'user', content:text}); chatBusy = true; chatSave(); renderChat();
+  let reply = '';
+  try{
+    const r = await fetch(DATA.chatEndpoint, {method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({messages:CHAT.filter(m => !m.err).slice(-12).map(m => ({role:m.role, content:m.content})), state:report()})});
+    const j = await r.json().catch(() => ({}));
+    reply = j.reply || '';
+  }catch(e){}
+  CHAT.push(reply ? {role:'assistant', content:reply} : {role:'assistant', content:'Не получилось ответить. Проверьте интернет и попробуйте ещё раз через минуту.', err:true});
+  chatBusy = false; chatSave(); renderChat();
+}
+document.addEventListener('click', e => {
+  if(e.target.closest('#chat-open')){ $('#chat').hidden = false; renderChat(); const i = $('#chat-input'); if(i) i.focus(); }
+  else if(e.target.closest('#chat-close')){ $('#chat').hidden = true; renderChat(); }
+  else if(e.target.closest('#chat-clear')){ CHAT = []; chatSave(); renderChat(); }
+});
+document.addEventListener('submit', e => {
+  if(e.target.id !== 'chat-form') return;
+  e.preventDefault(); const i = $('#chat-input'); const v = i.value; i.value = ''; chatSend(v);
+});
+try{ window.claude && window.claude.hot && window.claude.hot.snapshot && window.claude.hot.snapshot(() => ({S})); }catch(e){}
+if(window.claude && window.claude.hot && window.claude.hot.ready){ window.claude.hot.ready(start); }
+else { start((window.claude && window.claude.hot && window.claude.hot.data) || {}); }
+window.__quest = {total, issues, OFFERS, get S(){ return S; }};
+})();
+</script>

@@ -2,7 +2,7 @@
 
 Пошаговая страница для поиска и замены переднего бампера на Toyota RAV4 2018 (гибрид) в Минске.
 
-Сайт: https://khomichkovamaria.github.io/rav4-bumper/
+Сайт: https://zloivan.github.io/rav4-bumper/
 
 ## Как устроено
 

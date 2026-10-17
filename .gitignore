@@ -1,0 +1,6 @@
+private/
+PROMPT_для_Claude_Code.md
+__pycache__/
+node_modules/
+.wrangler/
+.DS_Store
