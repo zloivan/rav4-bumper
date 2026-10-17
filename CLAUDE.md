@@ -23,7 +23,7 @@
 
 ## Источники данных
 - Kufar — читается обычным HTTP (GitHub Actions).
-- bamper.by — закрыт Cloudflare для обычных запросов; читается только через WebFetch Claude (добавлять `?PAGEN_1=1` к адресу). Сейчас это делает облачная задача Claude «Обновление бамперов RAV4» (trig_01EAdqTkniHjqwRqzH92giHz, 08:53 Минск): клонирует репозиторий, обновляет `fresh` с `source:"bamper"`, пушит. Она работает от GitHub-аккаунта **khomichkovamaria** — нужен доступ на запись к zloivan/rav4-bumper, иначе push не пройдёт.
+- bamper.by — закрыт Cloudflare для обычных запросов; читается только через WebFetch Claude (добавлять `?PAGEN_1=1` к адресу). Сейчас это делает облачная задача Claude «Обновление бамперов RAV4» (trig_01EAdqTkniHjqwRqzH92giHz, 08:53 Минск): клонирует репозиторий, обновляет `fresh` с `source:"bamper"`, пушит. Пушит через GitHub, подключённый к claude.ai, — это должен быть только аккаунт **zloivan** (посторонних коллабораторов в репозитории нет и не добавлять).
 - av.by и Avito — проверка на робота / блок по IP. Капчи и защиту от ботов не обходить.
 
 ## Правила
@@ -31,6 +31,11 @@
 - Без согласия Ивана ничего не покупать и продавцам не писать.
 - Страница — для пожилого человека: крупно, просто, по-русски, без жаргона; телефоны крупно + «Копировать».
 
+## Git
+- Репозиторий: `git@github.com:zloivan/rav4-bumper.git` (публичный, владелец zloivan). Push — личным ключом `~/.ssh/id_ed25519_personal` (в репо задан `core.sshCommand` с `IdentitiesOnly` и `IdentityAgent=none`; без этого ssh-agent подсовывает рабочий ключ IvanKhamichkou без прав).
+- gh CLI залогинен как IvanKhamichkou (без прав на репо) — настройки репозитория менять через браузер под zloivan.
+
 ## Статус (18.10.2026)
 - Готово: страница, данные по VIN, автообновление Kufar, чат (код), отчёт в Telegram.
-- Осталось: запушить в `git@github.com:zloivan/rav4-bumper.git`, включить Pages (Source: GitHub Actions), прогнать workflow, проверить сайт; дать khomichkovamaria Write-доступ (для bamper.by) или отключить облачную задачу; подключить Cloudflare для чата (README → «Включить чат»); отправить маме ссылку.
+- Запушено, Pages включены (GitHub Actions), workflow прошёл, сайт и data.json открываются, Kufar обновляется.
+- Осталось: переподключить GitHub в claude.ai под zloivan (для облачной задачи bamper.by); подключить Cloudflare для чата (README → «Включить чат»); отправить маме ссылку.
