@@ -1,0 +1,11 @@
+name = "rav4-bumper-chat"
+main = "src/index.js"
+compatibility_date = "2025-06-01"
+workers_dev = true
+
+[ai]
+binding = "AI"
+
+[vars]
+SITE_URL = "https://khomichkovamaria.github.io/rav4-bumper/"
+ALLOWED_ORIGIN = "https://khomichkovamaria.github.io"

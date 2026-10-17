@@ -1,0 +1,895 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Бампер для RAV4</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=PT+Mono&family=Russo+One&display=swap">
+<style>
+/* Layout: одна узкая колонка; «дорога» из 7 остановок, каждая открывает свой экран */
+:root{
+  --bg:#ECF0F3; --surface:#FFFFFF; --surface-2:#F4F7F9; --ink:#14202A; --muted:#55636F; --line:#D1D9DF;
+  --road:#34414B; --mark:#F2C230; --accent:#1F5BB5; --accent-ink:#FFFFFF; --accent-soft:#E2EBF8;
+  --go:#1C7F45; --go-soft:#E0F2E7; --stop:#BD3A2C; --stop-soft:#F8E3DF; --wait:#9C5F00; --wait-soft:#FAEED6;
+  --on-strong:#FFFFFF; --on-mark:#14202A;
+  --font-display:"Russo One","Arial Black",system-ui,sans-serif;
+  --font-body:"Golos Text","Segoe UI",Roboto,system-ui,sans-serif;
+  --font-mono:"PT Mono",ui-monospace,Menlo,Consolas,monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F161C; --surface:#18222A; --surface-2:#1F2A33; --ink:#E7EDF1; --muted:#A3B0BA; --line:#2D3A44;
+    --road:#3D4B56; --mark:#E8B923; --accent:#69A3FF; --accent-ink:#09121F; --accent-soft:#1B2D45;
+    --go:#4CC781; --go-soft:#153021; --stop:#FF7A6B; --stop-soft:#3A1F1B; --wait:#F2AF48; --wait-soft:#382A12;
+    --on-strong:#0B1418; --on-mark:#14202A;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F161C; --surface:#18222A; --surface-2:#1F2A33; --ink:#E7EDF1; --muted:#A3B0BA; --line:#2D3A44;
+  --road:#3D4B56; --mark:#E8B923; --accent:#69A3FF; --accent-ink:#09121F; --accent-soft:#1B2D45;
+  --go:#4CC781; --go-soft:#153021; --stop:#FF7A6B; --stop-soft:#3A1F1B; --wait:#F2AF48; --wait-soft:#382A12;
+  --on-strong:#0B1418; --on-mark:#14202A;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:var(--font-body); font-size:18px; line-height:1.5;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+  padding-block:14px 96px;
+}
+.wrap{max-width:600px; margin:0 auto; display:flex; flex-direction:column; gap:18px}
+h1,h2,h3{margin:0; text-wrap:balance; line-height:1.15}
+h1{font-family:var(--font-display); font-weight:400; font-size:34px; letter-spacing:.01em}
+h2{font-family:var(--font-display); font-weight:400; font-size:27px}
+h3{font-size:20px; font-weight:700}
+p{margin:0}
+a{color:var(--accent)}
+.muted{color:var(--muted)}
+.small{font-size:15px}
+.mono{font-family:var(--font-mono)}
+.stack{display:flex; flex-direction:column; gap:12px}
+.row{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:18px; display:flex; flex-direction:column; gap:12px; min-width:0}
+.card.soft{background:var(--surface-2)}
+.card.accent{border:2px solid var(--accent)}
+.eyebrow{font-size:14px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
+
+/* Кнопки */
+.btn{
+  -webkit-appearance:none; appearance:none; border:0; cursor:pointer;
+  min-height:54px; padding:12px 20px; border-radius:12px;
+  font:600 18px/1.2 var(--font-body); text-decoration:none; text-align:center;
+  display:inline-flex; align-items:center; justify-content:center; gap:10px;
+  background:var(--accent); color:var(--accent-ink);
+}
+.btn.block{width:100%}
+.btn.ghost{background:transparent; color:var(--accent); box-shadow:inset 0 0 0 2px var(--accent)}
+.btn.quiet{background:var(--surface-2); color:var(--ink); box-shadow:inset 0 0 0 1px var(--line); min-height:46px; font-size:16px; padding:10px 14px}
+.btn:focus-visible,.opt:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--mark); outline-offset:2px}
+.btn svg{flex:none}
+
+/* Варианты ответа */
+.opts{display:grid; grid-template-columns:repeat(auto-fit,minmax(96px,1fr)); gap:10px}
+.opt{
+  -webkit-appearance:none; appearance:none; cursor:pointer; min-height:54px; padding:10px 8px; border-radius:12px;
+  font:600 17px/1.2 var(--font-body); color:var(--ink); background:var(--surface); box-shadow:inset 0 0 0 2px var(--line); border:0;
+}
+.opt[aria-pressed="true"]{background:var(--accent); color:var(--accent-ink); box-shadow:none}
+.opt.yes[aria-pressed="true"]{background:var(--go); color:var(--on-strong)}
+.opt.no[aria-pressed="true"]{background:var(--stop); color:var(--on-strong)}
+.opt.later[aria-pressed="true"]{background:var(--wait); color:var(--on-strong)}
+
+/* Шапка и прогресс */
+.hero{display:flex; flex-direction:column; gap:10px}
+.progress{display:flex; flex-direction:column; gap:8px}
+.bar{height:14px; border-radius:999px; background:var(--line); overflow:hidden}
+.bar > i{display:block; height:100%; background:var(--go); border-radius:999px; transition:width .4s ease}
+.stars{display:flex; gap:4px; color:var(--mark)}
+.stars .off{color:var(--line)}
+.photo{display:grid; grid-template-columns:120px 1fr; gap:14px; align-items:center}
+.photo img{width:120px; height:116px; object-fit:cover; border-radius:12px; display:block}
+@media (max-width:360px){.photo{grid-template-columns:1fr}.photo img{width:100%; height:auto}}
+
+/* Дорога */
+.road{position:relative; display:flex; flex-direction:column; gap:12px; padding-left:62px}
+.road::before{content:""; position:absolute; left:10px; top:8px; bottom:8px; width:34px; border-radius:17px; background:var(--road)}
+.road::after{content:""; position:absolute; left:26px; top:22px; bottom:22px; width:2px;
+  background:repeating-linear-gradient(to bottom, var(--mark) 0 12px, transparent 12px 24px)}
+.stop{position:relative}
+.stop .btn-step{
+  -webkit-appearance:none; appearance:none; border:0; cursor:pointer; width:100%; text-align:left;
+  background:var(--surface); color:var(--ink); border-radius:var(--r); box-shadow:inset 0 0 0 1px var(--line);
+  padding:14px 16px; display:flex; flex-direction:column; gap:2px; font:inherit; min-height:64px;
+}
+.stop.current .btn-step{box-shadow:inset 0 0 0 2px var(--accent); background:var(--accent-soft)}
+.stop .dot{
+  position:absolute; left:-56px; top:50%; transform:translateY(-50%); z-index:1;
+  width:42px; height:42px; border-radius:50%; display:grid; place-items:center;
+  background:var(--surface); color:var(--ink); box-shadow:0 0 0 3px var(--road);
+  font-family:var(--font-display); font-size:18px;
+}
+.stop.done .dot{background:var(--go); color:var(--on-strong)}
+.stop.current .dot{background:var(--mark); color:var(--on-mark)}
+.stop .st{font-size:15px; color:var(--muted)}
+.stop.done .st{color:var(--go)}
+@media (prefers-reduced-motion:no-preference){
+  .stop.current .dot svg{animation:hop 1.6s ease-in-out infinite}
+  @keyframes hop{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+}
+
+/* Экран шага */
+.topbar{display:flex; justify-content:space-between; align-items:center; gap:10px}
+.lead{font-size:19px}
+.navrow{display:grid; grid-template-columns:1fr 2fr; gap:10px}
+.note{border-radius:12px; padding:12px 14px; font-size:16px; display:flex; gap:10px; align-items:flex-start}
+.note.warn{background:var(--wait-soft); color:var(--ink); box-shadow:inset 3px 0 0 var(--wait)}
+.note.good{background:var(--go-soft); color:var(--ink); box-shadow:inset 3px 0 0 var(--go)}
+.note.bad{background:var(--stop-soft); color:var(--ink); box-shadow:inset 3px 0 0 var(--stop)}
+.note.info{background:var(--accent-soft); color:var(--ink); box-shadow:inset 3px 0 0 var(--accent)}
+ol.plain,ul.plain{margin:0; padding-left:22px; display:flex; flex-direction:column; gap:6px}
+.check{display:flex; gap:10px; align-items:flex-start}
+.check input{width:24px; height:24px; margin-top:2px; flex:none; accent-color:var(--go)}
+label.field{display:flex; flex-direction:column; gap:6px; font-weight:600; font-size:16px}
+input[type=text],input[type=number],input[type=tel],input[type=url],select{
+  font:500 18px/1.2 var(--font-body); color:var(--ink); background:var(--surface);
+  border:2px solid var(--line); border-radius:10px; padding:12px; min-height:52px; width:100%; box-sizing:border-box;
+}
+input.code{font-family:var(--font-mono); font-size:22px; letter-spacing:.06em; text-transform:uppercase}
+.figure{background:var(--surface-2); border-radius:12px; padding:10px; overflow-x:auto}
+.figure svg{display:block; width:100%; height:auto; max-width:520px; margin:0 auto}
+.svg-t{font-family:var(--font-mono); font-size:13px; fill:var(--muted)}
+.svg-b{font-family:var(--font-mono); font-size:19px; fill:var(--ink); font-weight:700}
+.svg-l{font-family:var(--font-display); font-size:16px; fill:var(--accent-ink)}
+
+/* Карточки продавцов */
+.chip{display:inline-flex; align-self:flex-start; align-items:center; gap:6px; border-radius:999px; padding:4px 10px; font-size:14px; font-weight:600; line-height:1.2}
+.g-asm{background:var(--go-soft); color:var(--go)}
+.g-cov{background:var(--accent-soft); color:var(--accent)}
+.g-new{background:var(--wait-soft); color:var(--wait)}
+.g-don{background:var(--surface-2); color:var(--muted); box-shadow:inset 0 0 0 1px var(--line)}
+.offer{gap:10px}
+.offer.st-yes{box-shadow:inset 0 0 0 2px var(--go)}
+.offer.st-no{opacity:.72}
+.offer-head{display:flex; justify-content:space-between; gap:12px; align-items:flex-start}
+.offer-head > div{min-width:0}
+.price{font-family:var(--font-display); font-size:26px; white-space:nowrap; text-align:right; line-height:1.1}
+.price small{display:block; font-family:var(--font-body); font-size:14px; color:var(--muted); font-weight:500}
+.phones{display:flex; flex-direction:column; gap:8px}
+.phone{display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; background:var(--surface-2); border-radius:12px; padding:10px 12px}
+.phone .num{font-family:var(--font-mono); font-size:23px; font-weight:700; color:var(--ink); text-decoration:none; user-select:all; -webkit-user-select:all; letter-spacing:.01em}
+.phone .lbl{font-size:14px; color:var(--muted); flex-basis:100%}
+.phone .acts{display:flex; gap:8px; margin-left:auto}
+.say{font-size:16px; background:var(--accent-soft); border-radius:10px; padding:8px 12px}
+.meta{font-size:15px; color:var(--muted); display:flex; flex-direction:column; gap:2px}
+details.more summary{cursor:pointer; color:var(--accent); font-weight:600; font-size:16px; padding:6px 0}
+details.more[open] summary{margin-bottom:6px}
+.result{border-top:1px dashed var(--line); padding-top:12px; display:flex; flex-direction:column; gap:10px}
+.result .opts{grid-template-columns:1fr 1fr}
+.result .opt.later{grid-column:1 / -1}
+.flags{display:flex; flex-direction:column; gap:6px}
+.total{display:flex; justify-content:space-between; gap:10px; align-items:baseline; font-weight:700}
+.total b{font-family:var(--font-display); font-weight:400; font-size:22px; white-space:nowrap}
+.tabs{display:flex; gap:8px; flex-wrap:wrap}
+
+/* Сравнение */
+.cmp{display:flex; flex-direction:column; gap:10px}
+.cmp-item{display:grid; grid-template-columns:1fr auto; gap:6px 12px; align-items:center}
+.cmp-item .sum{font-family:var(--font-display); font-size:24px; white-space:nowrap; text-align:right}
+.cmp-item .break{grid-column:1 / -1; font-size:15px; color:var(--muted); font-variant-numeric:tabular-nums}
+.cmp-item.chosen{box-shadow:inset 0 0 0 3px var(--go)}
+.badge{display:inline-block; background:var(--mark); color:var(--on-mark); border-radius:6px; padding:2px 8px; font-size:13px; font-weight:700; letter-spacing:.04em; text-transform:uppercase}
+.costs{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px}
+
+/* Тост и конфетти */
+.toast{position:fixed; left:0; right:0; margin-inline:auto; width:fit-content; bottom:calc(18px + env(safe-area-inset-bottom, 0px)); z-index:20;
+  background:var(--ink); color:var(--bg); border-radius:12px; padding:12px 18px; font-weight:600; max-width:calc(100% - 32px); box-shadow:0 8px 24px rgba(0,0,0,.25)}
+#confetti{position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:30}
+.foot{font-size:15px; color:var(--muted); display:flex; flex-direction:column; gap:10px; align-items:flex-start}
+.linkbtn{background:none; border:0; padding:0; font:inherit; color:var(--accent); text-decoration:underline; cursor:pointer}
+.big-win{font-family:var(--font-display); font-size:44px; line-height:1.05}
+
+/* Чат */
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)}
+.chat-fab{position:fixed; z-index:15; right:max(16px, env(safe-area-inset-right, 0px)); bottom:calc(16px + env(safe-area-inset-bottom, 0px)); box-shadow:0 8px 24px rgba(0,0,0,.25); border-radius:999px}
+.chat{position:fixed; z-index:25; left:max(10px, env(safe-area-inset-left, 0px)); right:max(10px, env(safe-area-inset-right, 0px)); bottom:calc(10px + env(safe-area-inset-bottom, 0px));
+  max-width:520px; margin-left:auto; height:min(80vh, 640px); background:var(--surface); color:var(--ink); border:1px solid var(--line); border-radius:16px;
+  box-shadow:0 14px 44px rgba(0,0,0,.3); display:flex; flex-direction:column; overflow:hidden}
+.chat-head{display:flex; justify-content:space-between; align-items:center; gap:8px; padding:10px 12px; border-bottom:1px solid var(--line)}
+.chat-head .row{flex-wrap:nowrap}
+.chat-head .btn{min-height:40px; padding:6px 10px; font-size:15px}
+.chat-log{flex:1; overflow-y:auto; padding:12px; display:flex; flex-direction:column; gap:10px}
+.msg{max-width:88%; padding:10px 12px; border-radius:14px; font-size:17px; line-height:1.4; overflow-wrap:anywhere}
+.msg.me{align-self:flex-end; background:var(--accent); color:var(--accent-ink)}
+.msg.bot{align-self:flex-start; background:var(--surface-2); box-shadow:inset 0 0 0 1px var(--line)}
+.chat-form{display:flex; gap:8px; padding:10px 12px; border-top:1px solid var(--line)}
+.chat-form input{flex:1; min-width:0}
+.chat-note{padding:0 12px 10px}
+</style>
+
+</head>
+<body>
+<div class="wrap" id="app" lang="ru"></div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<button id="chat-open" class="btn chat-fab" hidden>Спросить помощника</button>
+<section id="chat" class="chat" hidden aria-label="Помощник по бамперу">
+  <div class="chat-head"><strong>Помощник по бамперу</strong><span class="row" style="gap:6px"><button class="btn quiet" id="chat-clear" type="button">Очистить</button><button class="btn quiet" id="chat-close" type="button">Закрыть</button></span></div>
+  <div id="chat-log" class="chat-log" aria-live="polite"></div>
+  <form id="chat-form" class="chat-form"><label for="chat-input" class="sr">Вопрос</label><input id="chat-input" type="text" placeholder="Напишите вопрос…" autocomplete="off"><button class="btn" type="submit">Отправить</button></form>
+  <p class="small muted chat-note">Помощник может ошибаться. Цены и наличие уточняйте по телефону.</p>
+</section>
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<script type="application/json" id="quest-data">{"checked":"16–17 октября 2026","updated":"17.10.2026, 22:40 (Тбилиси)","updateNote":"Первоначальная проверка вручную","vin":{"source":"VIN из техпаспорта, каталог Toyota для Европы (partsouq), проверено 17.10.2026","model":"RAV4 2018 гибрид, AVA42L-ANXMBW, Европа, выпуск 08.2018","paint":"1G3","washers":"no","pdc":"yes","fog":"grilles","radar":true,"partno":"52119-4A911","parts":[["52119-4A911","Бампер, верхняя часть: под парктроники, под покраску"],["52411-42080","Нижняя часть бампера (защита)"],["53112-42100","Нижняя решётка № 1"],["53113-42080","Нижняя решётка № 2"],["52711-42110-B2","Серебристая накладка внизу"],["52030-42060","Правая заглушка на месте противотуманки"],["52535-42080","Правый боковой кронштейн бампера"],["52618-42070","Нижний абсорбер"]]},"offers":[{"id":"multimotor","group":"assembly","seller":"MultiMotor (разборка)","what":"Б/у оригинал в сборе с RAV4 2016 (машина из Италии)","price":2625,"priceNote":"на bamper.by тот же бампер — 2 580","phones":[["+375 29 626-27-26","Viber, WhatsApp"],["+375 29 257-96-57",""]],"wa":"375296262726","say":"Скажите: «Меня интересует запчасть 00113745»","includes":"В комплекте решётки с хромом, площадка под номер, серебристая накладка и обе противотуманки. На фото тёмно-серый. Номер детали в объявлении не указан — спросите, есть ли отверстия под парктроники и код краски донора (нужен 1G3).","holes":{"washers":null,"pdc":null},"fogLamps":true,"address":"д. Новый Двор, ул. Садовая, 13 (6 км от МКАД)","hours":"Пн–Пт 9–19, Сб 9–17, Вс 9–16","delivery":"был в наличии 16.10","link":"https://auto.kufar.by/vi/zapchasti/1086909644","top":1},{"id":"motorland","group":"donor","seller":"МоторЛэнд (разборка)","what":"Разбирают такой же RAV4 2018 гибрид (правый руль, чёрный). Номер бампера по каталогу — тот же 52119-4A911","price":null,"exact":true,"phones":[["+375 29 697-18-53","колл-центр, ежедневно 8:30–20:00"],["+375 29 617-11-21","по этой машине"]],"say":"Скажите: «У вас разбирают RAV4 2018 гибрид, VIN JTMWRREVX0D090002. Есть с него передний бампер?»","includes":"Бампер пока не выставлен — спросите, цел ли он и сколько стоит. Машина чёрная, бампер придётся красить. Эсэмэски не читают — только звонок.","holes":{"washers":false,"pdc":true},"address":"д. Малиновка, ул. Промысловая, 11","hours":"ежедневно 8:30–20:00","delivery":"спросить","link":"https://bamper.by/zchbu/vin_JTMWRREVX0D090002/?PAGEN_1=1","top":2},{"id":"kuzov","group":"copy","seller":"KUZOV.BY","what":"Новый бампер (копия) для RAV4 2016–2018","price":209,"pricePdc":375,"pdcNote":"версия с отверстиями под парктроники — 375 BYN","phones":[["+375 29 655-10-47",""],["+375 29 776-61-80","МТС, Viber"],["+375 29 666-26-38","A1"]],"includes":"Только верхняя часть бампера, приходит под покраску. Ставят сами на своём СТО и дают гарантию на работу. Спросите, красят ли сами. Берите версию с отверстиями под парктроники.","holes":{"washers":null,"pdc":false},"address":"Минск, ул. Куприянова, 4","hours":"","delivery":"наличие уточнить","link":"https://bamper.by/zapchast_bamper-peredniy/2632-193174325/","top":3},{"id":"orehovskaya","group":"cover","seller":"Ореховская Автозапчасти","what":"Б/у оригинал, привезён из Норвегии","price":903,"phones":[["+375 29 650-29-50","Viber, WhatsApp, Telegram"]],"wa":"375296502950","includes":"В объявлении: «Элементы крепления в целостности. Бампер без трещин. Комплектация на фото актуальна». Спросите номер детали (нужен 52119-4A911) и что входит. Оплата только наличными.","holes":{"washers":null,"pdc":null},"address":"д. Ореховская, ул. Центральная, 32 (10 км от рынка Малиновка)","hours":"до 20:00","delivery":"в наличии","link":"https://bamper.by/zapchast_bamper-peredniy/3768-21731867/","top":4},{"id":"private2583","group":"assembly","seller":"Частное лицо, Минск","what":"Б/у оригинал в сборе, 2017","price":2583,"phones":[["+375 29 911-83-71",""]],"includes":"В объявлении: «оригинал, без дефектов, цена за бампер в сборе, как на фото». Цвет и номер не указаны — спросите.","holes":{"washers":null,"pdc":null},"address":"Минск","hours":"","delivery":"в наличии","link":"https://bamper.by/zapchast_bamper-peredniy/84232-143195558/"},{"id":"autobal","group":"assembly","seller":"Autobal (разборка, Гомель)","what":"Б/у оригинал в сборе 52119-4A911 — номер совпадает","price":4306,"exact":true,"mustPaint":true,"shipping":40,"phones":[["+375 44 727-34-56",""],["+7 916 230-20-20","российский номер"]],"includes":"В объявлении: «Цена указана за в сборе», «отличное состояние». На фото белый — нужна покраска. Нужна доставка из Гомеля (≈ 40 BYN, оценка). Рейтинг продавца 84%, 25 отзывов.","holes":{"washers":false,"pdc":true},"address":"Гомель, ул. 2-я Заводская, 33","hours":"с 9:00","delivery":"Гомель, нужна доставка","link":"https://bamper.by/zapchast_bamper-peredniy/3752-253684/"},{"id":"razborauto","group":"assembly","seller":"Razbor-Auto (Москва)","what":"Б/у оригинал 52119-4A911 «под парктроник, без омывателей фар» — номер совпадает","price":4325,"exact":true,"phones":[["+7 901 746-05-51",""],["+7 926 377-77-48","Telegram"]],"includes":"Четыре таких бампера, один «в сборе с накладкой и решётками». Свой рейс в Минск раз в неделю, оплата при получении. Отзывов о продавце нет.","holes":{"washers":false,"pdc":true},"address":"Москва","hours":"Пн–Сб 9–18, Вс 9–16","delivery":"из Москвы, рейс раз в неделю","link":"https://bamper.by/zapchast_bamper-peredniy/386333-165505/"},{"id":"sales24","group":"copy","seller":"SALES24.BY","what":"Новый бампер (копия, марка AVG) для RAV4 2016–2019","price":200,"pricePdc":280,"pdcNote":"версия с отверстиями под парктроники — 280 BYN","phones":[["+375 29 184-90-96",""]],"includes":"Только верхняя часть, под покраску. Самовывоз по предварительному заказу. Берите версию с отверстиями под парктроники.","holes":{"washers":null,"pdc":false},"address":"Минск, ул. Малая, 1 (ТЦ OUTLETO, въезд с ул. Автодоровской)","hours":"","delivery":"по предзаказу","link":"https://bamper.by/zapchast_bamper-peredniy/306598-S24-8102906/"},{"id":"bestdeal","group":"assembly","seller":"BestDeal 1","what":"Б/у оригинал в сборе, с царапинами, 52119-0R916","price":1776,"priceNote":"второй такой же — 2 283","mustPaint":true,"phones":[["+375 44 796-70-33",""]],"includes":"В объявлении: «Оригинал в сборе… с дефектами, царапины, потёртости». Под заказ — спросите срок и есть ли отверстия под парктроники.","holes":{"washers":null,"pdc":null},"address":"Минск","hours":"ежедневно 9–21","delivery":"под заказ","link":"https://bamper.by/zapchast_bamper-peredniy/4512-VZ254563/"},{"id":"avtobamper","group":"copy","seller":"Автобампер","what":"Новый «бампер RAV4 2018» — модель не подтверждена","price":293,"phones":[["+375 29 393-95-79","Viber"],["+375 33 393-95-79",""]],"includes":"Фото нет. Обязательно спросите: «Подходит на RAV4 2016–2018, рестайлинг 40 кузова, с отверстиями под парктроники?» Бампер от новой модели 2019+ не подойдёт.","holes":{"washers":null,"pdc":null},"address":"Минск, ул. Неманская, 12","hours":"Пн–Чт 9–20, Пт 9–19","delivery":"наличие уточнить","link":"https://auto.kufar.by/vi/zapchasti/1036694070"},{"id":"dtp302","group":"cover","seller":"Dtp-zap","what":"Б/у оригинал, тёмно-серый, 52119-0R180","price":302,"phones":[["+375 29 532-62-92","Viber, WhatsApp, Telegram"],["+375 44 560-62-92",""]],"wa":"375295326292","includes":"Только бампер. В объявлении: «под омыватели фар, сломано нижнее крепление, потёртости». Рейтинг продавца 67%.","holes":{"washers":true,"pdc":null},"address":"Минск, ул. Аннаева, 67/2","hours":"Пн–Пт 10–18","delivery":"под заказ, 3–7 дней","link":"https://bamper.by/zapchast_bamper-peredniy/7198-A431696/"},{"id":"dtp318","group":"cover","seller":"Dtp-zap","what":"Б/у оригинал, серый, 52119-0R180","price":318,"phones":[["+375 29 532-62-92","Viber, WhatsApp, Telegram"],["+375 44 560-62-92",""]],"wa":"375295326292","includes":"В объявлении: «под парктроник и омыватели фар, все крепления целые после незначительного ремонта».","holes":{"washers":true,"pdc":true},"address":"Минск, ул. Аннаева, 67/2","hours":"Пн–Пт 10–18","delivery":"под заказ, 3–7 дней","link":"https://bamper.by/zapchast_bamper-peredniy/7198-L081538/"},{"id":"private812","group":"cover","seller":"Частное лицо, Минск","what":"Б/у оригинал, 2017 (похоже, с гибрида)","price":812,"phones":[["+375 33 681-47-39",""]],"includes":"В объявлении только «Бампер б/у, оригинал». Спросите номер, комплект, цвет и трещины.","holes":{"washers":null,"pdc":null},"address":"Минск","hours":"","delivery":"в наличии","link":"https://bamper.by/zapchast_bamper-peredniy/58695-150429982/"}],"fresh":[],"chatEndpoint":null,"sources":{}}</script>
+<script>
+(() => {
+'use strict';
+
+/* ---------- Данные (проверены 16.10.2026) ---------- */
+const RATE = 3.0091;           // BYN за 1 USD, курс НБРБ на 16.10.2026
+let DATA = {offers:[], fresh:[], vin:{}};
+try{ DATA = JSON.parse(document.getElementById('quest-data').textContent); }catch(e){}
+let VIN, CHECKED, OFFERS, FRESH;
+function applyData(d){
+  DATA = d || DATA; VIN = DATA.vin || {}; CHECKED = DATA.checked || '';
+  OFFERS = DATA.offers || [];
+  FRESH = (DATA.fresh || []).map(o => Object.assign({holes:{washers:null, pdc:null}, phones:[]}, o, {auto:true}));
+}
+applyData(DATA);
+const BASELINE = 3568;         // первый найденный вариант «из Москвы», только деталь
+const DAMAGE_IMG = 'data:image/jpeg;base64,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';
+
+const GROUPS = {
+  assembly:{label:'Б/у оригинал в сборе', cls:'g-asm'},
+  cover:{label:'Б/у оригинал, только бампер', cls:'g-cov'},
+  copy:{label:'Новый, неоригинал', cls:'g-new'},
+  donor:{label:'Разборка, спросить', cls:'g-don'}
+};
+
+
+const SHOPS = [
+  {name:'KUZOV.BY', note:'Если бампер берёте у них — сами и поставят. Спросите про покраску.', phones:['+375 29 655-10-47','+375 29 776-61-80'], addr:'ул. Куприянова, 4', price:''},
+  {name:'Лак и Мастер', note:'Сами найдут и закажут детали, работают со страховыми.', phones:['+375 29 329-40-00','+375 17 388-40-40'], addr:'ул. Свердлова, 23', price:'«Бампер — 750 BYN» под ключ'},
+  {name:'JDM Motors', note:'Специализируются на Toyota и Lexus, красят пластиковые бамперы.', phones:['+375 29 130-85-85','+375 29 633-33-96'], addr:'Брилевский тупик, 16', price:'цены по телефону'},
+  {name:'СТО Миура', note:'Гарантия на покраску 6 месяцев.', phones:['+375 29 555-11-88'], addr:'пер. Промышленный, 11/2', price:'покраска бампера от 600 BYN'},
+  {name:'pokrasimavto.by', note:'Помогают найти запчасть.', phones:['+375 29 388-08-60'], addr:'ул. Рогачевская, 16 к8', price:'покраска элемента 450 BYN, снять-поставить бампер ≈ 80 BYN'}
+];
+
+const DEALERS = [
+  {name:'Тойота Центр Минск Восток («Атлант-М»)', phones:['+375 44 561-77-77'], addr:'пр. Независимости, 202/1', hours:'ежедневно 8:00–20:30'},
+  {name:'Тойота Центр Минск («Эмир Моторс»)', phones:['+375 17 356-65-55'], addr:'ул. Орловская, 88', hours:''}
+];
+
+const LIVE = [
+  {name:'Kufar: RAV4 рестайлинг, «бампер»', url:'https://auto.kufar.by/l/zapchasti/z~toyota-rav4-iv-ca40-restajling?query=%D0%B1%D0%B0%D0%BC%D0%BF%D0%B5%D1%80'},
+  {name:'bamper.by: RAV4, бампер передний, 2016–2017', url:'https://bamper.by/zchbu/zapchast_bamper-peredniy/marka_toyota/model_rav4/god_2016-2017/'},
+  {name:'av.by: запчасти (в поиске: RAV4 IV рестайлинг, бампер передний)', url:'https://parts.av.by/'}
+];
+
+const STEPS = [
+  {n:1, title:'Страховка', sub:'Есть ли КАСКО — одна минута'},
+  {n:2, title:'Паспорт машины', sub:'Код краски и три вопроса у машины'},
+  {n:3, title:'Выберите путь', sub:'Дёшево, оригинал или без хлопот'},
+  {n:4, title:'Обзвон продавцов', sub:'Звоним и отмечаем ответы'},
+  {n:5, title:'Сравнить и выбрать', sub:'Итог с покраской и установкой'},
+  {n:6, title:'Покраска и установка', sub:'Кому отдать бампер'},
+  {n:7, title:'Радар у дилера', sub:'Настройка после замены'}
+];
+
+const ROUTES = [
+  {id:'copy', title:'Дёшево', what:'Новый неоригинальный бампер + покраска', time:'2–5 дней', plus:'Самый дешёвый новый вариант. У KUZOV.BY купить и поставить можно в одном месте.', minus:'Копия может встать с зазорами хуже оригинала.'},
+  {id:'cover', title:'Оригинал под покраску', what:'Б/у оригинальный бампер без решёток + покраска', time:'3–7 дней', plus:'Оригинальная посадка. Если цвет совпадёт — можно не красить.', minus:'Бывают царапины и сломанные крепления. Решётки и мелочи переставляют со старого.'},
+  {id:'assembly', title:'Без хлопот', what:'Б/у оригинал в сборе, в идеале вашего цвета', time:'1 день, если цвет совпал', plus:'Всё уже собрано: решётки, накладки, площадка под номер.', minus:'Дороже. Цвет нужно сверить по коду краски.'}
+];
+
+/* ---------- Состояние ---------- */
+const KEY = 'rav4-bumper-quest-v1';
+const fresh = () => ({v:1, screen:'home', done:{}, kasko:null, paint:VIN.paint || '', washers:VIN.washers || null, pdc:VIN.pdc || null, fog:VIN.fog || null, partno:VIN.partno || '',
+  checks:{}, route:null, calls:{}, custom:[], costs:{paint:500, install:60, extras:150}, choice:null, finished:false, filter:'mine'});
+let S = fresh();
+const U = {confirmReset:false, confirmDel:null, showAdd:false};
+
+function load(){
+  try{
+    const raw = localStorage.getItem(KEY);
+    if(raw){ const o = JSON.parse(raw); if(o && o.v === 1){ const d = fresh(), r = Object.assign(fresh(), o, {costs:Object.assign(d.costs, o.costs || {})});
+      ['paint','partno'].forEach(k => { if(!r[k]) r[k] = d[k]; }); ['washers','pdc','fog'].forEach(k => { if(r[k] == null) r[k] = d[k]; });
+      return r; } }
+  }catch(e){}
+  return fresh();
+}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+
+/* ---------- Помощники ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt = n => Math.round(n).toLocaleString('ru-RU');
+const usd = byn => '≈ $' + fmt(byn / RATE);
+const digits = p => String(p).replace(/[^\d+]/g, '');
+const doneCount = () => STEPS.filter(s => S.done[s.n]).length;
+const allOffers = () => OFFERS.concat(FRESH, S.custom || []);
+const findOffer = id => allOffers().find(o => o.id === id);
+const nextStep = () => { const s = STEPS.find(x => !S.done[x.n]); return s ? s.n : null; };
+
+const I = {
+  phone:'<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>',
+  ext:'<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14 3h7v7h-2V6.4l-9.3 9.3-1.4-1.4L17.6 5H14zM5 5h6v2H7v10h10v-4h2v6H5z"/></svg>',
+  check:'<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9.5 16.2 5.3 12l-1.4 1.4 5.6 5.6L20.1 8.4 18.7 7z"/></svg>',
+  star:'<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.8l2.8 5.7 6.3.9-4.6 4.4 1.1 6.3L12 17.1l-5.6 3 1.1-6.3L2.9 9.4l6.3-.9z"/></svg>',
+  car:'<svg width="30" height="20" viewBox="0 0 40 26" aria-hidden="true"><path fill="currentColor" d="M3 17.5 5.6 9.3C6.3 7.2 8 6 10.2 6h17.4c2 0 3.6 1 4.5 2.8l2.3 4.4c2.5.4 3.6 1.7 3.6 3.6V20h-3.3a4.6 4.6 0 0 0-9 0H14.4a4.6 4.6 0 0 0-9 0H1.8v-1.5c0-.6.5-1 1.2-1z"/><path fill="#fff" opacity=".85" d="M10.4 8.6h6.4v4.6H8.9zm8.6 0h7.6c1.1 0 2 .5 2.6 1.5l1.6 3.1H19z"/><circle cx="9.9" cy="20.3" r="3.3" fill="currentColor"/><circle cx="29.8" cy="20.3" r="3.3" fill="currentColor"/></svg>',
+  flag:'<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 21V3h2v1h12l-2 4 2 4H7v9z"/></svg>'
+};
+
+function toast(msg){
+  const t = $('#toast'); t.textContent = msg; t.hidden = false;
+  clearTimeout(toast._t); toast._t = setTimeout(() => { t.hidden = true; }, 2600);
+}
+
+function copyText(text){
+  try{
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(() => toast('Скопировано'), () => fallbackCopy(text));
+      return;
+    }
+  }catch(e){}
+  fallbackCopy(text);
+}
+function fallbackCopy(text){
+  try{
+    const ta = document.createElement('textarea'); ta.value = text; ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed'; ta.style.top = '0'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select(); const ok = document.execCommand('copy'); ta.remove();
+    toast(ok ? 'Скопировано' : 'Не получилось скопировать — выделите текст пальцем и скопируйте');
+  }catch(e){ toast('Не получилось скопировать — выделите текст пальцем и скопируйте'); }
+}
+
+/* ---------- Анализ: подходит ли вариант к машине ---------- */
+function issues(o){
+  const out = [], h = o.holes || {};
+  if(S.washers === 'no' && h.washers === true) out.push({t:'Есть прорези под омыватели фар, а у вас их нет — их нужно заделать', cost:80});
+  if(S.washers === 'yes' && h.washers === false) out.push({t:'Нет прорезей под омыватели фар — мастеру нужно прорезать', cost:40});
+  if(S.pdc === 'no' && h.pdc === true) out.push({t:'Есть отверстия под парктроники, а у вас их нет — их нужно заделать', cost:80});
+  if(S.pdc === 'yes' && h.pdc === false) out.push({t: o.pricePdc ? ('Вам нужна ' + o.pdcNote + ' (посчитано по ней)') : 'Нет отверстий под парктроники — спросите версию с отверстиями', cost:0});
+  if(S.fog === 'grilles' && o.fogLamps) out.push({t:'В комплекте противотуманки, а у вас решётки — поставьте свои решётки или попросите цену без фар', cost:0});
+  return out;
+}
+function asks(o){
+  const a = [], h = o.holes || {};
+  if(o.group === 'donor') return a;
+  if(h.washers == null && S.washers !== 'unknown') a.push('есть ли прорези под омыватели фар');
+  if(h.pdc == null && S.pdc !== 'unknown') a.push('есть ли отверстия под парктроники');
+  if(o.group !== 'copy' && !o.mustPaint) a.push('какой код краски' + (S.paint ? ' (у вас ' + S.paint + ')' : ''));
+  return a;
+}
+function basePrice(o){
+  const c = S.calls[o.id];
+  if(c && c.status === 'yes' && +c.price > 0) return +c.price;
+  if(S.pdc === 'yes' && o.pricePdc) return o.pricePdc;
+  return o.price;
+}
+function total(o){
+  const p = basePrice(o);
+  if(!(p > 0)) return null;
+  const c = S.calls[o.id] || {}, k = S.costs;
+  let pMin, pMax;
+  if(o.group === 'copy' || o.mustPaint || c.color === 'nomatch'){ pMin = pMax = +k.paint || 0; }
+  else if(c.color === 'match'){ pMin = pMax = 0; }
+  else { pMin = 0; pMax = +k.paint || 0; }
+  const extras = o.group === 'assembly' ? 20 : (+k.extras || 0);
+  const fix = issues(o).reduce((s, i) => s + i.cost, 0);
+  const ship = +o.shipping || 0;
+  const base = p + (+k.install || 0) + extras + fix + ship;
+  return {price:p, pMin, pMax, install:+k.install || 0, extras, fix, ship, min:base + pMin, max:base + pMax};
+}
+const rangeTxt = t => t.min === t.max ? fmt(t.min) : fmt(t.min) + '–' + fmt(t.max);
+
+/* ---------- Отчёт для Вани ---------- */
+const yn = v => ({yes:'есть', no:'нет', unknown:'не знаю'})[v] || 'не отмечено';
+const fogTxt = v => ({lamps:'фары', grilles:'решётки', unknown:'не знаю'})[v] || 'не отмечено';
+const statusTxt = v => ({yes:'есть', no:'нет', later:'перезвонят'})[v] || '';
+const colorTxt = v => ({match:'совпадает', nomatch:'не совпадает', unknown:'не знаю'})[v] || '';
+function report(){
+  const L = [];
+  L.push('Шагов пройдено: ' + doneCount() + ' из 7');
+  L.push('КАСКО: ' + yn(S.kasko));
+  L.push('Код краски: ' + (S.paint || '—') + '; омыватели: ' + yn(S.washers) + '; парктроники: ' + yn(S.pdc) + '; противотуманки: ' + fogTxt(S.fog) + (S.partno ? '; номер детали: ' + S.partno : ''));
+  const called = allOffers().filter(o => S.calls[o.id] && S.calls[o.id].status);
+  if(called.length){
+    L.push('Звонки:');
+    called.forEach(o => {
+      const c = S.calls[o.id];
+      L.push((c.status === 'yes' ? '✅ ' : c.status === 'no' ? '❌ ' : '⏳ ') + o.seller + ' — ' + statusTxt(c.status) +
+        (c.status === 'yes' && basePrice(o) > 0 ? ', ' + fmt(basePrice(o)) + ' BYN' : '') + (c.color ? ', цвет: ' + colorTxt(c.color) : '') + (c.note ? '. ' + c.note : ''));
+    });
+  } else L.push('Звонков пока не было.');
+  const ch = S.choice && findOffer(S.choice);
+  if(ch){ const t = total(ch); L.push('Выбрано: ' + ch.seller + (t ? ', итого ≈ ' + rangeTxt(t) + ' BYN' : '')); }
+  return L.join('\n');
+}
+function tgLink(){
+  return 'https://t.me/share/url?url=' + encodeURIComponent('Бампер RAV4 — отчёт от ' + new Date().toLocaleDateString('ru-RU')) + '&text=' + encodeURIComponent(report());
+}
+
+/* ---------- Куски интерфейса ---------- */
+function stars(){
+  let h = '';
+  STEPS.forEach(s => { h += '<span class="' + (S.done[s.n] ? '' : 'off') + '">' + I.star + '</span>'; });
+  return '<div class="stars" aria-hidden="true">' + h + '</div>';
+}
+function phoneRow(p, label, wa){
+  return '<div class="phone">' +
+    '<a class="num" href="tel:' + esc(digits(p)) + '">' + esc(p) + '</a>' +
+    '<span class="acts"><button class="btn quiet" data-act="copy" data-text="' + esc(p) + '">Копировать</button></span>' +
+    (label ? '<span class="lbl">' + esc(label) + (wa ? ' · <a href="https://wa.me/' + esc(wa) + '" target="_blank" rel="noopener">написать в WhatsApp</a>' : '') + '</span>' : '') +
+  '</div>';
+}
+function reportBlock(){
+  return '<div class="card soft">' +
+    '<h3>Отправить отчёт Ване</h3>' +
+    '<p class="small muted">Что отмечено на этой странице: шаги, звонки, выбор. Ваня увидит всё в Telegram.</p>' +
+    '<a class="btn block" data-act="tg" href="' + esc(tgLink()) + '" target="_blank" rel="noopener">Отправить в Telegram</a>' +
+    '<button class="btn ghost block" data-act="copyreport">Скопировать отчёт</button>' +
+  '</div>';
+}
+function liveBlock(){
+  return '<div class="card">' +
+    '<h3>Свежие объявления</h3>' +
+    '<p class="small muted">Если в списке всё продали — посмотрите новые. Подходит только RAV4 «IV рестайлинг» 2016–2019. Не подходит: 2013–2015 и 2019+ (другая модель).</p>' +
+    '<div class="stack">' + LIVE.map(l => '<a class="btn ghost block" href="' + esc(l.url) + '" target="_blank" rel="noopener">' + esc(l.name) + ' ' + I.ext + '</a>').join('') + '</div>' +
+    '<p class="small muted">Нашли новое объявление — добавьте его в шаге 4 кнопкой «Добавить свой вариант».</p>' +
+  '</div>';
+}
+function choice(key, value, label, extra){
+  return '<button class="opt ' + (extra || '') + '" data-act="set" data-key="' + key + '" data-v="' + value + '" aria-pressed="' + (S[key] === value) + '">' + label + '</button>';
+}
+
+/* ---------- Экраны ---------- */
+function home(){
+  const n = nextStep(), d = doneCount();
+  let h = '<header class="hero">' +
+    '<p class="eyebrow">Toyota RAV4 2018 · гибрид</p>' +
+    '<h1>Бампер для RAV4</h1>' +
+    '<p class="lead">Семь шагов от разбитого бампера до целого. Идите по дороге сверху вниз — на каждом шаге всё подскажем.</p>' +
+  '</header>';
+  h += '<div class="card photo"><img src="' + DAMAGE_IMG + '" alt="Разбитый правый передний угол бампера"><div class="stack">' +
+    '<p class="eyebrow">Что чиним</p><p>Правый передний угол бампера, нижняя решётка и площадка под номер.</p></div></div>';
+  h += '<div class="card progress"><div class="row" style="justify-content:space-between"><strong>Пройдено ' + d + ' из 7</strong>' + stars() + '</div>' +
+    '<div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="7" aria-valuenow="' + d + '"><i style="width:' + (d / 7 * 100) + '%"></i></div></div>';
+  if(n){
+    const s = STEPS[n - 1];
+    h += '<div class="card accent"><p class="eyebrow">Ваш следующий шаг</p><h2>Шаг ' + n + '. ' + esc(s.title) + '</h2><p class="muted">' + esc(s.sub) + '</p>' +
+      '<button class="btn block" data-act="go" data-to="' + n + '">Начать шаг ' + n + '</button></div>';
+  } else {
+    h += '<div class="card accent"><p class="eyebrow">Всё пройдено</p><h2>Бампер на месте</h2><button class="btn block" data-act="go" data-to="finish">Посмотреть итог</button></div>';
+  }
+  h += '<section class="road" aria-label="Дорога к новому бамперу">';
+  STEPS.forEach(s => {
+    const cls = S.done[s.n] ? 'done' : (s.n === n ? 'current' : '');
+    const dot = S.done[s.n] ? I.check : (s.n === n ? I.car : s.n);
+    h += '<div class="stop ' + cls + '"><span class="dot">' + dot + '</span>' +
+      '<button class="btn-step" data-act="go" data-to="' + s.n + '"><strong>' + s.n + '. ' + esc(s.title) + '</strong>' +
+      '<span class="st">' + (S.done[s.n] ? 'Готово' : esc(s.sub)) + '</span></button></div>';
+  });
+  h += '<div class="stop ' + (S.finished ? 'done' : '') + '"><span class="dot">' + I.flag + '</span><button class="btn-step" data-act="go" data-to="finish"><strong>Финиш</strong><span class="st">' + (S.finished ? 'Готово' : 'Машина снова целая') + '</span></button></div>';
+  h += '</section>';
+  h += reportBlock() + liveBlock();
+  h += '<footer class="foot"><p>Список обновлён: ' + esc(DATA.updated || CHECKED) + '. Обновляется автоматически каждое утро' + (FRESH.length ? '; новых объявлений: ' + FRESH.length : '') + '. Цены и наличие меняются — уточняйте по телефону.</p>' +
+    (U.confirmReset
+      ? '<div class="row"><span>Стереть все отметки?</span><button class="btn quiet" data-act="resetyes">Да, стереть</button><button class="btn quiet" data-act="resetno">Нет</button></div>'
+      : '<button class="linkbtn" data-act="reset">Начать заново</button>') +
+  '</footer>';
+  return h;
+}
+
+function stepShell(n, body, opts){
+  opts = opts || {};
+  const s = STEPS[n - 1];
+  let h = '<div class="topbar"><button class="btn quiet" data-act="go" data-to="home">← К дороге</button><span class="muted small">Шаг ' + n + ' из 7</span></div>';
+  h += '<header class="stack"><h2>' + esc(s.title) + '</h2>' + (opts.lead ? '<p class="lead">' + opts.lead + '</p>' : '') + '</header>';
+  if(S.done[n]) h += '<div class="note good">' + I.check + '<span>Этот шаг уже пройден. Можно вернуться и поменять ответы.</span></div>';
+  h += body;
+  const nextLabel = n === 7 ? 'Бампер на месте!' : 'Готово, дальше →';
+  h += '<div class="navrow">' +
+    (n > 1 ? '<button class="btn ghost" data-act="go" data-to="' + (n - 1) + '">← Назад</button>' : '<button class="btn ghost" data-act="go" data-to="home">← Дорога</button>') +
+    '<button class="btn" data-act="next" data-n="' + n + '">' + nextLabel + '</button></div>';
+  return h;
+}
+
+function s1(){
+  let b = '<div class="card"><h3>Есть ли у машины КАСКО?</h3><p class="muted small">КАСКО — добровольная страховка своей машины. Обязательная страховка (ОСГО) есть у всех, но за свою машину она не платит.</p>' +
+    '<div class="opts">' + choice('kasko', 'yes', 'Есть') + choice('kasko', 'no', 'Нет') + choice('kasko', 'unknown', 'Не знаю') + '</div></div>';
+  if(S.kasko === 'yes') b += '<div class="card accent"><h3>Сначала страховая, потом ремонт</h3><ol class="plain">' +
+    '<li>Позвоните в свою страховую и скажите: «наезд на косулю».</li>' +
+    '<li>Подайте заявление: в Белгосстрах — письменно в течение 3 рабочих дней, в ТАСК — в течение 72 часов.</li>' +
+    '<li>Покажите машину оценщику <strong>до</strong> ремонта.</li></ol>' +
+    '<p class="small muted">Если ГАИ не вызывали, Белгосстрах по обычным программам платит не больше 7% страховой суммы. Если страховая оплачивает ремонт, она его и организует — дальше по шагам можно не идти.</p></div>';
+  if(S.kasko === 'no') b += '<div class="note good">' + I.check + '<span>Тогда ищем бампер сами, как можно дешевле. Штрафа за случайно сбитую косулю нет.</span></div>';
+  if(S.kasko === 'unknown') b += '<div class="note info"><span>Посмотрите полисы в бардачке или спросите Ваню. Если КАСКО нет — просто идите дальше.</span></div>';
+  return stepShell(1, b, {lead:'Если есть КАСКО, ремонт может оплатить страховая. Но только если позвонить ей до ремонта.'});
+}
+
+function vinCard(){
+  if(!VIN.paint) return '';
+  const yes = v => v === 'yes' ? '<strong>есть</strong>' : v === 'no' ? '<strong>нет</strong>' : 'не знаю';
+  return '<div class="card accent"><p class="eyebrow">Уже узнали по техпаспорту</p><h3>' + esc(VIN.model || 'RAV4') + '</h3><ul class="plain">' +
+    '<li>Код краски: <strong class="mono">' + esc(VIN.paint) + '</strong> (тёмно-серый)</li>' +
+    '<li>Парктроники спереди: ' + yes(VIN.pdc) + '</li><li>Омыватели фар: ' + yes(VIN.washers) + '</li>' +
+    '<li>Противотуманки: ' + (VIN.fog === 'grilles' ? '<strong>нет</strong>, стоят заглушки' : VIN.fog === 'lamps' ? '<strong>есть</strong>' : 'не знаю') + '</li>' +
+    (VIN.radar ? '<li>Радар защиты от столкновения: <strong>есть</strong></li>' : '') +
+    '<li>Номер бампера: <strong class="mono">' + esc(VIN.partno || '') + '</strong></li></ul>' +
+    '<details class="more"><summary>Номера всех деталей бампера</summary><div class="stack small">' + (VIN.parts || []).map(p => '<div><span class="mono">' + esc(p[0]) + '</span> — ' + esc(p[1]) + '</div>').join('') + '</div></details>' +
+    '<p class="small muted">Ниже всё уже отмечено. Если на машине видите иначе — поменяйте ответ.</p></div>';
+}
+function s2(){
+  let b = vinCard() + '<div class="card"><h3>1. Код краски</h3><p>Код краски стоит на наклейке на стойке водительской двери, в строке <span class="mono">C/TR</span> — три знака до «/».</p>' +
+    '<details class="more"' + (VIN.paint ? '' : ' open') + '><summary>Показать, где наклейка</summary><div class="figure"><svg viewBox="0 0 330 150" role="img" aria-label="Наклейка с кодом краски на стойке водительской двери">' +
+      '<rect x="12" y="12" width="118" height="126" rx="12" fill="none" stroke="var(--muted)" stroke-width="3"/>' +
+      '<rect x="112" y="12" width="20" height="126" fill="var(--line)"/>' +
+      '<rect x="115" y="58" width="14" height="22" rx="2" fill="var(--mark)"/>' +
+      '<path d="M129 69 H172" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="5 4"/>' +
+      '<text x="30" y="80" class="svg-t">проём двери</text>' +
+      '<rect x="172" y="16" width="148" height="118" rx="10" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/>' +
+      '<text x="184" y="42" class="svg-t">MODEL AVA44L-...</text>' +
+      '<text x="184" y="64" class="svg-t">ENGINE 2AR</text>' +
+      '<text x="184" y="104" class="svg-b">C/TR</text>' +
+      '<rect x="234" y="84" width="46" height="28" rx="6" fill="none" stroke="var(--stop)" stroke-width="3"/>' +
+      '<text x="240" y="104" class="svg-b">1G3</text>' +
+      '<text x="284" y="104" class="svg-b">/..</text>' +
+      '<text x="184" y="126" class="svg-t">пример</text>' +
+    '</svg></div></details>' +
+    '<label class="field" for="f-paint">Код краски вашей машины<input id="f-paint" class="code" type="text" maxlength="6" autocomplete="off" placeholder="например 1G3" data-act="field" data-key="paint" value="' + esc(S.paint) + '"></label></div>';
+
+  b += '<div class="card"><h3>2. Три вопроса у машины</h3><p class="muted small">Посмотрите на целую левую сторону бампера.</p>' +
+    '<div class="figure"><svg viewBox="0 0 340 176" role="img" aria-label="Где на бампере омыватели фар, парктроники и противотуманки">' +
+      '<path d="M18 40 L124 54 L114 70 L26 62 Z" fill="var(--surface)" stroke="var(--muted)" stroke-width="2"/>' +
+      '<path d="M322 40 L216 54 L226 70 L314 62 Z" fill="var(--surface)" stroke="var(--muted)" stroke-width="2"/>' +
+      '<ellipse cx="170" cy="58" rx="17" ry="11" fill="none" stroke="var(--muted)" stroke-width="2"/>' +
+      '<path d="M12 66 Q8 124 30 156 H310 Q332 124 328 66 L232 76 Q170 92 108 76 Z" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5"/>' +
+      '<path d="M92 116 H248 L234 146 H106 Z" fill="var(--line)"/>' +
+      '<rect x="132" y="96" width="76" height="14" rx="2" fill="var(--surface-2)" stroke="var(--muted)"/>' +
+      '<rect x="30" y="114" width="26" height="24" rx="6" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="2"/>' +
+      '<rect x="284" y="114" width="26" height="24" rx="6" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="2"/>' +
+      '<circle cx="74" cy="74" r="4" fill="var(--ink)"/><circle cx="266" cy="74" r="4" fill="var(--ink)"/>' +
+      '<circle cx="120" cy="103" r="4.5" fill="none" stroke="var(--ink)" stroke-width="2"/><circle cx="220" cy="103" r="4.5" fill="none" stroke="var(--ink)" stroke-width="2"/>' +
+      '<circle cx="66" cy="110" r="4.5" fill="none" stroke="var(--ink)" stroke-width="2"/><circle cx="274" cy="110" r="4.5" fill="none" stroke="var(--ink)" stroke-width="2"/>' +
+      '<circle cx="74" cy="26" r="13" fill="var(--accent)"/><text x="68" y="32" class="svg-l">А</text><path d="M74 39 V68" stroke="var(--accent)" stroke-width="2"/>' +
+            '<circle cx="150" cy="22" r="13" fill="var(--accent)"/><text x="144" y="28" class="svg-l">Б</text><path d="M146 34 L122 97" stroke="var(--accent)" stroke-width="2"/>' +
+            '<circle cx="306" cy="22" r="13" fill="var(--accent)"/><text x="300" y="28" class="svg-l">В</text><path d="M304 35 L298 112" stroke="var(--accent)" stroke-width="2"/>' +
+    '</svg></div>' +
+    '<div class="stack"><p><strong>А. Омыватели фар.</strong> Под фарами на бампере есть маленькие крышечки?</p><div class="opts">' +
+      choice('washers', 'yes', 'Есть') + choice('washers', 'no', 'Нет') + choice('washers', 'unknown', 'Не знаю') + '</div></div>' +
+    '<div class="stack"><p><strong>Б. Парктроники.</strong> На бампере есть круглые «пуговки» размером с монету?</p><div class="opts">' +
+      choice('pdc', 'yes', 'Есть') + choice('pdc', 'no', 'Нет') + choice('pdc', 'unknown', 'Не знаю') + '</div></div>' +
+    '<div class="stack"><p><strong>В. Нижние углы.</strong> Там противотуманные фары или пластиковые решётки?</p><div class="opts">' +
+      choice('fog', 'lamps', 'Фары') + choice('fog', 'grilles', 'Решётки') + choice('fog', 'unknown', 'Не знаю') + '</div></div>' +
+  '</div>';
+
+  const chk = [['brace','Железная балка за бампером (усилитель) не погнута'],['brackets','Пластиковые держатели бампера по бокам целы'],['washer','Бачок омывателя и шланги целы, не текут'],['lamp','«Уши» крепления правой фары целы'],['rad','Радиаторы не текут'],['wires','Провода в правом углу целы']];
+  b += '<div class="card"><h3>3. Попросите мастера снять бампер</h3>' +
+    '<p>Это стоит 40–80 BYN. Сразу станет видно, что ещё сломано за ним, а на внутренней стороне будет номер детали (начинается на 52119).</p>' +
+    '<label class="field" for="f-partno">Номер с внутренней стороны бампера<input id="f-partno" class="code" type="text" maxlength="16" autocomplete="off" placeholder="52119-…" data-act="field" data-key="partno" value="' + esc(S.partno) + '"></label>' +
+    '<p class="small muted">Что спросить у мастера:</p><div class="stack">' +
+    chk.map(c => '<label class="check" for="c-' + c[0] + '"><input type="checkbox" id="c-' + c[0] + '" data-act="chk" data-key="' + c[0] + '"' + (S.checks[c[0]] ? ' checked' : '') + '><span>' + c[1] + '</span></label>').join('') +
+    '</div><p class="small muted">Если что-то сломано, скажите продавцу бампера — у разборок эти детали часто есть с той же машины.</p></div>';
+  return stepShell(2, b, {lead:'Эти ответы помогут сразу отсеять неподходящие бамперы. Не знаете ответа — нажмите «Не знаю», это нормально.'});
+}
+
+function routeRange(g){
+  const ts = OFFERS.filter(o => o.group === g).map(total).filter(Boolean);
+  if(!ts.length) return null;
+  return {min:Math.min.apply(null, ts.map(t => t.min)), max:Math.max.apply(null, ts.map(t => t.max))};
+}
+function s3(){
+  let b = '<div class="stack">';
+  ROUTES.forEach(r => {
+    const rg = routeRange(r.id), on = S.route === r.id;
+    b += '<div class="card' + (on ? ' accent' : '') + '"><div class="offer-head"><div><span class="chip ' + GROUPS[r.id].cls + '">' + esc(GROUPS[r.id].label) + '</span><h3 style="margin-top:8px">' + esc(r.title) + '</h3></div>' +
+      (rg ? '<div class="price">' + fmt(rg.min) + '–' + fmt(rg.max) + '<small>BYN всего · ' + usd(rg.min) + '–' + fmt(rg.max / RATE) + '</small></div>' : '') + '</div>' +
+      '<p>' + esc(r.what) + '</p><p class="small"><strong>Срок:</strong> ' + esc(r.time) + '</p>' +
+      '<p class="small"><strong>Плюс:</strong> ' + esc(r.plus) + '</p><p class="small"><strong>Минус:</strong> ' + esc(r.minus) + '</p>' +
+      '<button class="btn ' + (on ? '' : 'ghost') + ' block" data-act="route" data-v="' + r.id + '">' + (on ? 'Выбран этот путь' : 'Выбрать этот путь') + '</button></div>';
+  });
+  b += '</div><p class="small muted">«Всего» — это бампер, покраска, снятие-установка и мелочи (нижняя решётка, клипсы, заглушка). Звонить можно всем — в шаге 5 сравним честно.</p>';
+  return stepShell(3, b, {lead:'Выберите, что вам важнее: цена, оригинал или чтобы быстрее и без хлопот.'});
+}
+
+function script(){
+  let t = 'Здравствуйте! Мне нужен передний бампер на Toyota RAV4 2018 года, рестайлинг, 40 кузов, гибрид.';
+  if(S.partno) t += ' Номер детали ' + S.partno + '.';
+  if(S.paint) t += ' Код краски ' + S.paint + '.';
+  const feat = []; if(S.pdc === 'yes') feat.push('под парктроники'); if(S.washers === 'no') feat.push('без омывателей фар');
+  if(feat.length) t += ' Нужен ' + feat.join(', ') + '.';
+  t += ' Он есть в наличии? Какого цвета? Есть ли отверстия под омыватели фар и под парктроники? Целы ли крепления, нет ли трещин? Что входит в комплект и сколько стоит? Пришлите, пожалуйста, фото внутренней стороны в Viber.';
+  return t;
+}
+function offerCard(o){
+  const c = S.calls[o.id] || {}, g = GROUPS[o.group] || GROUPS.cover, iss = issues(o), ask = asks(o), t = total(o);
+  const p = basePrice(o);
+  let h = '<article class="card offer' + (c.status ? ' st-' + c.status : '') + '">';
+  h += '<div class="offer-head"><div class="stack" style="gap:6px"><div class="row" style="gap:6px"><span class="chip ' + g.cls + '">' + esc(g.label) + '</span>' + (o.exact ? '<span class="chip g-asm">Номер совпадает</span>' : '') + (o.auto ? '<span class="chip g-new">Новое' + (o.found ? ', ' + esc(o.found) : '') + '</span>' : '') + '</div><h3>' + esc(o.seller) + '</h3><p class="small">' + esc(o.what) + '</p></div>' +
+    (p > 0 ? '<div class="price">' + fmt(p) + '<small>BYN · ' + usd(p) + '</small></div>' : '<div class="price small" style="font-size:18px">цена<small>спросить</small></div>') + '</div>';
+  if(o.priceNote) h += '<p class="small muted">' + esc(o.priceNote) + '</p>';
+  if(o.gone) h += '<div class="note bad"><span>Похоже, объявление снято (проверка ' + esc(o.gone) + '). Можно позвонить — вдруг ещё есть.</span></div>';
+  if(o.say) h += '<p class="say">' + esc(o.say) + '</p>';
+  h += (o.phones && o.phones.length ? '' : '<p class="small muted">Телефон — в объявлении, кнопка «Открыть объявление» ниже.</p>') + '<div class="phones">' + (o.phones || []).map((ph, i) => phoneRow(ph[0], ph[1] || (i === 0 && o.phones.length > 1 ? 'основной' : ''), /WhatsApp/.test(ph[1] || '') ? o.wa : '')).join('') + '</div>';
+  if(iss.length || ask.length){
+    h += '<div class="flags">' + iss.map(i => '<div class="note warn"><span>' + esc(i.t) + (i.cost ? ' (≈ +' + i.cost + ' BYN)' : '') + '</span></div>').join('') +
+      (ask.length ? '<div class="note info"><span>Спросите: ' + esc(ask.join(', ')) + '.</span></div>' : '') + '</div>';
+  }
+  h += '<details class="more"><summary>Подробнее: что в комплекте, адрес</summary><div class="stack small">' +
+    '<p>' + esc(o.includes || '') + '</p><div class="meta">' + (o.address ? '<span>Адрес: ' + esc(o.address) + '</span>' : '') +
+    (o.hours ? '<span>Часы: ' + esc(o.hours) + '</span>' : '') + (o.delivery ? '<span>Наличие: ' + esc(o.delivery) + '</span>' : '') +
+    (o.custom ? '<span>Добавлено вами</span>' : o.auto ? '<span>Найдено автоматически' + (o.found ? ' ' + esc(o.found) : '') + '</span>' : '<span>Проверено ' + CHECKED + '</span>') + '</div>' +
+    (o.link ? '<a href="' + esc(o.link) + '" target="_blank" rel="noopener">Открыть объявление ' + I.ext + '</a>' : '') +
+    (o.custom ? (U.confirmDel === o.id
+      ? '<div class="row"><span>Удалить этот вариант?</span><button class="btn quiet" data-act="delyes" data-id="' + esc(o.id) + '">Да, удалить</button><button class="btn quiet" data-act="delno">Нет</button></div>'
+      : '<button class="linkbtn" data-act="del" data-id="' + esc(o.id) + '">Удалить этот вариант</button>') : '') +
+    '</div></details>';
+  h += '<div class="result"><p><strong>Что ответили?</strong></p><div class="opts">' +
+    ['yes','no','later'].map(v => '<button class="opt ' + v + '" data-act="call" data-id="' + esc(o.id) + '" data-v="' + v + '" aria-pressed="' + (c.status === v) + '">' + statusTxt(v).replace(/^./, m => m.toUpperCase()) + '</button>').join('') + '</div>';
+  if(c.status === 'yes'){
+    h += '<label class="field" for="p-' + esc(o.id) + '">Цена, которую назвали (BYN)<input id="p-' + esc(o.id) + '" type="number" inputmode="decimal" min="0" step="1" data-act="price" data-id="' + esc(o.id) + '" value="' + esc(c.price != null ? c.price : (p > 0 ? p : '')) + '"></label>';
+    if(o.group !== 'copy' && !o.mustPaint){
+      h += '<div class="stack"><p class="small"><strong>Цвет совпадает с вашим?</strong></p><div class="opts">' +
+        [['match','Да'],['nomatch','Нет'],['unknown','Не знаю']].map(v => '<button class="opt" data-act="color" data-id="' + esc(o.id) + '" data-v="' + v[0] + '" aria-pressed="' + (c.color === v[0]) + '">' + v[1] + '</button>').join('') + '</div></div>';
+    }
+  }
+  if(c.status) h += '<label class="field" for="n-' + esc(o.id) + '">Заметка (срок, что сказали)<input id="n-' + esc(o.id) + '" type="text" data-act="note" data-id="' + esc(o.id) + '" value="' + esc(c.note || '') + '" placeholder="например: привезут во вторник"></label>';
+  if(t && c.status !== 'no') h += '<div class="total"><span>Всего с покраской и установкой</span><b>≈ ' + rangeTxt(t) + ' BYN</b></div>';
+  h += '</div></article>';
+  return h;
+}
+function addForm(){
+  if(!U.showAdd) return '<button class="btn ghost block" data-act="showadd">+ Добавить свой вариант</button>';
+  return '<form class="card" id="addform"><h3>Новый вариант</h3>' +
+    '<label class="field" for="a-seller">Продавец<input id="a-seller" type="text" required placeholder="например: разборка на Тимирязева"></label>' +
+    '<label class="field" for="a-phone">Телефон<input id="a-phone" type="tel" required placeholder="+375 29 ..."></label>' +
+    '<label class="field" for="a-price">Цена, BYN<input id="a-price" type="number" inputmode="decimal" min="0" step="1" placeholder="например 900"></label>' +
+    '<label class="field" for="a-group">Что это<select id="a-group"><option value="assembly">Б/у оригинал в сборе</option><option value="cover" selected>Б/у оригинал, только бампер</option><option value="copy">Новый, неоригинал</option></select></label>' +
+    '<label class="field" for="a-link">Ссылка на объявление (если есть)<input id="a-link" type="url" placeholder="https://..."></label>' +
+    '<div class="navrow"><button class="btn ghost" type="button" data-act="hideadd">Отмена</button><button class="btn" type="submit">Добавить</button></div></form>';
+}
+function s4(){
+  const mine = S.route;
+  let list = allOffers();
+  if(S.filter === 'mine' && mine){ list = list.filter(o => o.group === mine || o.group === 'donor'); }
+  list = list.slice().sort((a, b) => (a.top || 99) - (b.top || 99));
+  let b = '<p class="small muted">Список обновлён: ' + esc(DATA.updated || CHECKED) + '. Обновляется автоматически каждое утро.' + (FRESH.length ? ' Новых объявлений: ' + FRESH.length + '.' : '') + '</p>';
+  b += '<div class="card soft"><h3>Что сказать продавцу</h3><p id="script-text">' + esc(script()) + '</p>' +
+    '<button class="btn quiet" data-act="copy" data-text="' + esc(script()) + '">Скопировать текст</button>' +
+    '<p class="small muted">Номер телефона можно нажать — на телефоне откроется звонок. Если не открылся, нажмите «Копировать» и вставьте номер в звонилку.</p></div>';
+  b += '<div class="note info"><span><strong>С чего начать:</strong> в воскресенье работают MultiMotor (до 16:00, в сборе, на фото тёмно-серый) и МоторЛэнд (до 20:00, такой же гибрид на разборке). В будни — KUZOV.BY (новый с отверстиями под парктроники и установка) и Ореховская.</span></div>';
+  if(mine){
+    b += '<div class="tabs"><button class="opt" data-act="filter" data-v="mine" aria-pressed="' + (S.filter === 'mine') + '">Мой путь</button><button class="opt" data-act="filter" data-v="all" aria-pressed="' + (S.filter !== 'mine') + '">Все варианты</button></div>';
+  }
+  b += '<div class="stack">' + list.map(offerCard).join('') + '</div>';
+  b += addForm();
+  b += liveBlock();
+  return stepShell(4, b, {lead:'Позвоните, спросите по тексту ниже и отметьте ответ. Нашёлся бампер в наличии — уже победа.'});
+}
+
+function s5(){
+  const k = S.costs;
+  const rows = allOffers().map(o => ({o, t:total(o), c:S.calls[o.id] || {}})).filter(r => r.t && r.c.status !== 'no');
+  const conf = rows.filter(r => r.c.status === 'yes').sort((a, b) => a.t.min - b.t.min);
+  const rest = rows.filter(r => r.c.status !== 'yes').sort((a, b) => a.t.min - b.t.min);
+  const best = conf.length ? conf[0].o.id : null;
+  const item = r => {
+    const t = r.t, on = S.choice === r.o.id;
+    const paint = t.pMin === t.pMax ? fmt(t.pMin) : fmt(t.pMin) + '–' + fmt(t.pMax);
+    return '<div class="card cmp-item' + (on ? ' chosen' : '') + '"><div class="stack" style="gap:4px">' +
+      (r.o.id === best ? '<span><span class="badge">Самый дешёвый</span></span>' : '') +
+      '<strong>' + esc(r.o.seller) + '</strong><span class="chip ' + (GROUPS[r.o.group] || GROUPS.cover).cls + '" style="align-self:flex-start">' + esc((GROUPS[r.o.group] || GROUPS.cover).label) + '</span></div>' +
+      '<div class="sum">' + rangeTxt(t) + '<small class="small muted" style="display:block;font-family:var(--font-body)">BYN · ' + usd(t.min) + '</small></div>' +
+      '<div class="break">Бампер ' + fmt(t.price) + ' + покраска ' + paint + ' + установка ' + fmt(t.install) + ' + мелочи ' + fmt(t.extras) + (t.fix ? ' + заделать отверстия ' + fmt(t.fix) : '') + (t.ship ? ' + доставка ' + fmt(t.ship) : '') + '</div>' +
+      '<button class="btn ' + (on ? '' : 'ghost') + ' block" style="grid-column:1/-1" data-act="choose" data-id="' + esc(r.o.id) + '">' + (on ? 'Выбрано ' : 'Выбрать этот') + '</button></div>';
+  };
+  let b = '';
+  if(conf.length){ b += '<h3>Есть в наличии (по вашим звонкам)</h3><div class="cmp">' + conf.map(item).join('') + '</div>'; }
+  else { b += '<div class="note warn"><span>Пока никто не подтвердил наличие. Ниже — примерные итоги по ценам из объявлений. Отметьте звонки в шаге 4, и здесь появятся точные цифры.</span></div>'; }
+  if(rest.length){ b += '<details class="more"' + (conf.length ? '' : ' open') + '><summary>' + (conf.length ? 'Ещё не звонили (' + rest.length + ')' : 'Все варианты по ценам из объявлений') + '</summary><div class="cmp">' + rest.map(item).join('') + '</div></details>'; }
+  b += '<div class="card soft"><h3>Цены работ</h3><p class="small muted">Средние цены минских СТО. Знаете точную — поменяйте.</p><div class="costs">' +
+    '<label class="field" for="k-paint">Покраска бампера, BYN<input id="k-paint" type="number" inputmode="decimal" min="0" step="10" data-act="cost" data-key="paint" value="' + esc(k.paint) + '"></label>' +
+    '<label class="field" for="k-install">Снять и поставить, BYN<input id="k-install" type="number" inputmode="decimal" min="0" step="5" data-act="cost" data-key="install" value="' + esc(k.install) + '"></label>' +
+    '<label class="field" for="k-extras">Мелочи для неполного бампера, BYN<input id="k-extras" type="number" inputmode="decimal" min="0" step="10" data-act="cost" data-key="extras" value="' + esc(k.extras) + '"></label></div>' +
+    '<p class="small muted">Мелочи — нижняя решётка, площадка под номер, заглушка и клипсы, если старые сломаны. Для бампера в сборе считаем только клипсы, 20 BYN.</p></div>';
+  b += '<div class="note info"><span>Платите, когда увидели деталь своими глазами. За «под заказ» — при получении или после фото и номера накладной.</span></div>';
+  return stepShell(5, b, {lead:'Считаем честно: бампер плюс покраска, установка и мелочи. Самый дешёвый в наличии — сверху.'});
+}
+
+function s6(){
+  const ch = S.choice && findOffer(S.choice);
+  let b = '';
+  if(ch && ch.id === 'kuzov') b += '<div class="note good">' + I.check + '<span>Вы выбрали KUZOV.BY — они сами ставят на своём СТО. Спросите, красят ли тоже.</span></div>';
+  if(ch && ch.group === 'assembly') b += '<div class="note info"><span>Бампер в сборе. Если код краски совпал, красить не нужно — только поставить.</span></div>';
+  b += '<div class="stack">' + SHOPS.map(s => '<div class="card"><h3>' + esc(s.name) + '</h3><p class="small">' + esc(s.note) + '</p>' +
+    (s.price ? '<p class="small muted">' + esc(s.price) + '</p>' : '') +
+    '<div class="phones">' + s.phones.map(p => phoneRow(p, '')).join('') + '</div><p class="small muted">' + esc(s.addr) + '</p></div>').join('') + '</div>';
+  const memo = 'Для мастера: 1) Значок Toyota на решётке не красить — за ним радар. 2) Лишние отверстия заделать до покраски. 3) Клипсы поставить новые. 4) Решётку со значком и серебристую накладку перенести со старого бампера, если целы. 5) Проверить держатели бампера и бачок омывателя.';
+  b += '<div class="card soft"><h3>Памятка для мастера</h3><ol class="plain">' +
+    '<li>Значок Toyota на решётке <strong>не красить</strong> — за ним может стоять радар.</li>' +
+    '<li>Лишние отверстия заделать до покраски.</li><li>Клипсы поставить новые.</li>' +
+    '<li>Решётку со значком и серебристую накладку перенести со старого бампера, если целы.</li>' +
+    '<li>Проверить держатели бампера и бачок омывателя.</li></ol>' +
+    '<button class="btn quiet" data-act="copy" data-text="' + esc(memo) + '">Скопировать памятку</button></div>';
+  return stepShell(6, b, {lead:'Отдайте бампер на покраску и установку. Покраска обычно 2–3 дня.'});
+}
+
+function s7(){
+  let b = VIN.radar ? '<div class="note good">' + I.check + '<span>По VIN у вашей машины есть радар защиты от столкновения — после замены бампера настройка нужна.</span></div>' : '';
+  b += '<div class="card"><h3>Нужно ли это вам?</h3><p>Если машина сама держит дистанцию на круизе или пищит перед столкновением — у неё есть радар. После замены бампера его настраивают у дилера.</p>' +
+    '<p class="small muted">Запишитесь на «Настройку датчиков Safety Sense» и спросите цену при записи. Если таких функций нет — этот шаг просто отметьте.</p></div>';
+  b += '<div class="stack">' + DEALERS.map(d => '<div class="card"><h3>' + esc(d.name) + '</h3><div class="phones">' + d.phones.map(p => phoneRow(p, '')).join('') + '</div><p class="small muted">' + esc(d.addr) + (d.hours ? ' · ' + esc(d.hours) : '') + '</p></div>').join('') + '</div>';
+  return stepShell(7, b, {lead:'Последний шаг. После него машина снова целая и всё работает как раньше.'});
+}
+
+function finish(){
+  const ch = S.choice && findOffer(S.choice), t = ch ? total(ch) : null;
+  let h = '<div class="topbar"><button class="btn quiet" data-act="go" data-to="home">← К дороге</button><span></span></div>';
+  h += '<div class="card accent"><p class="eyebrow">Финиш</p><p class="big-win">Ура! Машина снова целая</p>' + stars() +
+    '<p>Пройдено шагов: ' + doneCount() + ' из 7. Звонков сделано: ' + Object.values(S.calls).filter(c => c.status).length + '.</p>';
+  if(ch && t){
+    h += '<p>Ваш выбор: <strong>' + esc(ch.seller) + '</strong>, всего ≈ <strong>' + rangeTxt(t) + ' BYN</strong> (' + usd(t.min) + ').</p>';
+    h += '<p class="small muted">Для сравнения: первый найденный бампер стоил ' + fmt(BASELINE) + ' BYN только за деталь, без покраски и доставки.</p>';
+  }
+  h += '</div>' + reportBlock();
+  return h;
+}
+
+/* ---------- Отрисовка ---------- */
+function render(){
+  const v = S.screen;
+  let h;
+  if(v === 'home') h = home();
+  else if(v === 'finish') h = finish();
+  else h = [null, s1, s2, s3, s4, s5, s6, s7][+v] ? [null, s1, s2, s3, s4, s5, s6, s7][+v]() : home();
+  $('#app').innerHTML = h;
+}
+function go(to){
+  S.screen = String(to); U.confirmReset = false; U.confirmDel = null; U.showAdd = false;
+  save(); render(); window.scrollTo(0, 0);
+}
+
+/* ---------- События ---------- */
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]');
+  if(!el) return;
+  const a = el.dataset.act;
+  if(a === 'tg'){ el.href = tgLink(); return; }
+  if(a === 'copy'){ copyText(el.dataset.text || ''); return; }
+  if(a === 'copyreport'){ copyText('Бампер RAV4 — отчёт от ' + new Date().toLocaleDateString('ru-RU') + '\n' + report()); return; }
+  if(a === 'go'){ go(el.dataset.to); return; }
+  if(a === 'next'){
+    const n = +el.dataset.n; const first = !S.done[n]; S.done[n] = true;
+    if(n === 7){ S.finished = true; go('finish'); confetti(); return; }
+    go(n + 1); if(first) toast('Шаг ' + n + ' пройден! Звёздочка ваша');
+    return;
+  }
+  if(a === 'set'){ S[el.dataset.key] = el.dataset.v; save(); render(); return; }
+  if(a === 'route'){ S.route = el.dataset.v; S.filter = 'mine'; save(); render(); toast('Путь выбран'); return; }
+  if(a === 'filter'){ S.filter = el.dataset.v; save(); render(); return; }
+  if(a === 'call'){
+    const id = el.dataset.id, c = S.calls[id] || {};
+    c.status = c.status === el.dataset.v ? null : el.dataset.v; S.calls[id] = c; save(); render();
+    if(c.status === 'yes') toast('Нашёлся! Проверьте цену и цвет');
+    return;
+  }
+  if(a === 'color'){ const c = S.calls[el.dataset.id] || {}; c.color = el.dataset.v; S.calls[el.dataset.id] = c; save(); render(); return; }
+  if(a === 'choose'){ S.choice = el.dataset.id; save(); render(); toast('Выбор сохранён'); return; }
+  if(a === 'showadd'){ U.showAdd = true; render(); const f = $('#a-seller'); if(f) f.focus(); return; }
+  if(a === 'hideadd'){ U.showAdd = false; render(); return; }
+  if(a === 'del'){ U.confirmDel = el.dataset.id; render(); return; }
+  if(a === 'delno'){ U.confirmDel = null; render(); return; }
+  if(a === 'delyes'){ const id = el.dataset.id; S.custom = S.custom.filter(o => o.id !== id); delete S.calls[id]; if(S.choice === id) S.choice = null; U.confirmDel = null; save(); render(); toast('Удалено'); return; }
+  if(a === 'reset'){ U.confirmReset = true; render(); return; }
+  if(a === 'resetno'){ U.confirmReset = false; render(); return; }
+  if(a === 'resetyes'){ S = fresh(); U.confirmReset = false; save(); render(); window.scrollTo(0, 0); toast('Начинаем заново'); return; }
+});
+document.addEventListener('input', e => {
+  const el = e.target, a = el.dataset && el.dataset.act;
+  if(!a) return;
+  if(a === 'field'){ S[el.dataset.key] = el.value.trim().toUpperCase(); save(); return; }
+  if(a === 'price' || a === 'note'){ const c = S.calls[el.dataset.id] || {}; if(a === 'price') c.price = el.value === '' ? null : +el.value; else c.note = el.value; S.calls[el.dataset.id] = c; save(); return; }
+  if(a === 'cost'){ S.costs[el.dataset.key] = el.value === '' ? 0 : +el.value; save(); return; }
+});
+document.addEventListener('change', e => {
+  const el = e.target, a = el.dataset && el.dataset.act;
+  if(!a) return;
+  if(a === 'chk'){ S.checks[el.dataset.key] = el.checked; save(); return; }
+  if(a === 'price' || a === 'cost' || a === 'field'){ const y = window.scrollY; render(); window.scrollTo(0, y); }
+});
+document.addEventListener('submit', e => {
+  if(e.target.id !== 'addform') return;
+  e.preventDefault();
+  const seller = $('#a-seller').value.trim(), phone = $('#a-phone').value.trim();
+  if(!seller || !phone){ toast('Впишите продавца и телефон'); return; }
+  const price = +$('#a-price').value || null, group = $('#a-group').value, link = $('#a-link').value.trim();
+  S.custom.push({id:'c' + Date.now(), custom:true, group, seller, what:GROUPS[group].label, price, phones:[[phone, '']],
+    includes:'', holes:{washers:null, pdc:null}, address:'', hours:'', delivery:'', link:/^https?:\/\//.test(link) ? link : ''});
+  U.showAdd = false; save(); render(); toast('Вариант добавлен');
+});
+
+/* ---------- Конфетти ---------- */
+function confetti(){
+  try{ if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; }catch(e){}
+  const cv = $('#confetti'), ctx = cv.getContext && cv.getContext('2d'); if(!ctx) return;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  cv.width = innerWidth * dpr; cv.height = innerHeight * dpr; ctx.scale(dpr, dpr);
+  const cs = getComputedStyle(document.documentElement);
+  const cols = ['--mark', '--accent', '--go', '--stop'].map(v => cs.getPropertyValue(v).trim() || '#f2c230');
+  const P = Array.from({length:140}, () => ({x:Math.random() * innerWidth, y:-20 - Math.random() * innerHeight * .5, vx:(Math.random() - .5) * 3, vy:2 + Math.random() * 3.5, r:4 + Math.random() * 5, a:Math.random() * 6, va:(Math.random() - .5) * .3, c:cols[(Math.random() * cols.length) | 0]}));
+  const t0 = performance.now();
+  (function frame(t){
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    P.forEach(p => { p.x += p.vx; p.y += p.vy; p.vy += .03; p.a += p.va; ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a); ctx.fillStyle = p.c; ctx.fillRect(-p.r / 2, -p.r / 3, p.r, p.r * .66); ctx.restore(); });
+    if(t - t0 < 3200) requestAnimationFrame(frame); else ctx.clearRect(0, 0, innerWidth, innerHeight);
+  })(t0);
+}
+
+/* ---------- Запуск ---------- */
+function start(data){
+  S = (data && data.S && data.S.v === 1) ? data.S : load();
+  render(); renderChat();
+  fetch('data.json?t=' + Date.now(), {cache:'no-store'}).then(r => r.ok ? r.json() : null).then(d => {
+    if(d && d.offers){ applyData(d); render(); renderChat(); }
+  }).catch(() => {});
+}
+
+/* ---------- Чат-помощник ---------- */
+const CHAT_KEY = 'rav4-bumper-chat-v1';
+let CHAT = [];
+try{ CHAT = JSON.parse(localStorage.getItem(CHAT_KEY) || '[]') || []; }catch(e){ CHAT = []; }
+let chatBusy = false;
+function chatSave(){ try{ localStorage.setItem(CHAT_KEY, JSON.stringify(CHAT.slice(-30))); }catch(e){} }
+function renderChat(){
+  const box = $('#chat'), fab = $('#chat-open');
+  if(!box || !fab) return;
+  const on = !!DATA.chatEndpoint;
+  if(!on){ box.hidden = true; fab.hidden = true; return; }
+  fab.hidden = !box.hidden;
+  const log = $('#chat-log');
+  log.innerHTML = (CHAT.length ? '' : '<div class="msg bot">Здравствуйте! Я знаю всё про ваш бампер: продавцов, цены, номер детали и шаги. Спросите, например: «Что сказать продавцу?» или «Какой вариант дешевле?»</div>') +
+    CHAT.map(m => '<div class="msg ' + (m.role === 'user' ? 'me' : 'bot') + '">' + esc(m.content).replace(/\n/g, '<br>') + '</div>').join('') +
+    (chatBusy ? '<div class="msg bot">Думаю…</div>' : '');
+  log.scrollTop = log.scrollHeight;
+}
+async function chatSend(text){
+  text = (text || '').trim();
+  if(!text || chatBusy) return;
+  CHAT.push({role:'user', content:text}); chatBusy = true; chatSave(); renderChat();
+  let reply = '';
+  try{
+    const r = await fetch(DATA.chatEndpoint, {method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({messages:CHAT.filter(m => !m.err).slice(-12).map(m => ({role:m.role, content:m.content})), state:report()})});
+    const j = await r.json().catch(() => ({}));
+    reply = j.reply || '';
+  }catch(e){}
+  CHAT.push(reply ? {role:'assistant', content:reply} : {role:'assistant', content:'Не получилось ответить. Проверьте интернет и попробуйте ещё раз через минуту.', err:true});
+  chatBusy = false; chatSave(); renderChat();
+}
+document.addEventListener('click', e => {
+  if(e.target.closest('#chat-open')){ $('#chat').hidden = false; renderChat(); const i = $('#chat-input'); if(i) i.focus(); }
+  else if(e.target.closest('#chat-close')){ $('#chat').hidden = true; renderChat(); }
+  else if(e.target.closest('#chat-clear')){ CHAT = []; chatSave(); renderChat(); }
+});
+document.addEventListener('submit', e => {
+  if(e.target.id !== 'chat-form') return;
+  e.preventDefault(); const i = $('#chat-input'); const v = i.value; i.value = ''; chatSend(v);
+});
+try{ window.claude && window.claude.hot && window.claude.hot.snapshot && window.claude.hot.snapshot(() => ({S})); }catch(e){}
+if(window.claude && window.claude.hot && window.claude.hot.ready){ window.claude.hot.ready(start); }
+else { start((window.claude && window.claude.hot && window.claude.hot.data) || {}); }
+})();
+</script>
+
+</body>
+</html>
