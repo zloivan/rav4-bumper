@@ -155,8 +155,8 @@ input.code{font-family:var(--font-mono); font-size:22px; letter-spacing:.06em; t
 .offer.st-no{opacity:.72}
 .offer-head{display:flex; justify-content:space-between; gap:12px; align-items:flex-start}
 .offer-head > div{min-width:0}
-.price{font-family:var(--font-display); font-size:26px; white-space:nowrap; text-align:right; line-height:1.1}
-.price small{display:block; font-family:var(--font-body); font-size:14px; color:var(--muted); font-weight:500}
+.price{font-family:var(--font-display); font-size:26px; white-space:nowrap; text-align:right; line-height:1.1; flex-shrink:0}
+.price small{display:block; font-family:var(--font-body); font-size:14px; color:var(--muted); font-weight:500; white-space:normal}
 .phones{display:flex; flex-direction:column; gap:8px}
 .phone{display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; background:var(--surface-2); border-radius:12px; padding:10px 12px}
 .phone .num{font-family:var(--font-mono); font-size:23px; font-weight:700; color:var(--ink); text-decoration:none; user-select:all; -webkit-user-select:all; letter-spacing:.01em}
@@ -170,7 +170,7 @@ details.more[open] summary{margin-bottom:6px}
 .result .opts{grid-template-columns:1fr 1fr}
 .result .opt.later{grid-column:1 / -1}
 .flags{display:flex; flex-direction:column; gap:6px}
-.total{display:flex; justify-content:space-between; gap:10px; align-items:baseline; font-weight:700}
+.total{display:flex; flex-wrap:wrap; justify-content:space-between; gap:10px; align-items:baseline; font-weight:700}
 .total b{font-family:var(--font-display); font-weight:400; font-size:22px; white-space:nowrap}
 .tabs{display:flex; gap:8px; flex-wrap:wrap}
 
