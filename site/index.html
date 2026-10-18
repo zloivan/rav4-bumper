@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>Бампер для RAV4</title>
+<title>Ремонт RAV4</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -192,6 +192,18 @@ details.more[open] summary{margin-bottom:6px}
 .badge{display:inline-block; background:var(--mark); color:var(--on-mark); border-radius:6px; padding:2px 8px; font-size:13px; font-weight:700; letter-spacing:.04em; text-transform:uppercase}
 .costs{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px}
 
+/* Главная: задачи */
+.task{gap:12px}
+.task-head{display:flex; gap:14px; align-items:flex-start}
+.task-ico{flex:none; width:52px; height:52px; border-radius:14px; display:grid; place-items:center; background:var(--accent-soft); color:var(--accent)}
+.task-head > div{min-width:0; display:flex; flex-direction:column; gap:4px}
+.facts{font-size:16px; color:var(--muted); display:flex; flex-direction:column; gap:2px}
+.closed{background:var(--surface-2); border-style:dashed; gap:10px}
+.closed h3{font-size:18px}
+.closed .row .btn{flex:1 1 140px}
+.opts.qty{grid-template-columns:repeat(4,1fr)}
+.opts.qty .opt:last-child{grid-column:1 / -1}
+
 /* Тост и конфетти */
 .toast{position:fixed; left:0; right:0; margin-inline:auto; width:fit-content; bottom:calc(18px + env(safe-area-inset-bottom, 0px)); z-index:20;
   background:var(--ink); color:var(--bg); border-radius:12px; padding:12px 18px; font-weight:600; max-width:calc(100% - 32px); box-shadow:0 8px 24px rgba(0,0,0,.25)}
@@ -223,15 +235,15 @@ details.more[open] summary{margin-bottom:6px}
 <div class="wrap" id="app" lang="ru"></div>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 <button id="chat-open" class="btn chat-fab" hidden>Спросить помощника</button>
-<section id="chat" class="chat" hidden aria-label="Помощник по бамперу">
-  <div class="chat-head"><strong>Помощник по бамперу</strong><span class="row" style="gap:6px"><button class="btn quiet" id="chat-clear" type="button">Очистить</button><button class="btn quiet" id="chat-close" type="button">Закрыть</button></span></div>
+<section id="chat" class="chat" hidden aria-label="Помощник по ремонту">
+  <div class="chat-head"><strong>Помощник по ремонту</strong><span class="row" style="gap:6px"><button class="btn quiet" id="chat-clear" type="button">Очистить</button><button class="btn quiet" id="chat-close" type="button">Закрыть</button></span></div>
   <div id="chat-log" class="chat-log" aria-live="polite"></div>
   <form id="chat-form" class="chat-form"><label for="chat-input" class="sr">Вопрос</label><input id="chat-input" type="text" placeholder="Напишите вопрос…" autocomplete="off"><button class="btn" type="submit">Отправить</button></form>
   <p class="small muted chat-note">Помощник может ошибаться. Цены и наличие уточняйте по телефону.</p>
 </section>
 <canvas id="confetti" aria-hidden="true"></canvas>
 
-<script type="application/json" id="quest-data">{"checked":"16–17 октября 2026","updated":"18.10.2026, 00:42","updateNote":"Kufar проверен: подходящих объявлений вне основного списка — 0.","vin":{"source":"VIN из техпаспорта, каталог Toyota для Европы (partsouq), проверено 17.10.2026","model":"RAV4 2018 гибрид, AVA42L-ANXMBW, Европа, выпуск 08.2018","paint":"1G3","washers":"no","pdc":"yes","fog":"grilles","radar":true,"partno":"52119-4A911","parts":[["52119-4A911","Бампер, верхняя часть: под парктроники, под покраску"],["52411-42080","Нижняя часть бампера (защита)"],["53112-42100","Нижняя решётка № 1"],["53113-42080","Нижняя решётка № 2"],["52711-42110-B2","Серебристая накладка внизу"],["52030-42060","Правая заглушка на месте противотуманки"],["52535-42080","Правый боковой кронштейн бампера"],["52618-42070","Нижний абсорбер"]]},"offers":[{"id":"multimotor","group":"assembly","seller":"MultiMotor (разборка)","what":"Б/у оригинал в сборе с RAV4 2016 (машина из Италии)","price":2625,"priceNote":"на bamper.by тот же бампер — 2 580","phones":[["+375 29 626-27-26","Viber, WhatsApp"],["+375 29 257-96-57",""]],"wa":"375296262726","say":"Скажите: «Меня интересует запчасть 00113745»","includes":"В комплекте решётки с хромом, площадка под номер, серебристая накладка и обе противотуманки. На фото тёмно-серый. Номер детали в объявлении не указан — спросите, есть ли отверстия под парктроники и код краски донора (нужен 1G3).","holes":{"washers":null,"pdc":null},"fogLamps":true,"address":"д. Новый Двор, ул. Садовая, 13 (6 км от МКАД)","hours":"Пн–Пт 9–19, Сб 9–17, Вс 9–16","delivery":"был в наличии 16.10","link":"https://auto.kufar.by/vi/zapchasti/1086909644","top":1},{"id":"motorland","group":"donor","seller":"МоторЛэнд (разборка)","what":"Разбирают такой же RAV4 2018 гибрид (правый руль, чёрный). Номер бампера по каталогу — тот же 52119-4A911","price":null,"exact":true,"phones":[["+375 29 697-18-53","колл-центр, ежедневно 8:30–20:00"],["+375 29 617-11-21","по этой машине"]],"say":"Скажите: «У вас разбирают RAV4 2018 гибрид, VIN JTMWRREVX0D090002. Есть с него передний бампер?»","includes":"Бампер пока не выставлен — спросите, цел ли он и сколько стоит. Машина чёрная, бампер придётся красить. Эсэмэски не читают — только звонок.","holes":{"washers":false,"pdc":true},"address":"д. Малиновка, ул. Промысловая, 11","hours":"ежедневно 8:30–20:00","delivery":"спросить","link":"https://bamper.by/zchbu/vin_JTMWRREVX0D090002/","top":2,"linkKind":"donor"},{"id":"kuzov","group":"copy","seller":"KUZOV.BY","what":"Новый бампер (копия) для RAV4 2016–2018","price":209,"pricePdc":375,"pdcNote":"версия с отверстиями под парктроники — 375 BYN","phones":[["+375 29 655-10-47",""],["+375 29 776-61-80","МТС, Viber"],["+375 29 666-26-38","A1"]],"includes":"Только верхняя часть бампера, приходит под покраску. Ставят сами на своём СТО и дают гарантию на работу. Спросите, красят ли сами. Берите версию с отверстиями под парктроники.","holes":{"washers":null,"pdc":false},"address":"Минск, ул. Куприянова, 4","hours":"","delivery":"наличие уточнить","link":"https://bamper.by/zapchast_bamper-peredniy/2632-193174325/","top":3},{"id":"orehovskaya","group":"cover","seller":"Ореховская Автозапчасти","what":"Б/у оригинал, привезён из Норвегии","price":903,"phones":[["+375 29 650-29-50","Viber, WhatsApp, Telegram"]],"wa":"375296502950","includes":"В объявлении: «Элементы крепления в целостности. Бампер без трещин. Комплектация на фото актуальна». Спросите номер детали (нужен 52119-4A911) и что входит. Оплата только наличными.","holes":{"washers":null,"pdc":null},"address":"д. Ореховская, ул. Центральная, 32 (10 км от рынка Малиновка)","hours":"до 20:00","delivery":"в наличии","link":"https://bamper.by/zapchast_bamper-peredniy/3768-21731867/","top":4},{"id":"private2583","group":"assembly","seller":"Частное лицо, Минск","what":"Б/у оригинал в сборе, 2017","price":2583,"phones":[["+375 29 911-83-71",""]],"includes":"В объявлении: «оригинал, без дефектов, цена за бампер в сборе, как на фото». Цвет и номер не указаны — спросите.","holes":{"washers":null,"pdc":null},"address":"Минск","hours":"","delivery":"в наличии","link":"https://bamper.by/zapchast_bamper-peredniy/84232-143195558/"},{"id":"autobal","group":"assembly","seller":"Autobal (разборка, Гомель)","what":"Б/у оригинал в сборе 52119-4A911 — номер совпадает","price":4306,"exact":true,"mustPaint":true,"shipping":40,"phones":[["+375 44 727-34-56",""],["+7 916 230-20-20","российский номер"]],"includes":"В объявлении: «Цена указана за в сборе», «отличное состояние». На фото белый — нужна покраска. Нужна доставка из Гомеля (≈ 40 BYN, оценка). Рейтинг продавца 84%, 25 отзывов.","holes":{"washers":false,"pdc":true},"address":"Гомель, ул. 2-я Заводская, 33","hours":"с 9:00","delivery":"Гомель, нужна доставка","link":"https://bamper.by/zapchast_bamper-peredniy/3752-253684/"},{"id":"razborauto","group":"assembly","seller":"Razbor-Auto (Москва)","what":"Б/у оригинал 52119-4A911 «под парктроник, без омывателей фар» — номер совпадает","price":4325,"exact":true,"phones":[["+7 901 746-05-51",""],["+7 926 377-77-48","Telegram"]],"includes":"Четыре таких бампера, один «в сборе с накладкой и решётками». Свой рейс в Минск раз в неделю, оплата при получении. Отзывов о продавце нет.","holes":{"washers":false,"pdc":true},"address":"Москва","hours":"Пн–Сб 9–18, Вс 9–16","delivery":"из Москвы, рейс раз в неделю","link":"https://bamper.by/zapchast_bamper-peredniy/386333-165505/"},{"id":"sales24","group":"copy","seller":"SALES24.BY","what":"Новый бампер (копия, марка AVG) для RAV4 2016–2019","price":200,"pricePdc":280,"pdcNote":"версия с отверстиями под парктроники — 280 BYN","phones":[["+375 29 184-90-96",""]],"includes":"Только верхняя часть, под покраску. Самовывоз по предварительному заказу. Берите версию с отверстиями под парктроники.","holes":{"washers":null,"pdc":false},"address":"Минск, ул. Малая, 1 (ТЦ OUTLETO, въезд с ул. Автодоровской)","hours":"","delivery":"по предзаказу","link":"https://bamper.by/zapchast_bamper-peredniy/306598-S24-8102906/"},{"id":"bestdeal","group":"assembly","seller":"BestDeal 1","what":"Б/у оригинал в сборе, с царапинами, 52119-0R916","price":1776,"priceNote":"второй такой же — 2 283","mustPaint":true,"phones":[["+375 44 796-70-33",""]],"includes":"В объявлении: «Оригинал в сборе… с дефектами, царапины, потёртости». Под заказ — спросите срок и есть ли отверстия под парктроники.","holes":{"washers":null,"pdc":null},"address":"Минск","hours":"ежедневно 9–21","delivery":"под заказ","link":"https://bamper.by/zapchast_bamper-peredniy/4512-VZ254563/"},{"id":"avtobamper","group":"copy","seller":"Автобампер","what":"Новый «бампер RAV4 2018» — модель не подтверждена","price":293,"phones":[["+375 29 393-95-79","Viber"],["+375 33 393-95-79",""]],"includes":"Фото нет. Обязательно спросите: «Подходит на RAV4 2016–2018, рестайлинг 40 кузова, с отверстиями под парктроники?» Бампер от новой модели 2019+ не подойдёт.","holes":{"washers":null,"pdc":null},"address":"Минск, ул. Неманская, 12","hours":"Пн–Чт 9–20, Пт 9–19","delivery":"наличие уточнить","link":"https://auto.kufar.by/vi/zapchasti/1036694070"},{"id":"dtp302","group":"cover","seller":"Dtp-zap","what":"Б/у оригинал, тёмно-серый, 52119-0R180","price":302,"phones":[["+375 29 532-62-92","Viber, WhatsApp, Telegram"],["+375 44 560-62-92",""]],"wa":"375295326292","includes":"Только бампер. В объявлении: «под омыватели фар, сломано нижнее крепление, потёртости». Рейтинг продавца 67%.","holes":{"washers":true,"pdc":null},"address":"Минск, ул. Аннаева, 67/2","hours":"Пн–Пт 10–18","delivery":"под заказ, 3–7 дней","link":"https://bamper.by/zapchast_bamper-peredniy/7198-A431696/"},{"id":"dtp318","group":"cover","seller":"Dtp-zap","what":"Б/у оригинал, серый, 52119-0R180","price":318,"phones":[["+375 29 532-62-92","Viber, WhatsApp, Telegram"],["+375 44 560-62-92",""]],"wa":"375295326292","includes":"В объявлении: «под парктроник и омыватели фар, все крепления целые после незначительного ремонта».","holes":{"washers":true,"pdc":true},"address":"Минск, ул. Аннаева, 67/2","hours":"Пн–Пт 10–18","delivery":"под заказ, 3–7 дней","link":"https://bamper.by/zapchast_bamper-peredniy/7198-L081538/"},{"id":"private812","group":"cover","seller":"Частное лицо, Минск","what":"Б/у оригинал, 2017 (похоже, с гибрида)","price":812,"phones":[["+375 33 681-47-39",""]],"includes":"В объявлении только «Бампер б/у, оригинал». Спросите номер, комплект, цвет и трещины.","holes":{"washers":null,"pdc":null},"address":"Минск","hours":"","delivery":"в наличии","link":"https://bamper.by/zapchast_bamper-peredniy/58695-150429982/"}],"fresh":[{"id":"bamper-386333-153879","group":"assembly","seller":"Razbor-Auto (Москва)","what":"Б/у оригинал 52119-4A911, RAV4 A40 2017 (ещё один из бамперов этого продавца)","price":4325,"phones":[["+7 901 746-05-51","Telegram"],["+7 926 377-77-48","Telegram"]],"link":"https://bamper.by/zapchast_bamper-peredniy/386333-153879/","found":"17.10","includes":"«Под парктроник / без омывателей фар». Цвет не указан. Свой рейс в Минск раз в неделю, оплата при получении.","partno":"52119-4A911","holes":{"washers":false,"pdc":true},"exact":true,"source":"bamper"},{"id":"bamper-386333-168005","group":"assembly","seller":"Razbor-Auto (Москва)","what":"Б/у оригинал 52119-4A911, RAV4 A40 2017 (ещё один из бамперов этого продавца)","price":4325,"phones":[["+7 901 746-05-51","Telegram"],["+7 926 377-77-48","Telegram"]],"link":"https://bamper.by/zapchast_bamper-peredniy/386333-168005/","found":"17.10","includes":"«Под парктроник / без омывателей фар». Цвет не указан. Свой рейс в Минск раз в неделю, оплата при получении.","partno":"52119-4A911","holes":{"washers":false,"pdc":true},"exact":true,"source":"bamper"},{"id":"bamper-386333-165676","group":"assembly","seller":"Razbor-Auto (Москва)","what":"Б/у оригинал 52119-4A911, RAV4 ASA44 2018","price":4325,"phones":[["+7 901 746-05-51","Telegram"],["+7 926 377-77-48","Telegram"]],"link":"https://bamper.by/zapchast_bamper-peredniy/386333-165676/","found":"17.10","includes":"«Под парктроник / без омывателей фар». Цвет не указан. Свой рейс в Минск раз в неделю, оплата при получении.","partno":"52119-4A911","holes":{"washers":false,"pdc":true},"exact":true,"source":"bamper"},{"id":"bamper-25054-SPA62","group":"cover","seller":"RAZBORKIN.BY PRIME (Минск)","what":"Б/у бампер RAV4 XA40 2017, под заказ из Европы (~2 недели)","price":761,"phones":[["+375 29 777-97-21","Viber, WhatsApp, Telegram"]],"link":"https://bamper.by/zapchast_bamper-peredniy/25054-SPA62/","found":"17.10","includes":"Под заказ с европейского склада, срок ~2 недели, состояние как на фото, торга нет. Цвет, номер и отверстия не указаны — спросить. Минск, ул. Корвата 73 к4.","partno":null,"holes":{"washers":null,"pdc":null},"source":"bamper"},{"id":"bamper-41304-M925","group":"cover","seller":"ИП Сланчевский А.А. (Минск)","what":"Б/у бампер RAV4 2017","price":574,"phones":[["+375 29 676-44-46","Viber"]],"link":"https://bamper.by/zapchast_bamper-peredniy/41304-M925/","found":"17.10","includes":"Описания почти нет; комплектация может отличаться от фото. Номер, цвет и отверстия не указаны — спросить. Доставка по Минску от 30 BYN.","partno":null,"holes":{"washers":null,"pdc":null},"source":"bamper"}],"chatEndpoint":null,"sources":{"bamper":{"updated":"17.10.2026, 21:39","ok":true,"count":5},"kufar":{"updated":"18.10.2026, 00:42","ok":true,"count":0}}}</script>
+<script type="application/json" id="quest-data">{"checked":"16–17 октября 2026","updated":"18.10.2026, 00:42","updateNote":"Kufar проверен: подходящих объявлений вне основного списка — 0.","vin":{"source":"VIN из техпаспорта, каталог Toyota для Европы (partsouq), проверено 17.10.2026","model":"RAV4 2018 гибрид, AVA42L-ANXMBW, Европа, выпуск 08.2018","paint":"1G3","washers":"no","pdc":"yes","fog":"grilles","radar":true,"partno":"52119-4A911","parts":[["52119-4A911","Бампер, верхняя часть: под парктроники, под покраску"],["52411-42080","Нижняя часть бампера (защита)"],["53112-42100","Нижняя решётка № 1"],["53113-42080","Нижняя решётка № 2"],["52711-42110-B2","Серебристая накладка внизу"],["52030-42060","Правая заглушка на месте противотуманки"],["52535-42080","Правый боковой кронштейн бампера"],["52618-42070","Нижний абсорбер"]]},"offers":[{"id":"multimotor","group":"assembly","seller":"MultiMotor (разборка)","what":"Б/у оригинал в сборе с RAV4 2016 (машина из Италии)","price":2625,"priceNote":"на bamper.by тот же бампер — 2 580","phones":[["+375 29 626-27-26","Viber, WhatsApp"],["+375 29 257-96-57",""]],"wa":"375296262726","say":"Скажите: «Меня интересует запчасть 00113745»","includes":"В комплекте решётки с хромом, площадка под номер, серебристая накладка и обе противотуманки. На фото тёмно-серый. Номер детали в объявлении не указан — спросите, есть ли отверстия под парктроники и код краски донора (нужен 1G3).","holes":{"washers":null,"pdc":null},"fogLamps":true,"address":"д. Новый Двор, ул. Садовая, 13 (6 км от МКАД)","hours":"Пн–Пт 9–19, Сб 9–17, Вс 9–16","delivery":"был в наличии 16.10","link":"https://auto.kufar.by/vi/zapchasti/1086909644","top":1},{"id":"motorland","group":"donor","seller":"МоторЛэнд (разборка)","what":"Разбирают такой же RAV4 2018 гибрид (правый руль, чёрный). Номер бампера по каталогу — тот же 52119-4A911","price":null,"exact":true,"phones":[["+375 29 697-18-53","колл-центр, ежедневно 8:30–20:00"],["+375 29 617-11-21","по этой машине"]],"say":"Скажите: «У вас разбирают RAV4 2018 гибрид, VIN JTMWRREVX0D090002. Есть с него передний бампер?»","includes":"Бампер пока не выставлен — спросите, цел ли он и сколько стоит. Машина чёрная, бампер придётся красить. Эсэмэски не читают — только звонок.","holes":{"washers":false,"pdc":true},"address":"д. Малиновка, ул. Промысловая, 11","hours":"ежедневно 8:30–20:00","delivery":"спросить","link":"https://bamper.by/zchbu/vin_JTMWRREVX0D090002/","top":2,"linkKind":"donor"},{"id":"kuzov","group":"copy","seller":"KUZOV.BY","what":"Новый бампер (копия) для RAV4 2016–2018","price":209,"pricePdc":375,"pdcNote":"версия с отверстиями под парктроники — 375 BYN","phones":[["+375 29 655-10-47",""],["+375 29 776-61-80","МТС, Viber"],["+375 29 666-26-38","A1"]],"includes":"Только верхняя часть бампера, приходит под покраску. Ставят сами на своём СТО и дают гарантию на работу. Спросите, красят ли сами. Берите версию с отверстиями под парктроники.","holes":{"washers":null,"pdc":false},"address":"Минск, ул. Куприянова, 4","hours":"","delivery":"наличие уточнить","link":"https://bamper.by/zapchast_bamper-peredniy/2632-193174325/","top":3},{"id":"orehovskaya","group":"cover","seller":"Ореховская Автозапчасти","what":"Б/у оригинал, привезён из Норвегии","price":903,"phones":[["+375 29 650-29-50","Viber, WhatsApp, Telegram"]],"wa":"375296502950","includes":"В объявлении: «Элементы крепления в целостности. Бампер без трещин. Комплектация на фото актуальна». Спросите номер детали (нужен 52119-4A911) и что входит. Оплата только наличными.","holes":{"washers":null,"pdc":null},"address":"д. Ореховская, ул. Центральная, 32 (10 км от рынка Малиновка)","hours":"до 20:00","delivery":"в наличии","link":"https://bamper.by/zapchast_bamper-peredniy/3768-21731867/","top":4},{"id":"private2583","group":"assembly","seller":"Частное лицо, Минск","what":"Б/у оригинал в сборе, 2017","price":2583,"phones":[["+375 29 911-83-71",""]],"includes":"В объявлении: «оригинал, без дефектов, цена за бампер в сборе, как на фото». Цвет и номер не указаны — спросите.","holes":{"washers":null,"pdc":null},"address":"Минск","hours":"","delivery":"в наличии","link":"https://bamper.by/zapchast_bamper-peredniy/84232-143195558/"},{"id":"autobal","group":"assembly","seller":"Autobal (разборка, Гомель)","what":"Б/у оригинал в сборе 52119-4A911 — номер совпадает","price":4306,"exact":true,"mustPaint":true,"shipping":40,"phones":[["+375 44 727-34-56",""],["+7 916 230-20-20","российский номер"]],"includes":"В объявлении: «Цена указана за в сборе», «отличное состояние». На фото белый — нужна покраска. Нужна доставка из Гомеля (≈ 40 BYN, оценка). Рейтинг продавца 84%, 25 отзывов.","holes":{"washers":false,"pdc":true},"address":"Гомель, ул. 2-я Заводская, 33","hours":"с 9:00","delivery":"Гомель, нужна доставка","link":"https://bamper.by/zapchast_bamper-peredniy/3752-253684/"},{"id":"razborauto","group":"assembly","seller":"Razbor-Auto (Москва)","what":"Б/у оригинал 52119-4A911 «под парктроник, без омывателей фар» — номер совпадает","price":4325,"exact":true,"phones":[["+7 901 746-05-51",""],["+7 926 377-77-48","Telegram"]],"includes":"Четыре таких бампера, один «в сборе с накладкой и решётками». Свой рейс в Минск раз в неделю, оплата при получении. Отзывов о продавце нет.","holes":{"washers":false,"pdc":true},"address":"Москва","hours":"Пн–Сб 9–18, Вс 9–16","delivery":"из Москвы, рейс раз в неделю","link":"https://bamper.by/zapchast_bamper-peredniy/386333-165505/"},{"id":"sales24","group":"copy","seller":"SALES24.BY","what":"Новый бампер (копия, марка AVG) для RAV4 2016–2019","price":200,"pricePdc":280,"pdcNote":"версия с отверстиями под парктроники — 280 BYN","phones":[["+375 29 184-90-96",""]],"includes":"Только верхняя часть, под покраску. Самовывоз по предварительному заказу. Берите версию с отверстиями под парктроники.","holes":{"washers":null,"pdc":false},"address":"Минск, ул. Малая, 1 (ТЦ OUTLETO, въезд с ул. Автодоровской)","hours":"","delivery":"по предзаказу","link":"https://bamper.by/zapchast_bamper-peredniy/306598-S24-8102906/"},{"id":"bestdeal","group":"assembly","seller":"BestDeal 1","what":"Б/у оригинал в сборе, с царапинами, 52119-0R916","price":1776,"priceNote":"второй такой же — 2 283","mustPaint":true,"phones":[["+375 44 796-70-33",""]],"includes":"В объявлении: «Оригинал в сборе… с дефектами, царапины, потёртости». Под заказ — спросите срок и есть ли отверстия под парктроники.","holes":{"washers":null,"pdc":null},"address":"Минск","hours":"ежедневно 9–21","delivery":"под заказ","link":"https://bamper.by/zapchast_bamper-peredniy/4512-VZ254563/"},{"id":"avtobamper","group":"copy","seller":"Автобампер","what":"Новый «бампер RAV4 2018» — модель не подтверждена","price":293,"phones":[["+375 29 393-95-79","Viber"],["+375 33 393-95-79",""]],"includes":"Фото нет. Обязательно спросите: «Подходит на RAV4 2016–2018, рестайлинг 40 кузова, с отверстиями под парктроники?» Бампер от новой модели 2019+ не подойдёт.","holes":{"washers":null,"pdc":null},"address":"Минск, ул. Неманская, 12","hours":"Пн–Чт 9–20, Пт 9–19","delivery":"наличие уточнить","link":"https://auto.kufar.by/vi/zapchasti/1036694070"},{"id":"dtp302","group":"cover","seller":"Dtp-zap","what":"Б/у оригинал, тёмно-серый, 52119-0R180","price":302,"phones":[["+375 29 532-62-92","Viber, WhatsApp, Telegram"],["+375 44 560-62-92",""]],"wa":"375295326292","includes":"Только бампер. В объявлении: «под омыватели фар, сломано нижнее крепление, потёртости». Рейтинг продавца 67%.","holes":{"washers":true,"pdc":null},"address":"Минск, ул. Аннаева, 67/2","hours":"Пн–Пт 10–18","delivery":"под заказ, 3–7 дней","link":"https://bamper.by/zapchast_bamper-peredniy/7198-A431696/"},{"id":"dtp318","group":"cover","seller":"Dtp-zap","what":"Б/у оригинал, серый, 52119-0R180","price":318,"phones":[["+375 29 532-62-92","Viber, WhatsApp, Telegram"],["+375 44 560-62-92",""]],"wa":"375295326292","includes":"В объявлении: «под парктроник и омыватели фар, все крепления целые после незначительного ремонта».","holes":{"washers":true,"pdc":true},"address":"Минск, ул. Аннаева, 67/2","hours":"Пн–Пт 10–18","delivery":"под заказ, 3–7 дней","link":"https://bamper.by/zapchast_bamper-peredniy/7198-L081538/"},{"id":"private812","group":"cover","seller":"Частное лицо, Минск","what":"Б/у оригинал, 2017 (похоже, с гибрида)","price":812,"phones":[["+375 33 681-47-39",""]],"includes":"В объявлении только «Бампер б/у, оригинал». Спросите номер, комплект, цвет и трещины.","holes":{"washers":null,"pdc":null},"address":"Минск","hours":"","delivery":"в наличии","link":"https://bamper.by/zapchast_bamper-peredniy/58695-150429982/"}],"fresh":[{"id":"bamper-386333-153879","group":"assembly","seller":"Razbor-Auto (Москва)","what":"Б/у оригинал 52119-4A911, RAV4 A40 2017 (ещё один из бамперов этого продавца)","price":4325,"phones":[["+7 901 746-05-51","Telegram"],["+7 926 377-77-48","Telegram"]],"link":"https://bamper.by/zapchast_bamper-peredniy/386333-153879/","found":"17.10","includes":"«Под парктроник / без омывателей фар». Цвет не указан. Свой рейс в Минск раз в неделю, оплата при получении.","partno":"52119-4A911","holes":{"washers":false,"pdc":true},"exact":true,"source":"bamper"},{"id":"bamper-386333-168005","group":"assembly","seller":"Razbor-Auto (Москва)","what":"Б/у оригинал 52119-4A911, RAV4 A40 2017 (ещё один из бамперов этого продавца)","price":4325,"phones":[["+7 901 746-05-51","Telegram"],["+7 926 377-77-48","Telegram"]],"link":"https://bamper.by/zapchast_bamper-peredniy/386333-168005/","found":"17.10","includes":"«Под парктроник / без омывателей фар». Цвет не указан. Свой рейс в Минск раз в неделю, оплата при получении.","partno":"52119-4A911","holes":{"washers":false,"pdc":true},"exact":true,"source":"bamper"},{"id":"bamper-386333-165676","group":"assembly","seller":"Razbor-Auto (Москва)","what":"Б/у оригинал 52119-4A911, RAV4 ASA44 2018","price":4325,"phones":[["+7 901 746-05-51","Telegram"],["+7 926 377-77-48","Telegram"]],"link":"https://bamper.by/zapchast_bamper-peredniy/386333-165676/","found":"17.10","includes":"«Под парктроник / без омывателей фар». Цвет не указан. Свой рейс в Минск раз в неделю, оплата при получении.","partno":"52119-4A911","holes":{"washers":false,"pdc":true},"exact":true,"source":"bamper"},{"id":"bamper-25054-SPA62","group":"cover","seller":"RAZBORKIN.BY PRIME (Минск)","what":"Б/у бампер RAV4 XA40 2017, под заказ из Европы (~2 недели)","price":761,"phones":[["+375 29 777-97-21","Viber, WhatsApp, Telegram"]],"link":"https://bamper.by/zapchast_bamper-peredniy/25054-SPA62/","found":"17.10","includes":"Под заказ с европейского склада, срок ~2 недели, состояние как на фото, торга нет. Цвет, номер и отверстия не указаны — спросить. Минск, ул. Корвата 73 к4.","partno":null,"holes":{"washers":null,"pdc":null},"source":"bamper"},{"id":"bamper-41304-M925","group":"cover","seller":"ИП Сланчевский А.А. (Минск)","what":"Б/у бампер RAV4 2017","price":574,"phones":[["+375 29 676-44-46","Viber"]],"link":"https://bamper.by/zapchast_bamper-peredniy/41304-M925/","found":"17.10","includes":"Описания почти нет; комплектация может отличаться от фото. Номер, цвет и отверстия не указаны — спросить. Доставка по Минску от 30 BYN.","partno":null,"holes":{"washers":null,"pdc":null},"source":"bamper"}],"chatEndpoint":null,"sources":{"bamper":{"updated":"17.10.2026, 21:39","ok":true,"count":5},"kufar":{"updated":"18.10.2026, 00:42","ok":true,"count":0}},"bumperClosed":"18.10.2026","pdc":{"checked":"18 октября 2026","vin":{"source":"VIN из техпаспорта, каталог Toyota для Европы (partsouq), группа 8417 Clearance & back sonar, проверено 18.10.2026","partno":"89341-42060-B2","parts":[["89341-42060-B2","Датчик парковки, окрашен в 1G3 (тёмно-серый) — для вашей машины; один номер на все 4 места спереди и 4 сзади"],["89341-42060-C0","Тот же датчик, чёрный без покраски"],["89348-12020","Клипса датчика"],["89340-42040","Блок управления парктрониками"],["89343-48010","Пищалка парктроника"]],"note":"В американском каталоге Toyota 89341-42060-B2 заменён на 89341-0R050-B1 (буква цвета другая — сверить у продавца). Не путать: 89341-42010 и 42030 — от RAV4 2013–2015."},"tip":"Б/у датчиков от вашей модели в Беларуси сейчас нет. Проще всего — оригинал 89341-42060-B2: он уже в вашем цвете, красить не нужно. МОНЛИБОН — 348 BYN за штуку, 3–4 дня, или zap.by — 351 BYN, к 24.10. Копии по 47 BYN чёрные — их красят, и подходят они только по базе магазина.","offers":[{"seller":"МОНЛИБОН (ml-auto.by)","address":"Склад: Минский р-н, Щомыслицкий с/с, 68/2, район д. Богатырёво","hours":"Пн–Пт 9–19, Сб 10–17, Вс выходной","phones":[["7175","короткий номер"],["+375 29 160-32-93","A1"],["+375 29 871-24-33","МТС"]],"id":"ml-b2","group":"orig","what":"Оригинал Toyota 89341-42060-B2 — уже в цвете 1G3","price":348,"painted":true,"exact":true,"partno":"89341-42060-B2","priceNote":"розничная цена с сайта; есть и за 388.92 BYN с доставкой за 4 дня","includes":"На сайте: «TOYOTA 8934142060B2 … Датчик парковочный TOYOTA 19 шт. 3-4 дн. … 348.00 р.». Под заказ, со склада поставщика — наличие меняется каждый день.","delivery":"под заказ, 3–4 дня (19 шт.)","link":"https://www.ml-auto.by/search/number/?article=8934142060B2","linkKind":"shop","top":1},{"id":"zap-b2","group":"orig","seller":"zap.by (АвтозапчастьСити)","what":"Оригинал Toyota 89341-42060-B2 — уже в цвете 1G3","price":351,"painted":true,"exact":true,"partno":"89341-42060-B2","priceNote":"351.30 BYN при заказе через корзину, иначе 361.30","phones":[["+375 29 650-33-44","A1"],["+375 33 650-33-44","МТС"],["+375 25 650-33-44","life"]],"includes":"На сайте: «OEM 89341-42060-B2 Датчик парковочный много 24.10.2026 95%». Привезут к 24.10, вероятность поставки 95%.","address":"Минск, интернет-магазин (пункты выдачи — на сайте)","hours":"звонить с 9 до 18","delivery":"под заказ, к 24.10","link":"https://zap.by/offers/oem/8934142060B2","linkKind":"shop","top":2},{"seller":"МОНЛИБОН (ml-auto.by)","address":"Склад: Минский р-н, Щомыслицкий с/с, 68/2, район д. Богатырёво","hours":"Пн–Пт 9–19, Сб 10–17, Вс выходной","phones":[["7175","короткий номер"],["+375 29 160-32-93","A1"],["+375 29 871-24-33","МТС"]],"id":"ml-c0","group":"orig","what":"Оригинал Toyota 89341-42060-C0 — чёрный, нужно красить","price":302,"painted":false,"exact":true,"partno":"89341-42060-C0","priceNote":"302.16 BYN; есть и за 465.42 BYN с доставкой за 2 дня","includes":"На сайте: «TOYOTA 8934142060C0 … ДАТЧИК 4 шт. 3-4 дн. … 302.16 р.». Окрашенный -B2 дороже всего на ~46 BYN — обычно выгоднее взять его.","delivery":"под заказ, 3–4 дня (4 шт.)","link":"https://www.ml-auto.by/search/number/?article=8934142060C0","linkKind":"shop","top":3},{"seller":"МОНЛИБОН (ml-auto.by)","address":"Склад: Минский р-н, Щомыслицкий с/с, 68/2, район д. Богатырёво","hours":"Пн–Пт 9–19, Сб 10–17, Вс выходной","phones":[["7175","короткий номер"],["+375 29 160-32-93","A1"],["+375 29 871-24-33","МТС"]],"id":"ml-zikmar","group":"copy","what":"ZIKMAR Z30032R «ДАТЧИК ПАРКОВКИ Toyota Rav 4» — копия, чёрная","price":47,"painted":false,"partno":"ZIKMAR Z30032R","priceNote":"46.68 BYN","warn":"Копия: магазин считает её заменой 89341-42060 по своей базе. Перед покупкой сверьте форму и разъём со старым датчиком.","includes":"На сайте: «ZIKMAR Z30032R … 1 шт. 0 дн. … 46.68 р.» — одна штука, в наличии. Чёрная — нужно красить в 1G3.","delivery":"в наличии, 1 шт.","link":"https://www.ml-auto.by/search/number/?article=8934142060","linkKind":"shop","top":4},{"seller":"МОНЛИБОН (ml-auto.by)","address":"Склад: Минский р-н, Щомыслицкий с/с, 68/2, район д. Богатырёво","hours":"Пн–Пт 9–19, Сб 10–17, Вс выходной","phones":[["7175","короткий номер"],["+375 29 160-32-93","A1"],["+375 29 871-24-33","МТС"]],"id":"ml-deqst","group":"copy","what":"DEQST 119016 «Датчик парковки TOYOTA RAV 4 IV» — копия, чёрная","price":48,"painted":false,"partno":"DEQST 119016","priceNote":"47.94 BYN","warn":"Копия: магазин считает её заменой 89341-42060 по своей базе. Перед покупкой сверьте форму и разъём со старым датчиком.","includes":"На сайте: «DEQST 119016 Датчик парковки TOYOTA RAV 4 IV (ZSA4_, ALA4_) … 5 шт. 2 дн. … 47.94 р.». Чёрная — нужно красить в 1G3.","delivery":"под заказ, 2 дня (5 шт.)","link":"https://www.ml-auto.by/search/number/?article=8934142060","linkKind":"shop","top":5}],"fresh":[]},"glass":{"checked":"18 октября 2026","vin":{"source":"VIN из техпаспорта, каталог Toyota для Европы (partsouq), группы 5553 Windshield glass и 8501 Windshield wiper, проверено 18.10.2026","partno":"56101-42511","parts":[["56101-42511","Лобовое стекло для машин с системой Pre-Collision (кронштейн камеры), Европа, 01.2017–10.2018"],["89941-52010","Датчик дождя (переставляется со старого стекла)"],["89943-42020","Крышка датчика дождя"],["89944-42010","Лента (наклейка) датчика дождя"],["56117-50140","Уплотнитель (дамба) клея стекла"]],"note":"У неоригинальных стёкол свой код — еврокод. Для вашей модели он начинается на 8410; буква C в коде — камера, M — датчик дождя, H — обогрев (например 8410AGACHMW1L). Номер Toyota 56101-42511 на сайтах стекольщиков не пишут — называйте его по телефону."},"tip":"Car-Glass.by работает и в выходные (Вс 10–18): спросите цену Fuyao за 423 BYN вместе с установкой. В будни позвоните в Стеклоавто — они сами настраивают камеру (от 200 BYN). Всем называйте номер 56101-42511 и спрашивайте, подойдёт ли стекло под камеру RAV4 2016–2018.","offers":[{"id":"cg-fuyao-1l","group":"new","seller":"Car-Glass.by","what":"Fuyao, «Лобовое стекло Toyota RAV4 IV рестайлинг 2016-2018», еврокод 8410AGACHMW1L","price":423,"priceNote":"в заголовке страницы — 422 BYN","camera":true,"heat":"yes","phones":[["+375 29 367-55-55",""]],"includes":"По сайту: датчик дождя, камера, обогрев, акустическое, молдинг, «В наличии». «Можно заказать лобовое стекло сразу с установкой» — цену установки спросите. Номер Toyota 56101-42511 на сайте не указан — назовите его и спросите, подходит ли под камеру.","address":"Минск, пр-д Бетонный, 3 к.2 (пункт выдачи)","hours":"Пн–Пт 9–20, Сб 9–19, Вс 10–18","delivery":"в наличии (по сайту)","link":"https://car-glass.by/catalog/avtosteklo/legkovye-i-mikroavtobusy/lobovoe-steklo-toyota-rav4-iv-xa40-003/","linkKind":"shop","top":1},{"id":"cg-kmk-heat","group":"new","seller":"Car-Glass.by","what":"КМК, «Лобовое стекло Toyota RAV4 IV 2013-2018», еврокод 8410AGNBLCHP","price":255,"camera":true,"heat":"yes","warn":"Подписано «2013–2018», а не рестайлинг — кронштейн камеры может быть от старой модели. Спросите, подходит ли под камеру RAV4 2016–2018.","phones":[["+375 29 367-55-55",""]],"includes":"По сайту: датчик дождя, камера, обогрев, полоса сверху, «В наличии». Установку можно заказать там же — цену спросите.","address":"Минск, пр-д Бетонный, 3 к.2 (пункт выдачи)","hours":"Пн–Пт 9–20, Сб 9–19, Вс 10–18","delivery":"в наличии (по сайту)","link":"https://car-glass.by/catalog/avtosteklo/legkovye-i-mikroavtobusy/lobovoe-steklo-toyota-rav4-iv-7/","linkKind":"shop","top":2},{"id":"steklo-lemson","group":"new","seller":"Стеклоавто (autosteklo.by)","what":"Lemson, «Ветровое стекло TOYOTA RAV 4 2013–2018»","price":200,"priceNote":"на сайте «от 200 BYN»; установка — отдельно, по запросу","camera":true,"heat":"yes","calibPrice":200,"warn":"Подписано «2013–2018» — спросите, подходит ли кронштейн под камеру рестайлинга 2016–2018.","phones":[["+375 29 636-55-42","A1"],["+375 29 506-55-41","МТС"],["+375 17 270-55-42","городской"]],"includes":"По сайту: камера — «Есть», датчик дождя — «Есть», электрообогрев — «Есть», «В наличии». Единственные, кто пишет цену настройки камеры: «от 200 BYN», ориентир 200–500 BYN; при замене стекла у них — «пакетные условия». Спросите цену всего вместе.","address":"Минск, ул. Ботаническая, 10","hours":"Пн–Чт 9–18, Пт 9–17, Сб–Вс выходной","delivery":"в наличии (по сайту)","link":"https://autosteklo.by/catalog/product/cmrzz47xh08idvt59cocan1qd?make=TOYOTA","linkKind":"shop","top":3},{"id":"cg-fuyao-1e","group":"new","seller":"Car-Glass.by","what":"Fuyao, «рестайлинг 2016-2018», еврокод 8410AGACHMW1E — с обогревом всего стекла","price":797,"camera":true,"heat":"full","phones":[["+375 29 367-55-55",""]],"includes":"По сайту: датчик дождя, камера, обогрев, акустическое, молдинг, «В наличии». Окончание 1E — полный обогрев стекла (по расшифровке кодов у других продавцов). Нужен, только если на вашем стекле проволочки по всей площади.","address":"Минск, пр-д Бетонный, 3 к.2 (пункт выдачи)","hours":"Пн–Пт 9–20, Сб 9–19, Вс 10–18","delivery":"в наличии (по сайту)","link":"https://car-glass.by/catalog/avtosteklo/legkovye-i-mikroavtobusy/lobovoe-steklo-toyota-rav4-iv-xa40-01/","linkKind":"shop","top":4},{"id":"cg-kmk","group":"new","seller":"Car-Glass.by","what":"КМК, «Лобовое стекло Toyota RAV4 IV 2013-2018», еврокод 8410AGNBLCP — без обогрева","price":180,"camera":true,"heat":"none","warn":"Подписано «2013–2018», а не рестайлинг — кронштейн камеры может быть от старой модели. Спросите, подходит ли под камеру RAV4 2016–2018.","phones":[["+375 29 367-55-55",""]],"includes":"По сайту: датчик дождя, камера, полоса сверху, «В наличии». Обогрева в описании нет.","address":"Минск, пр-д Бетонный, 3 к.2 (пункт выдачи)","hours":"Пн–Пт 9–20, Сб 9–19, Вс 10–18","delivery":"в наличии (по сайту)","link":"https://car-glass.by/catalog/avtosteklo/legkovye-i-mikroavtobusy/lobovoe-steklo-toyota-rav4-iv-4/","linkKind":"shop","top":5},{"id":"vlobovik","group":"service","seller":"Влобовик","what":"Стекольная мастерская: для RAV4 XA40 предлагают AGC, Fuyao, Benson","price":null,"priceNote":"цена стекла — по телефону; «замена под ключ — от 220 BYN, на популярные модели — от 240 BYN»","installPrice":70,"noCalib":true,"phones":[["+375 29 166-33-88","A1"],["+375 29 256-03-07","МТС"]],"includes":"«Установка вашего стекла — от 70 BYN, независимо от бренда», замена около часа. Камеру не настраивают — после них нужно к дилеру. Подходит, если стекло купили в другом месте без установки.","address":"Якубовичи, д. 1Г (под Минском)","hours":"Пн–Пт 10–20, Сб 10–18","delivery":"наличие стекла уточнить","link":"https://vlobovik.by/katalog/toyota/rav4/xa40","linkKind":"shop","top":6},{"id":"kufar-1082650714","group":"used","seller":"Сергей (частное лицо, Слоним)","what":"Б/у лобовое стекло RAV4 IV (CA40) рестайлинг, 2017","price":150,"camera":null,"heat":null,"phones":[],"includes":"В объявлении: «Не оригинал, есть 5 сколов, трещин нет, небольшой торг». Есть ли кронштейн камеры — не сказано. Продавец в Слониме — нужна пересылка.","city":"Слоним","delivery":"Слоним, нужна пересылка","link":"https://auto.kufar.by/vi/1082650714","top":9}],"fresh":[]}}</script>
 <script>
 (() => {
 'use strict';
@@ -243,6 +255,7 @@ try{ DATA = JSON.parse(document.getElementById('quest-data').textContent); }catc
 let VIN, CHECKED, OFFERS, FRESH;
 function applyData(d){
   DATA = d || DATA; VIN = DATA.vin || {}; CHECKED = DATA.checked || '';
+  DATA.pdc = DATA.pdc || {}; DATA.glass = DATA.glass || {};
   OFFERS = DATA.offers || [];
   FRESH = (DATA.fresh || []).map(o => Object.assign({holes:{washers:null, pdc:null}, phones:[]}, o, {auto:true}));
 }
@@ -320,6 +333,7 @@ const digits = p => String(p).replace(/[^\d+]/g, '');
 const doneCount = () => STEPS.filter(s => S.done[s.n]).length;
 const allOffers = () => OFFERS.concat(FRESH, S.custom || []);
 const findOffer = id => allOffers().find(o => o.id === id);
+const findAny = id => findOffer(id) || ['pdc', 'glass'].map(t => tOffers(t).find(o => o.id === id)).find(Boolean);
 const nextStep = () => { const s = STEPS.find(x => !S.done[x.n]); return s ? s.n : null; };
 
 const I = {
@@ -418,7 +432,7 @@ function report(){
   return L.join('\n');
 }
 function tgLink(){
-  return 'https://t.me/share/url?url=' + encodeURIComponent('Бампер RAV4 — отчёт от ' + new Date().toLocaleDateString('ru-RU')) + '&text=' + encodeURIComponent(report());
+  return 'https://t.me/share/url?url=' + encodeURIComponent('Ремонт RAV4 — отчёт от ' + new Date().toLocaleDateString('ru-RU')) + '&text=' + encodeURIComponent(fullReport());
 }
 
 /* ---------- Куски интерфейса ---------- */
@@ -437,7 +451,7 @@ function phoneRow(p, label, wa){
 function reportBlock(){
   return '<div class="card soft">' +
     '<h3>Отправить отчёт Ване</h3>' +
-    '<p class="small muted">Что отмечено на этой странице: шаги, звонки, выбор. Ваня увидит всё в Telegram.</p>' +
+    '<p class="small muted">Что отмечено на этой странице: парктроники, стекло, бампер — шаги, звонки, выбор. Ваня увидит всё в Telegram.</p>' +
     '<a class="btn block" data-act="tg" href="' + esc(tgLink()) + '" target="_blank" rel="noopener">Отправить в Telegram</a>' +
     '<button class="btn ghost block" data-act="copyreport">Скопировать отчёт</button>' +
   '</div>';
@@ -457,7 +471,9 @@ function choice(key, value, label, extra){
 /* ---------- Экраны ---------- */
 function home(){
   const n = nextStep(), d = doneCount();
-  let h = '<header class="hero">' +
+  let h = '<div class="topbar"><button class="btn quiet" data-act="view" data-v="hub">← Все задачи</button><span></span></div>';
+  if(DATA.bumperClosed) h += '<div class="note good">' + I.check + '<span><strong>Бампер нашли (' + esc(DATA.bumperClosed) + ').</strong> Поиск закрыт. Здесь всё сохранено — пригодится, если на бампере найдут дефекты. Новые объявления продолжают собираться каждое утро.</span></div>';
+  h += '<header class="hero">' +
     '<p class="eyebrow">Toyota RAV4 2018 · гибрид</p>' +
     '<h1>Бампер для RAV4</h1>' +
     '<p class="lead">Семь шагов от разбитого бампера до целого. Идите по дороге сверху вниз — на каждом шаге всё подскажем.</p>' +
@@ -616,7 +632,7 @@ function script(){
 // Какая это ссылка: само объявление, страница машины-донора на разборке или что-то другое.
 // Те же правила — в scripts/check-links.mjs.
 function linkKind(url){
-  if(/^https:\/\/(auto\.)?kufar\.by\/(vi\/[^/?#]+|item)\/\d+\/?$/.test(url)) return 'ad';
+  if(/^https:\/\/(auto\.)?kufar\.by\/(vi\/([^/?#]+\/)?|item\/)\d+\/?$/.test(url)) return 'ad';
   if(/^https:\/\/bamper\.by\/zapchast_[a-z-]+\/[\w-]+\/?$/.test(url)) return 'ad';
   if(/^https:\/\/bamper\.by\/zchbu\/vin_[A-HJ-NPR-Z0-9]{17}\/?$/.test(url)) return 'donor';
   return 'other';
@@ -627,7 +643,7 @@ function adInfo(o){
   let site = 'сайт продавца', num = '';
   try{ site = new URL(url).hostname.replace(/^(www|auto)\./, ''); }catch(e){}
   const kind = linkKind(url);
-  const m = url.match(/kufar\.by\/(?:vi\/[^/]+|item)\/(\d+)/) || url.match(/bamper\.by\/zapchast_[^/]+\/([^/?#]+)/);
+  const m = url.match(/kufar\.by\/(?:vi\/(?:[^/]+\/)?|item\/)(\d+)/) || url.match(/bamper\.by\/zapchast_[^/]+\/([^/?#]+)/);
   if(kind === 'ad' && m) num = m[1];
   return {url, site, num, kind};
 }
@@ -793,8 +809,536 @@ function finish(){
   return h;
 }
 
+/* ---------- Парктроники и лобовое стекло ---------- */
+// Две новые детали, у каждой свои 4 шага. Данные — DATA.pdc и DATA.glass (vin, offers, fresh, checked, tip),
+// отметки мамы — P (свой ключ в localStorage, бамперные отметки S не трогаем).
+I.sensor = '<svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="3.2" fill="currentColor"/><path d="M11 7.6a6.4 6.4 0 0 1 0 8.8M14.6 5a10.2 10.2 0 0 1 0 14M18.2 2.6a13.6 13.6 0 0 1 0 18.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+I.glass = '<svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.2 5h13.6l3 13.5H2.2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><rect x="10" y="5" width="4" height="3" rx=".8" fill="currentColor"/><path d="M8 11.5l-1.6 4.5M12.2 11l-2.2 5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity=".55"/></svg>';
+
+const TASK = {
+  pdc:{
+    title:'Парктроники', sub:'Датчики парковки в переднем бампере', icon:'sensor',
+    lead:'Датчики в правом углу бампера разбиты. Находим такие же — их поставит мастер вместе с бампером.',
+    doneTitle:'Датчики на месте',
+    steps:[
+      {n:1, title:'Какие датчики нужны', sub:'Номер по VIN и сколько штук'},
+      {n:2, title:'Обзвон продавцов', sub:'Звоним и отмечаем ответы'},
+      {n:3, title:'Сравнить и выбрать', sub:'Итог с покраской'},
+      {n:4, title:'Установка', sub:'Ставит мастер вместе с бампером'}
+    ],
+    groups:{orig:{label:'Новый оригинал Toyota', cls:'g-asm'}, used:{label:'Б/у оригинал', cls:'g-cov'}, copy:{label:'Новый, неоригинал', cls:'g-new'}, new:{label:'Новый', cls:'g-new'}},
+    addGroups:['orig', 'used', 'copy'],
+    costs:{paint:40, install:0},
+    live:[
+      {name:'Kufar: датчики парктроника Toyota', url:'https://auto.kufar.by/l/zapchasti/z~toyota?spg=193'},
+      {name:'Kufar: поиск по номеру 89341-42060', url:'https://auto.kufar.by/l/zapchasti?query=89341-42060'}
+    ]
+  },
+  glass:{
+    title:'Лобовое стекло', sub:'С камерой и датчиком дождя', icon:'glass',
+    lead:'Меняем лобовое стекло. Главное — чтобы на новом был кронштейн для камеры и место под датчик дождя.',
+    doneTitle:'Стекло на месте',
+    steps:[
+      {n:1, title:'Какое стекло нужно', sub:'Номер по VIN и что на нём есть'},
+      {n:2, title:'Обзвон стекольщиков', sub:'Цена стекла с установкой'},
+      {n:3, title:'Сравнить и выбрать', sub:'Стекло, установка, настройка камеры'},
+      {n:4, title:'Настройка камеры', sub:'После замены — обязательно'}
+    ],
+    groups:{orig:{label:'Оригинал Toyota', cls:'g-asm'}, new:{label:'Новое, неоригинал', cls:'g-cov'}, used:{label:'Б/у', cls:'g-new'}, service:{label:'Мастерская, цена по телефону', cls:'g-don'}},
+    addGroups:['new', 'orig', 'used'],
+    costs:{install:80, calib:200},
+    live:[
+      {name:'Kufar: лобовые стёкла RAV4', url:'https://auto.kufar.by/l/zapchasti/z~toyota-rav4?spg=918'}
+    ]
+  }
+};
+const TKEYS = ['pdc', 'glass'];
+
+/* Состояние */
+const PKEY = 'rav4-parts-v1';
+const tfresh = t => ({screen:'home', done:{}, calls:{}, custom:[], choice:null, qty:null, heat:null, finished:false, costs:Object.assign({}, TASK[t].costs)});
+const pfresh = () => ({v:1, view:'hub', pdc:tfresh('pdc'), glass:tfresh('glass')});
+let P = pfresh();
+function pload(){
+  try{
+    const o = JSON.parse(localStorage.getItem(PKEY) || 'null');
+    if(o && o.v === 1){
+      const r = pfresh(); r.view = o.view || 'hub';
+      TKEYS.forEach(t => { r[t] = Object.assign(tfresh(t), o[t] || {}); r[t].costs = Object.assign({}, TASK[t].costs, (o[t] || {}).costs || {}); });
+      return r;
+    }
+  }catch(e){}
+  return pfresh();
+}
+function psave(){ try{ localStorage.setItem(PKEY, JSON.stringify(P)); }catch(e){} }
+
+/* Помощники */
+const tData = t => DATA[t] || {};
+function tOffers(t){
+  const d = tData(t);
+  return (d.offers || []).concat((d.fresh || []).map(o => Object.assign({phones:[]}, o, {auto:true})), P[t].custom || []);
+}
+const tFind = (t, id) => tOffers(t).find(o => o.id === id);
+const tDone = t => TASK[t].steps.filter(s => P[t].done[s.n]).length;
+const tNext = t => { const s = TASK[t].steps.find(x => !P[t].done[x.n]); return s ? s.n : null; };
+const tGroup = (t, o) => TASK[t].groups[o.group] || TASK[t].groups.new;
+function tPrice(t, o){ const c = P[t].calls[o.id]; if(c && c.status === 'yes' && +c.price > 0) return +c.price; return o.price; }
+const qtyN = () => +P.pdc.qty > 0 ? +P.pdc.qty : 1;
+const qtyTxt = () => +P.pdc.qty > 0 ? P.pdc.qty + ' шт.' : 'не знаю';
+const tOpt = (k, v) => k === 'inst' ? ({yes:'с установкой', no:'без установки'})[v] : k === 'cam' ? ({yes:'кронштейн камеры есть', no:'кронштейна камеры нет'})[v] : colorTxt(v) ? 'цвет: ' + colorTxt(v) : '';
+const range2 = (a, b) => a === b ? fmt(a) : fmt(a) + '–' + fmt(b);
+
+/* Итог: деталь + покраска / установка + настройка */
+function tTotal(t, o){
+  const p = tPrice(t, o);
+  if(!(p > 0)) return null;
+  const c = P[t].calls[o.id] || {}, k = P[t].costs, ship = +o.shipping || 0;
+  if(t === 'pdc'){
+    const q = qtyN(), per = +k.paint || 0, inst = +k.install || 0;
+    const painted = c.color === 'match' ? true : c.color === 'nomatch' ? false : o.painted;
+    const pMin = painted === false ? per * q : 0, pMax = painted === true ? 0 : per * q;
+    const base = p * q + inst + ship;
+    const lines = [(q > 1 ? q + ' × ' + fmt(p) : 'датчик ' + fmt(p)), 'покраска ' + range2(pMin, pMax)];
+    if(inst) lines.push('установка ' + fmt(inst));
+    if(ship) lines.push('доставка ' + fmt(ship));
+    return {price:p, min:base + pMin, max:base + pMax, lines};
+  }
+  const inc = c.inst === 'yes' ? true : c.inst === 'no' ? false : o.installIncluded;
+  let iMin, iMax;
+  if(inc === true){ iMin = iMax = 0; }
+  else if(o.installPrice != null && c.inst !== 'no'){ iMin = iMax = +o.installPrice; }
+  else if(inc === false){ iMin = iMax = +k.install || 0; }
+  else { iMin = 0; iMax = +k.install || 0; }
+  const cal = o.calibIncluded ? 0 : (o.calibPrice != null ? +o.calibPrice : +k.calib || 0);
+  const lines = ['стекло ' + fmt(p) + (inc === true ? ' (с установкой)' : '')];
+  if(inc !== true) lines.push('установка ' + range2(iMin, iMax));
+  lines.push(o.calibIncluded ? 'настройка камеры входит' : 'настройка камеры ' + fmt(cal));
+  if(ship) lines.push('доставка ' + fmt(ship));
+  const base = p + cal + ship;
+  return {price:p, min:base + iMin, max:base + iMax, lines};
+}
+
+/* Подходит ли вариант и что спросить */
+function tIssues(t, o){
+  const out = [], c = P[t].calls[o.id] || {};
+  if(t === 'pdc'){
+    if(o.partno && !o.exact && !/89341-?42060/i.test(o.partno)) out.push({t:'Другой номер (' + o.partno + ') — спросите, подходит ли вместо 89341-42060'});
+    const painted = c.color === 'match' ? true : c.color === 'nomatch' ? false : o.painted;
+    if(painted === false) out.push({t:'Датчик не вашего цвета — мастер покрасит его в 1G3 вместе с бампером (≈ +' + fmt(+P.pdc.costs.paint || 0) + ' BYN за штуку)'});
+  } else {
+    const cam = c.cam === 'yes' ? true : c.cam === 'no' ? false : o.camera;
+    if(cam === false) out.push({t:'Без кронштейна камеры — не подойдёт: у вас камера системы защиты от столкновения', bad:true});
+    if(o.partno && !o.exact && !/56101-?42511/i.test(o.partno)) out.push({t:'Другой номер (' + o.partno + ') — спросите, подходит ли вместо 56101-42511'});
+    const need = P.glass.heat;
+    if((need === 'full' || need === 'wipers') && o.heat === 'none') out.push({t:'Без обогрева, а у вас стекло с обогревом — обогрев перестанет работать'});
+    if(need === 'full' && o.heat === 'yes') out.push({t:'У вас обогрев по всему стеклу — спросите, такой ли обогрев у этого стекла'});
+    if((need === 'wipers' || need === 'none') && o.heat === 'full') out.push({t:'Это стекло с обогревом всей площади — вам такой не нужен, есть дешевле'});
+  }
+  if(o.warn) out.push({t:o.warn});
+  return out;
+}
+function tAsks(t, o){
+  const a = [], c = P[t].calls[o.id] || {};
+  if(t === 'pdc'){
+    if(!o.exact && o.group !== 'copy') a.push('номер датчика (нужен 89341-42060)');
+    if(o.painted == null && !c.color) a.push('какого он цвета (у вас 1G3, тёмно-серый)');
+    if(o.group === 'used') a.push('проверен ли датчик, работает ли');
+  } else {
+    if(o.camera == null && !c.cam) a.push('есть ли на стекле кронштейн под камеру и место под датчик дождя');
+    if(o.installIncluded == null && o.installPrice == null && !c.inst) a.push('сколько стоит установка');
+    if(o.heat == null && P.glass.heat !== 'none') a.push('есть ли обогрев' + (P.glass.heat === 'full' ? ' по всему стеклу' : P.glass.heat === 'wipers' ? ' в зоне дворников' : ''));
+    if(o.calibPrice == null && o.calibIncluded == null && !o.noCalib) a.push('делают ли настройку камеры после замены');
+    if(!o.delivery) a.push('сколько ждать');
+  }
+  return a;
+}
+function tScript(t){
+  if(t === 'pdc'){
+    return 'Здравствуйте! Мне нужен передний датчик парковки (парктроник) на Toyota RAV4 2018 года, рестайлинг, 40 кузов, гибрид. Номер детали 89341-42060, цвет 1G3 — тёмно-серый.' +
+      (+P.pdc.qty > 0 ? ' Нужно ' + P.pdc.qty + ' шт.' : '') + ' Есть в наличии? Новый или б/у, оригинал? Какого цвета? Сколько стоит за штуку?';
+  }
+  const heat = ({wipers:' С обогревом зоны дворников.', full:' С обогревом всего стекла.', none:' Без обогрева.'})[P.glass.heat] || '';
+  return 'Здравствуйте! Нужно лобовое стекло на Toyota RAV4 2018 года, рестайлинг, 40 кузов, гибрид, Европа. Номер детали 56101-42511 — с кронштейном камеры (система Pre-Collision) и датчиком дождя.' + heat +
+    ' Какие марки есть и сколько стоит с установкой? Подойдёт ли под камеру рестайлинга 2016–2018? Сколько ждать? Делаете ли настройку камеры после замены?';
+}
+
+/* Отчёт */
+function tReport(t){
+  const T = TASK[t], st = P[t], L = [];
+  L.push(T.title.toUpperCase() + ': шагов пройдено ' + tDone(t) + ' из ' + T.steps.length + (t === 'pdc' ? '; нужно датчиков: ' + qtyTxt() :
+    '; обогрев стекла: ' + (({wipers:'у дворников', full:'по всему стеклу', none:'нет', unknown:'не знаю'})[st.heat] || 'не отмечено')));
+  const called = tOffers(t).filter(o => (st.calls[o.id] || {}).status);
+  called.forEach(o => {
+    const c = st.calls[o.id], subs = ['color', 'inst', 'cam'].map(k => c[k] ? tOpt(k, c[k]) : '').filter(Boolean);
+    L.push((c.status === 'yes' ? '✅ ' : c.status === 'no' ? '❌ ' : '⏳ ') + o.seller + (o.what ? ' (' + o.what + ')' : '') + ' — ' + statusTxt(c.status) +
+      (c.status === 'yes' && tPrice(t, o) > 0 ? ', ' + fmt(tPrice(t, o)) + ' BYN' : '') + (subs.length ? ', ' + subs.join(', ') : '') + (c.note ? '. ' + c.note : '') + (o.link ? ' ' + o.link : ''));
+  });
+  if(!called.length) L.push('Звонков пока не было.');
+  const ch = st.choice && tFind(t, st.choice);
+  if(ch){ const x = tTotal(t, ch); L.push('Выбрано: ' + ch.seller + (x ? ', итого ≈ ' + rangeTxt(x) + ' BYN' : '')); }
+  return L.join('\n');
+}
+function fullReport(){ return [tReport('pdc'), tReport('glass'), 'БАМПЕР (найден):\n' + report()].join('\n\n'); }
+
+/* Куски интерфейса */
+function tChoice(t, key, value, label){
+  return '<button class="opt" data-act="tset" data-t="' + t + '" data-key="' + key + '" data-v="' + value + '" aria-pressed="' + (P[t][key] === value) + '">' + label + '</button>';
+}
+function vinParts(v, title){
+  if(!(v.parts || []).length) return '';
+  return '<details class="more"><summary>' + esc(title) + '</summary><div class="stack small">' + v.parts.map(p => '<div><span class="mono">' + esc(p[0]) + '</span> — ' + esc(p[1]) + '</div>').join('') + '</div></details>';
+}
+function tLive(t){
+  return '<div class="card"><h3>Свежие объявления</h3>' +
+    '<p class="small muted">Список выше обновляется сам каждое утро. Если хочется посмотреть самой — вот поиск.</p>' +
+    '<div class="stack">' + TASK[t].live.map(l => '<a class="btn ghost block" href="' + esc(l.url) + '" target="_blank" rel="noopener">' + esc(l.name) + ' ' + I.ext + '</a>').join('') + '</div>' +
+    '<p class="small muted">Нашли вариант сами — добавьте его в шаге 2 кнопкой «Добавить свой вариант».</p></div>';
+}
+function tAdBlock(t, o){
+  const a = adInfo(o), p = tPrice(t, o), d = tData(t);
+  if(!a) return '<div class="ad"><p class="small"><strong>Объявления нет.</strong> Цену и наличие называют по телефону.</p>' + (o.say ? '<p class="say">' + esc(o.say) + '</p>' : '') + '</div>';
+  const when = o.custom ? 'добавлено вами' : o.auto ? 'найдено ' + (o.found || 'автоматически') : 'проверено ' + (o.checked || d.checked || '');
+  const kind = o.linkKind === 'shop' ? 'shop' : a.kind;
+  const what = t === 'pdc' ? 'датчик парковки на Toyota RAV4' : 'лобовое стекло на Toyota RAV4 2018';
+  let head, btn, phrase, hint;
+  if(kind === 'ad'){
+    const where = a.site + (a.num ? ', № ' + a.num : '');
+    head = '<strong>Объявление:</strong> ' + esc(where) + ' · ' + esc(when);
+    btn = 'Открыть объявление';
+    phrase = o.say || ('Скажите: «Здравствуйте, я по вашему объявлению на ' + where + ' — ' + what + (o.partno ? ', номер ' + o.partno : '') + (p > 0 ? ', цена ' + fmt(p) + ' р.' : '') + ' Ещё есть?»');
+    hint = 'Чего-то не хватает — откройте объявление: там фото, описание и телефоны.';
+  } else if(kind === 'shop'){
+    head = '<strong>Страница магазина:</strong> ' + esc(a.site) + ' · ' + esc(when);
+    btn = 'Открыть страницу магазина';
+    phrase = o.say || ('Скажите: «Здравствуйте! Нужно ' + what + (o.partno ? ', ' + o.partno : t === 'pdc' ? ', номер 89341-42060' : ', номер 56101-42511, с камерой') + '. На сайте цена ' + (p > 0 ? fmt(p) + ' р.' : 'не указана') + ' — она актуальна? Есть в наличии?»');
+    hint = 'На странице — цена и описание. Цены в магазинах меняются — уточните по телефону.';
+  } else {
+    head = '<strong>Ссылка не на объявление</strong> (' + esc(a.site) + ') · ' + esc(when);
+    btn = 'Открыть страницу';
+    phrase = o.say || ('Скажите: «Здравствуйте! Нужно ' + what + '. Есть в наличии?»');
+    hint = 'Спросите у продавца номер детали и фото.';
+  }
+  return '<div class="ad"><p class="small">' + head + '</p>' +
+    '<p class="say">' + esc(phrase) + '</p>' +
+    '<div class="row" style="gap:8px"><a class="btn quiet" href="' + esc(a.url) + '" target="_blank" rel="noopener">' + btn + ' ' + I.ext + '</a>' +
+    '<button class="btn quiet" data-act="copy" data-text="' + esc(a.url) + '">Копировать ссылку</button>' +
+    (DATA.chatEndpoint ? '<button class="btn quiet" data-act="askchat" data-id="' + esc(o.id) + '">Спросить помощника</button>' : '') + '</div>' +
+    '<p class="small muted">' + hint + '</p></div>';
+}
+function subQ(t, o, key, q, opts){
+  const c = P[t].calls[o.id] || {};
+  return '<div class="stack"><p class="small"><strong>' + q + '</strong></p><div class="opts">' +
+    opts.map(v => '<button class="opt" data-act="tsub" data-t="' + t + '" data-id="' + esc(o.id) + '" data-k="' + key + '" data-v="' + v[0] + '" aria-pressed="' + (c[key] === v[0]) + '">' + v[1] + '</button>').join('') + '</div></div>';
+}
+function tOfferCard(t, o){
+  const c = P[t].calls[o.id] || {}, g = tGroup(t, o), iss = tIssues(t, o), ask = tAsks(t, o), tot = tTotal(t, o), p = tPrice(t, o);
+  const id = esc(o.id), dt = ' data-t="' + t + '" data-id="' + id + '"';
+  let h = '<article class="card offer' + (c.status ? ' st-' + c.status : '') + '">';
+  h += '<div class="offer-head"><div class="stack" style="gap:6px"><div class="row" style="gap:6px"><span class="chip ' + g.cls + '">' + esc(g.label) + '</span>' +
+    (o.exact ? '<span class="chip g-asm">Номер совпадает</span>' : '') + (o.auto ? '<span class="chip g-new">Новое' + (o.found ? ', ' + esc(o.found) : '') + '</span>' : '') +
+    '</div><h3>' + esc(o.seller) + '</h3><p class="small">' + esc(o.what) + '</p></div>' +
+    (p > 0 ? '<div class="price">' + fmt(p) + '<small>BYN' + (t === 'pdc' ? ' за штуку' : '') + ' · ' + usd(p) + '</small></div>' : '<div class="price small" style="font-size:18px">цена<small>спросить</small></div>') + '</div>';
+  if(o.priceNote) h += '<p class="small muted">' + esc(o.priceNote) + '</p>';
+  if(o.gone) h += '<div class="note bad"><span>Похоже, объявление снято (проверка ' + esc(o.gone) + '). Можно позвонить — вдруг ещё есть.</span></div>';
+  h += tAdBlock(t, o);
+  h += (o.phones && o.phones.length ? '' : '<p class="small muted">Телефон — в объявлении, кнопка «Открыть» выше.</p>') +
+    '<div class="phones">' + (o.phones || []).map((ph, i) => phoneRow(ph[0], ph[1] || (i === 0 && o.phones.length > 1 ? 'основной' : ''), /WhatsApp/.test(ph[1] || '') ? o.wa : '')).join('') + '</div>';
+  if(iss.length || ask.length){
+    h += '<div class="flags">' + iss.map(i => '<div class="note ' + (i.bad ? 'bad' : 'warn') + '"><span>' + esc(i.t) + '</span></div>').join('') +
+      (ask.length ? '<div class="note info"><span>Спросите: ' + esc(ask.join(', ')) + '.</span></div>' : '') + '</div>';
+  }
+  h += '<details class="more"><summary>Подробнее: описание, адрес</summary><div class="stack small">' +
+    (o.includes ? '<p>' + esc(o.includes) + '</p>' : '') + '<div class="meta">' + (o.address ? '<span>Адрес: ' + esc(o.address) + '</span>' : (o.city ? '<span>Город: ' + esc(o.city) + '</span>' : '')) +
+    (o.hours ? '<span>Часы: ' + esc(o.hours) + '</span>' : '') + (o.delivery ? '<span>Наличие: ' + esc(o.delivery) + '</span>' : '') +
+    (o.custom ? '<span>Добавлено вами</span>' : o.auto ? '<span>Найдено автоматически' + (o.found ? ' ' + esc(o.found) : '') + '</span>' : '<span>Проверено ' + esc(o.checked || tData(t).checked || '') + '</span>') + '</div>' +
+    (o.custom ? (U.tDel === o.id
+      ? '<div class="row"><span>Удалить этот вариант?</span><button class="btn quiet" data-act="tdelyes"' + dt + '>Да, удалить</button><button class="btn quiet" data-act="tdelno"' + dt + '>Нет</button></div>'
+      : '<button class="linkbtn" data-act="tdel"' + dt + '>Удалить этот вариант</button>') : '') +
+    '</div></details>';
+  h += '<div class="result"><p><strong>Что ответили?</strong></p><div class="opts">' +
+    ['yes', 'no', 'later'].map(v => '<button class="opt ' + v + '" data-act="tcall"' + dt + ' data-v="' + v + '" aria-pressed="' + (c.status === v) + '">' + statusTxt(v).replace(/^./, m => m.toUpperCase()) + '</button>').join('') + '</div>';
+  if(c.status === 'yes'){
+    h += '<label class="field" for="tp-' + id + '">' + (t === 'pdc' ? 'Цена за один датчик, которую назвали (BYN)' : 'Цена стекла, которую назвали (BYN)') +
+      '<input id="tp-' + id + '" type="number" inputmode="decimal" min="0" step="1" data-act="tprice"' + dt + ' value="' + esc(c.price != null ? c.price : (p > 0 ? p : '')) + '"></label>';
+    if(t === 'pdc' && o.painted !== true) h += subQ(t, o, 'color', 'Датчик вашего цвета (тёмно-серый)?', [['match', 'Да'], ['nomatch', 'Нет'], ['unknown', 'Не знаю']]);
+    if(t === 'glass'){
+      if(o.installIncluded == null) h += subQ(t, o, 'inst', 'Цена с установкой?', [['yes', 'Да'], ['no', 'Нет']]);
+      if(o.camera !== true) h += subQ(t, o, 'cam', 'Кронштейн для камеры есть?', [['yes', 'Есть'], ['no', 'Нет']]);
+    }
+  }
+  if(c.status) h += '<label class="field" for="tn-' + id + '">Заметка (срок, марка, что сказали)<input id="tn-' + id + '" type="text" data-act="tnote"' + dt + ' value="' + esc(c.note || '') + '" placeholder="например: привезут в четверг"></label>';
+  if(tot && c.status !== 'no') h += '<div class="total"><span>Всего' + (t === 'pdc' ? ' за ' + qtyN() + ' шт. с покраской' : ' с установкой и настройкой') + '</span><b>≈ ' + rangeTxt(tot) + ' BYN</b></div>';
+  h += '</div></article>';
+  return h;
+}
+function tAddForm(t){
+  if(U.tAdd !== t) return '<button class="btn ghost block" data-act="tshowadd" data-t="' + t + '">+ Добавить свой вариант</button>';
+  const G = TASK[t].groups;
+  return '<form class="card" id="taddform" data-t="' + t + '"><h3>Новый вариант</h3>' +
+    '<label class="field" for="ta-seller">Продавец<input id="ta-seller" type="text" required placeholder="например: магазин на Тимирязева"></label>' +
+    '<label class="field" for="ta-phone">Телефон<input id="ta-phone" type="tel" required placeholder="+375 29 ..."></label>' +
+    '<label class="field" for="ta-price">Цена' + (t === 'pdc' ? ' за штуку' : '') + ', BYN<input id="ta-price" type="number" inputmode="decimal" min="0" step="1" placeholder="например ' + (t === 'pdc' ? '120' : '500') + '"></label>' +
+    '<label class="field" for="ta-group">Что это<select id="ta-group">' + TASK[t].addGroups.map((k, i) => '<option value="' + k + '"' + (i === 0 ? ' selected' : '') + '>' + esc(G[k].label) + '</option>').join('') + '</select></label>' +
+    '<label class="field" for="ta-link">Ссылка на объявление (если есть)<input id="ta-link" type="url" placeholder="https://..."></label>' +
+    '<div class="navrow"><button class="btn ghost" type="button" data-act="thideadd" data-t="' + t + '">Отмена</button><button class="btn" type="submit">Добавить</button></div></form>';
+}
+
+/* Экраны детали */
+function tShell(t, n, body, opts){
+  opts = opts || {};
+  const T = TASK[t], s = T.steps[n - 1], N = T.steps.length;
+  let h = '<div class="topbar"><button class="btn quiet" data-act="tgo" data-t="' + t + '" data-to="home">← ' + esc(T.title) + '</button><span class="muted small">Шаг ' + n + ' из ' + N + '</span></div>';
+  h += '<header class="stack"><p class="eyebrow">' + esc(T.title) + '</p><h2>' + esc(s.title) + '</h2>' + (opts.lead ? '<p class="lead">' + opts.lead + '</p>' : '') + '</header>';
+  if(P[t].done[n]) h += '<div class="note good">' + I.check + '<span>Этот шаг уже пройден. Можно вернуться и поменять ответы.</span></div>';
+  h += body;
+  h += '<div class="navrow">' +
+    '<button class="btn ghost" data-act="tgo" data-t="' + t + '" data-to="' + (n > 1 ? n - 1 : 'home') + '">← Назад</button>' +
+    '<button class="btn" data-act="tnext" data-t="' + t + '" data-n="' + n + '">' + (n === N ? 'Готово!' : 'Готово, дальше →') + '</button></div>';
+  return h;
+}
+function tHome(t){
+  const T = TASK[t], st = P[t], n = tNext(t), d = tDone(t), N = T.steps.length, d0 = tData(t);
+  let h = '<div class="topbar"><button class="btn quiet" data-act="view" data-v="hub">← Все задачи</button><span></span></div>';
+  h += '<header class="hero"><p class="eyebrow">Toyota RAV4 2018 · гибрид</p><h1>' + esc(T.title) + '</h1><p class="lead">' + esc(T.lead) + '</p></header>';
+  h += '<div class="card progress"><strong>Пройдено ' + d + ' из ' + N + '</strong>' +
+    '<div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="' + N + '" aria-valuenow="' + d + '"><i style="width:' + (d / N * 100) + '%"></i></div></div>';
+  if(n){
+    const s = T.steps[n - 1];
+    h += '<div class="card accent"><p class="eyebrow">Ваш следующий шаг</p><h2>Шаг ' + n + '. ' + esc(s.title) + '</h2><p class="muted">' + esc(s.sub) + '</p>' +
+      '<button class="btn block" data-act="tgo" data-t="' + t + '" data-to="' + n + '">Начать шаг ' + n + '</button></div>';
+  } else {
+    const ch = st.choice && tFind(t, st.choice), x = ch && tTotal(t, ch);
+    h += '<div class="card accent"><p class="eyebrow">Всё пройдено</p><h2>' + esc(T.doneTitle) + '</h2>' +
+      (ch ? '<p>Ваш выбор: <strong>' + esc(ch.seller) + '</strong>' + (x ? ', всего ≈ <strong>' + rangeTxt(x) + ' BYN</strong>' : '') + '.</p>' : '') + '</div>';
+  }
+  h += '<section class="road" aria-label="Шаги">';
+  T.steps.forEach(s => {
+    const cls = st.done[s.n] ? 'done' : (s.n === n ? 'current' : '');
+    const dot = st.done[s.n] ? I.check : (s.n === n ? I.car : s.n);
+    h += '<div class="stop ' + cls + '"><span class="dot">' + dot + '</span>' +
+      '<button class="btn-step" data-act="tgo" data-t="' + t + '" data-to="' + s.n + '"><strong>' + s.n + '. ' + esc(s.title) + '</strong>' +
+      '<span class="st">' + (st.done[s.n] ? 'Готово' : esc(s.sub)) + '</span></button></div>';
+  });
+  h += '<div class="stop ' + (st.finished ? 'done' : '') + '"><span class="dot">' + I.flag + '</span><div class="btn-step"><strong>Финиш</strong><span class="st">' + (st.finished ? 'Готово' : esc(T.doneTitle)) + '</span></div></div>';
+  h += '</section>';
+  h += reportBlock() + tLive(t);
+  h += '<footer class="foot"><p>Список обновлён: ' + esc(DATA.updated || d0.checked || '') + '. Обновляется автоматически каждое утро. Цены и наличие меняются — уточняйте по телефону.</p>' +
+    (U.tReset === t
+      ? '<div class="row"><span>Стереть отметки по этой детали?</span><button class="btn quiet" data-act="tresetyes" data-t="' + t + '">Да, стереть</button><button class="btn quiet" data-act="tresetno" data-t="' + t + '">Нет</button></div>'
+      : '<button class="linkbtn" data-act="treset" data-t="' + t + '">Начать заново</button>') + '</footer>';
+  return h;
+}
+
+function pdc1(){
+  const v = tData('pdc').vin || {};
+  let b = '<div class="card accent"><p class="eyebrow">Уже узнали по VIN</p><h3>Датчик <span class="mono">' + esc(v.partno || '89341-42060-B2') + '</span></h3><ul class="plain">' +
+    '<li>Он уже покрашен в ваш цвет <strong class="mono">1G3</strong> (тёмно-серый) — красить не нужно.</li>' +
+    '<li>Тот же номер на всех четырёх местах спереди (и сзади тоже).</li>' +
+    '<li>Без краски — <span class="mono">89341-42060-C0</span>, чёрный: его красят в цвет машины.</li>' +
+    '<li>Продавцы часто пишут номер без хвостика: <span class="mono">89341-42060</span> или <span class="mono">8934142060</span>.</li></ul>' +
+    (v.note ? '<p class="small muted">' + esc(v.note) + '</p>' : '') + vinParts(v, 'Номера всех деталей парктроников') + '</div>';
+  b += '<div class="card"><h3>Где стоят датчики</h3><div class="figure"><svg viewBox="0 0 340 172" role="img" aria-label="Четыре датчика парковки на переднем бампере, вид спереди. Датчик 1 в правом углу, в зоне удара">' +
+      '<path d="M12 40 Q8 110 30 146 H310 Q332 110 328 40 L232 50 Q170 66 108 50 Z" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5"/>' +
+      '<path d="M92 104 H248 L234 134 H106 Z" fill="var(--line)"/>' +
+      '<path d="M15 44 L94 54 L100 146 H30 Q10 116 15 44 Z" fill="var(--stop-soft)" stroke="var(--stop)" stroke-width="2" stroke-dasharray="6 4"/>' +
+      [[56, 88, '1', 'var(--stop)'], [128, 92, '2', 'var(--wait)'], [212, 92, '3', 'var(--ink)'], [284, 88, '4', 'var(--ink)']].map(s =>
+        '<circle cx="' + s[0] + '" cy="' + s[1] + '" r="9" fill="var(--surface-2)" stroke="' + s[3] + '" stroke-width="3"/><text x="' + (s[0] - 5) + '" y="' + (s[1] - 15) + '" class="svg-b">' + s[2] + '</text>').join('') +
+      '<text x="14" y="26" class="svg-t">правый угол — удар</text><text x="250" y="26" class="svg-t">левый угол</text>' +
+      '<text x="112" y="166" class="svg-t">вид на машину спереди</text>' +
+    '</svg></div><p class="small muted">Скорее всего, разбит датчик 1 в правом углу, возможно и 2. Целые датчики мастер переставит со старого бампера на новый.</p></div>';
+  b += '<div class="card"><h3>Сколько датчиков купить?</h3><p class="small muted">Точно скажет мастер, когда снимет старый бампер. Можно ответить потом — пока посчитаем за один.</p>' +
+    '<div class="opts qty">' + ['1', '2', '3', '4'].map(q => tChoice('pdc', 'qty', q, q)).join('') + tChoice('pdc', 'qty', 'unknown', 'Не знаю') + '</div></div>';
+  b += '<div class="note info"><span>Датчик вставляется в держатель на бампере изнутри. Если новый бампер — копия, спросите мастера, есть ли на нём держатели. Если нет — их переклеивают со старого бампера.</span></div>';
+  return tShell('pdc', 1, b, {lead:'Номер датчика уже нашли по VIN. Осталось понять, сколько штук покупать.'});
+}
+function pdc4(){
+  const memo = 'Для мастера: 1) Датчики парковки 89341-42060: новые поставить вместо разбитых, целые переставить со старого бампера. 2) Проверить держатели датчиков на новом бампере. 3) Если датчик не в цвет — покрасить в 1G3 вместе с бампером. 4) После установки проверить, что все датчики работают.';
+  let b = '<div class="note good">' + I.check + '<span>Обычно датчики парковки после замены не настраивают — их вставляют в бампер и подключают. Когда поедете к дилеру настраивать радар, попросите заодно проверить парктроники.</span></div>';
+  b += '<div class="card"><h3>Кто ставит</h3><p>Датчики ставит тот же мастер, что и бампер, — до того как бампер повесят на машину. Отдайте ему датчики вместе с бампером.</p>' +
+    '<button class="btn quiet" data-act="view" data-v="bumper" data-to="6">Кузовные мастерские (бампер, шаг 6)</button></div>';
+  b += '<div class="card soft"><h3>Памятка для мастера</h3><ol class="plain">' +
+    '<li>Новые датчики <span class="mono">89341-42060</span> поставить вместо разбитых, целые переставить со старого бампера.</li>' +
+    '<li>Проверить держатели датчиков на новом бампере.</li>' +
+    '<li>Если датчик не в цвет — покрасить в <span class="mono">1G3</span> вместе с бампером.</li>' +
+    '<li>После установки проверить, что все датчики работают.</li></ol>' +
+    '<button class="btn quiet" data-act="copy" data-text="' + esc(memo) + '">Скопировать памятку</button></div>';
+  b += '<p class="small muted">Как проверить самой: включите парктроник и медленно подъезжайте к стене. Писк должен начаться, когда до стены меньше метра.</p>';
+  return tShell('pdc', 4, b, {lead:'Последний шаг. Датчики ставят вместе с бампером — отдельно ехать не нужно.'});
+}
+function glass1(){
+  const v = tData('glass').vin || {};
+  let b = '<div class="card accent"><p class="eyebrow">Уже узнали по VIN</p><h3>Стекло <span class="mono">' + esc(v.partno || '56101-42511') + '</span></h3><ul class="plain">' +
+    '<li>На стекле есть <strong>кронштейн для камеры</strong> системы защиты от столкновения.</li>' +
+    '<li>Есть место под <strong>датчик дождя</strong>.</li>' +
+    '</ul>' +
+    (v.note ? '<p class="small muted">' + esc(v.note) + '</p>' : '') + vinParts(v, 'Номера деталей стекла') + '</div>';
+  b += '<div class="card"><h3>Что должно быть на стекле</h3><div class="figure"><svg viewBox="0 0 340 172" role="img" aria-label="Лобовое стекло из салона: у зеркала чёрный блок камеры и датчик дождя">' +
+      '<path d="M44 26 H296 L330 150 H10 Z" fill="var(--accent-soft)" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round"/>' +
+      '<rect x="140" y="26" width="50" height="30" rx="5" fill="var(--road)"/><circle cx="165" cy="41" r="6" fill="var(--surface-2)"/>' +
+      '<rect x="198" y="30" width="22" height="16" rx="4" fill="var(--muted)"/>' +
+      '<rect x="159" y="56" width="12" height="22" rx="3" fill="var(--muted)"/>' +
+      '<rect x="120" y="78" width="90" height="22" rx="9" fill="var(--surface)" stroke="var(--muted)" stroke-width="2"/>' +
+      '<path d="M140 41 H104" stroke="var(--accent)" stroke-width="2"/><text x="48" y="46" class="svg-t">камера</text>' +
+      '<path d="M220 38 H244" stroke="var(--accent)" stroke-width="2"/><text x="248" y="42" class="svg-t">датчик</text><text x="248" y="56" class="svg-t">дождя</text>' +
+      '<text x="136" y="122" class="svg-t">зеркало</text><text x="122" y="166" class="svg-t">вид из салона</text>' +
+    '</svg></div><p class="small muted">Посмотрите изнутри у зеркала: чёрный блок на стекле — это камера. Новое стекло должно быть с кронштейном под неё, иначе камеру не поставить.</p></div>';
+  b += '<div class="card"><h3>Есть ли у стекла обогрев?</h3><p>Посмотрите на стекло вблизи: видны тонкие проволочки?</p>' +
+    '<div class="opts" style="grid-template-columns:1fr">' + tChoice('glass', 'heat', 'wipers', 'Только внизу, у дворников') + tChoice('glass', 'heat', 'full', 'По всему стеклу') +
+    tChoice('glass', 'heat', 'none', 'Проволочек нет') + tChoice('glass', 'heat', 'unknown', 'Не знаю') + '</div>' +
+    '<p class="small muted">От этого зависит, какое стекло брать: с обогревом по всему стеклу оно заметно дороже.</p></div>';
+  b += '<div class="card"><h3>Какое стекло бывает</h3><ul class="plain">' +
+    '<li><strong>Оригинал Toyota</strong> — дороже всего.</li>' +
+    '<li><strong>Неоригинальное</strong> — разных марок и цен. Подходит, если на нём кронштейн камеры и место под датчик дождя.</li></ul>' +
+    '<p class="small muted">Спросите у мастерской, какая марка, сколько ждать и есть ли гарантия на установку.</p></div>';
+  if(S.kasko === 'yes') b += '<div class="note warn"><span><strong>У вас КАСКО.</strong> Позвоните в страховую до замены и спросите, оплатит ли она стекло.</span></div>';
+  else if(S.kasko !== 'no') b += '<div class="note info"><span>Если есть КАСКО — сначала позвоните в страховую и спросите, оплатит ли она стекло.</span></div>';
+  return tShell('glass', 1, b, {lead:'Номер стекла уже нашли по VIN. Здесь — что должно быть на новом стекле.'});
+}
+function glass4(){
+  let b = '<div class="card"><h3>Зачем настройка</h3><p>За стеклом у зеркала стоит камера системы защиты от столкновения. После замены стекла камеру настраивают — иначе система может срабатывать неправильно.</p>' +
+    '<p class="small muted">Некоторые стекольные мастерские настраивают камеру сами — спросите при звонке. Если нет — у дилера Toyota.</p></div>';
+  b += '<div class="note info"><span><strong>Одна поездка вместо двух:</strong> после замены бампера у дилера настраивают радар. Запишитесь сразу на обе настройки — радара и камеры.</span></div>';
+  b += '<div class="stack">' + DEALERS.map(d => '<div class="card"><h3>' + esc(d.name) + '</h3><div class="phones">' + d.phones.map(p => phoneRow(p, '')).join('') + '</div><p class="small muted">' + esc(d.addr) + (d.hours ? ' · ' + esc(d.hours) : '') + '</p></div>').join('') + '</div>';
+  b += '<p class="small muted">При записи скажите: «Нужна настройка камеры и радара Toyota Safety Sense после замены лобового стекла и бампера. Сколько стоит?»</p>';
+  return tShell('glass', 4, b, {lead:'Последний шаг. После него стекло на месте и система защиты работает как раньше.'});
+}
+function tCalls(t){
+  const d = tData(t), list = tOffers(t).slice().sort((a, b) => (a.top || 99) - (b.top || 99)), nf = (d.fresh || []).length;
+  let b = '<p class="small muted">Список обновлён: ' + esc(DATA.updated || d.checked || '') + '. Обновляется автоматически каждое утро.' + (nf ? ' Новых объявлений: ' + nf + '.' : '') + '</p>';
+  b += '<div class="card soft"><h3>Что сказать продавцу</h3><p>' + esc(tScript(t)) + '</p>' +
+    '<button class="btn quiet" data-act="copy" data-text="' + esc(tScript(t)) + '">Скопировать текст</button>' +
+    '<p class="small muted">Номер телефона можно нажать — откроется звонок. Если не открылся, нажмите «Копировать» и вставьте номер в звонилку.</p></div>';
+  if(d.tip) b += '<div class="note info"><span><strong>С чего начать:</strong> ' + esc(d.tip) + '</span></div>';
+  b += list.length ? '<div class="stack">' + list.map(o => tOfferCard(t, o)).join('') + '</div>'
+    : '<div class="note warn"><span>Пока вариантов нет. Ваня ищет, список обновляется каждое утро.</span></div>';
+  b += tAddForm(t) + tLive(t);
+  return tShell(t, 2, b, {lead:'Позвоните, спросите по тексту ниже и отметьте ответ.'});
+}
+function tCompare(t){
+  const st = P[t], k = st.costs;
+  const rows = tOffers(t).map(o => ({o, x:tTotal(t, o), c:st.calls[o.id] || {}})).filter(r => r.x && r.c.status !== 'no' && !tIssues(t, r.o).some(i => i.bad));
+  const conf = rows.filter(r => r.c.status === 'yes').sort((a, b) => a.x.min - b.x.min);
+  const rest = rows.filter(r => r.c.status !== 'yes').sort((a, b) => a.x.min - b.x.min);
+  const best = conf.length ? conf[0].o.id : null;
+  const item = r => {
+    const on = st.choice === r.o.id, g = tGroup(t, r.o);
+    return '<div class="card cmp-item' + (on ? ' chosen' : '') + '"><div class="stack" style="gap:4px">' +
+      (r.o.id === best ? '<span><span class="badge">Самый дешёвый</span></span>' : '') +
+      '<strong>' + esc(r.o.seller) + '</strong><span class="small">' + esc(r.o.what) + '</span><span class="chip ' + g.cls + '" style="align-self:flex-start">' + esc(g.label) + '</span></div>' +
+      '<div class="sum">' + rangeTxt(r.x) + '<small class="small muted" style="display:block;font-family:var(--font-body)">BYN · ' + usd(r.x.min) + '</small></div>' +
+      '<div class="break">' + esc(r.x.lines.join(' + ')) + '</div>' +
+      '<button class="btn ' + (on ? '' : 'ghost') + ' block" style="grid-column:1/-1" data-act="tchoose" data-t="' + t + '" data-id="' + esc(r.o.id) + '">' + (on ? 'Выбрано ' + I.check : 'Выбрать этот') + '</button></div>';
+  };
+  let b = '';
+  if(t === 'pdc') b += '<div class="note info"><span>Считаем за <strong>' + qtyN() + ' шт.</strong>' + (+P.pdc.qty > 0 ? '' : ' Сколько нужно — отметьте в шаге 1.') + '</span></div>';
+  if(conf.length) b += '<h3>Есть в наличии (по вашим звонкам)</h3><div class="cmp">' + conf.map(item).join('') + '</div>';
+  else b += '<div class="note warn"><span>Пока никто не подтвердил наличие. Ниже — примерные итоги по ценам с сайтов. Отметьте звонки в шаге 2, и здесь появятся точные цифры.</span></div>';
+  if(rest.length) b += '<details class="more"' + (conf.length ? '' : ' open') + '><summary>' + (conf.length ? 'Ещё не звонили (' + rest.length + ')' : 'Все варианты по ценам с сайтов') + '</summary><div class="cmp">' + rest.map(item).join('') + '</div></details>';
+  const cost = (key, label, step) => '<label class="field" for="tk-' + key + '">' + label + '<input id="tk-' + key + '" type="number" inputmode="decimal" min="0" step="' + step + '" data-act="tcost" data-t="' + t + '" data-key="' + key + '" value="' + esc(k[key]) + '"></label>';
+  b += '<div class="card soft"><h3>Цены работ</h3><p class="small muted">Примерные цены в Минске. Знаете точную — поменяйте.</p><div class="costs">' +
+    (t === 'pdc'
+      ? cost('paint', 'Покраска одного датчика (оценка), BYN', 5) + cost('install', 'Установка, если не вместе с бампером, BYN', 5)
+      : cost('install', 'Установка стекла, если не входит в цену, BYN', 10) + cost('calib', 'Настройка камеры, BYN', 10)) + '</div>' +
+    (t === 'pdc' ? '<p class="small muted">Датчик в цвет 1G3 (номер с окончанием B2) красить не нужно. Цены покраски датчика на сайтах нет — 40 BYN это оценка, спросите мастера, который красит бампер. Отдельная замена датчика в СТО — от 50 BYN за штуку; вместе с бампером спросите, входит ли в работу.</p>'
+      : '<p class="small muted">Установка стекла в Минске — примерно 70–120 BYN. Настройка камеры — у дилера или в мастерской с оборудованием (Стеклоавто: от 200 до 500 BYN). Её можно сделать вместе с настройкой радара после бампера.</p>') + '</div>';
+  b += '<div class="note info"><span>Платите, когда увидели деталь своими глазами. За «под заказ» — при получении.</span></div>';
+  return tShell(t, 3, b, {lead:t === 'pdc' ? 'Датчики плюс покраска, если они не в цвет. Самый дешёвый в наличии — сверху.' : 'Стекло плюс установка и настройка камеры. Самый дешёвый в наличии — сверху.'});
+}
+function tRender(t){
+  const v = P[t].screen;
+  if(v === 'home') return tHome(t);
+  const steps = t === 'pdc' ? [null, pdc1, () => tCalls('pdc'), () => tCompare('pdc'), pdc4] : [null, glass1, () => tCalls('glass'), () => tCompare('glass'), glass4];
+  return steps[+v] ? steps[+v]() : tHome(t);
+}
+
+/* Главная: все задачи */
+function taskCard(t){
+  const T = TASK[t], st = P[t], d = tDone(t), n = tNext(t), N = T.steps.length, offers = tOffers(t);
+  const prices = offers.map(o => tPrice(t, o)).filter(p => p > 0);
+  const called = offers.filter(o => (st.calls[o.id] || {}).status).length;
+  const ch = st.choice && tFind(t, st.choice), v = tData(t).vin || {};
+  let h = '<article class="card accent task"><div class="task-head"><span class="task-ico">' + I[T.icon] + '</span><div>' +
+    '<p class="eyebrow">' + (st.finished ? 'Готово' : n ? 'Шаг ' + n + ' из ' + N : 'Все шаги пройдены') + '</p><h2>' + esc(T.title) + '</h2><p class="muted">' + esc(T.sub) + '</p></div></div>';
+  h += '<div class="bar" role="progressbar" aria-label="Пройдено шагов" aria-valuemin="0" aria-valuemax="' + N + '" aria-valuenow="' + d + '"><i style="width:' + (d / N * 100) + '%"></i></div>';
+  h += '<div class="facts">' + (v.partno ? '<span>Номер по VIN: <strong class="mono">' + esc(v.partno) + '</strong></span>' : '') +
+    '<span>Вариантов: ' + offers.length + (prices.length ? ', от ' + fmt(Math.min.apply(null, prices)) + ' BYN' + (t === 'pdc' ? ' за штуку' : '') : '') + '</span>' +
+    (called ? '<span>Обзвонено: ' + called + '</span>' : '') + (ch ? '<span>Выбрано: <strong>' + esc(ch.seller) + '</strong></span>' : '') + '</div>';
+  h += n ? '<button class="btn block" data-act="tgo" data-t="' + t + '" data-to="' + n + '">Шаг ' + n + ': ' + esc(T.steps[n - 1].title) + '</button>' +
+      '<button class="btn quiet block" data-act="tgo" data-t="' + t + '" data-to="home">Все шаги</button>'
+    : '<button class="btn ghost block" data-act="tgo" data-t="' + t + '" data-to="home">Открыть</button>';
+  return h + '</article>';
+}
+function bumperCard(){
+  const nf = FRESH.length;
+  if(!DATA.bumperClosed){
+    const n = nextStep();
+    return '<article class="card accent task"><div class="task-head"><span class="task-ico">' + I.car + '</span><div><p class="eyebrow">' + (n ? 'Шаг ' + n + ' из 7' : 'Все шаги пройдены') + '</p><h2>Бампер</h2><p class="muted">Ищем снова' + (nf ? ' · новых объявлений: ' + nf : '') + '</p></div></div>' +
+      '<button class="btn block" data-act="view" data-v="bumper" data-to="home">Открыть бампер</button></article>';
+  }
+  return '<section class="card closed" aria-label="Бампер"><div class="row" style="justify-content:space-between"><h3>Бампер</h3><span class="chip g-asm">Нашли' + (DATA.bumperClosed ? ' ' + esc(DATA.bumperClosed) : '') + '</span></div>' +
+    '<p class="small muted">Поиск закрыт. Если на бампере найдут дефекты — здесь всё сохранено: продавцы, ваши звонки и отметки. Объявления по-прежнему собираются каждое утро' + (nf ? ' (сейчас новых: ' + nf + ')' : '') + '.</p>' +
+    '<div class="row"><button class="btn quiet" data-act="view" data-v="bumper" data-to="home">Открыть бампер</button>' +
+    '<button class="btn quiet" data-act="view" data-v="bumper" data-to="6">Покраска и установка</button>' +
+    '<button class="btn quiet" data-act="view" data-v="bumper" data-to="7">Радар у дилера</button></div></section>';
+}
+function hub(){
+  let h = '<header class="hero"><p class="eyebrow">Toyota RAV4 2018 · гибрид</p><h1>Ремонт RAV4</h1>' +
+    '<p class="lead">' + (DATA.bumperClosed ? 'Бампер нашли. Теперь ищем парктроники и лобовое стекло' : 'Ищем бампер, парктроники и лобовое стекло') + ' — так же: узнаём номер, обзваниваем, сравниваем и ставим.</p></header>';
+  if(!DATA.bumperClosed) h += bumperCard();
+  h += taskCard('pdc') + taskCard('glass');
+  h += '<div class="note info"><span><strong>Одна поездка к дилеру:</strong> после бампера настраивают радар, после стекла — камеру. Запишитесь сразу на обе настройки.</span></div>';
+  h += (DATA.bumperClosed ? bumperCard() : '') + reportBlock();
+  h += '<footer class="foot"><p>Данные обновлены: ' + esc(DATA.updated || CHECKED) + '. Обновляются автоматически каждое утро. Цены и наличие меняются — уточняйте по телефону.</p></footer>';
+  return h;
+}
+
+/* События */
+function tgo(t, to){
+  P.view = t; P[t].screen = String(to); U.tAdd = null; U.tDel = null; U.tReset = null;
+  psave(); render(); window.scrollTo(0, 0);
+}
+function tClick(a, el){
+  const t = el.dataset.t, st = P[t], id = el.dataset.id;
+  if(!st) return false;
+  const rr = () => { psave(); const y = window.scrollY; render(); window.scrollTo(0, y); };
+  if(a === 'tgo'){ tgo(t, el.dataset.to); return true; }
+  if(a === 'tnext'){
+    const n = +el.dataset.n, first = !st.done[n]; st.done[n] = true;
+    if(n === TASK[t].steps.length){ st.finished = true; tgo(t, 'home'); if(first){ toast(TASK[t].doneTitle + '!'); confetti(); } return true; }
+    tgo(t, n + 1); if(first) toast('Шаг ' + n + ' пройден!');
+    return true;
+  }
+  if(a === 'tset'){ st[el.dataset.key] = el.dataset.v; rr(); return true; }
+  if(a === 'tcall'){ const c = st.calls[id] || {}; c.status = c.status === el.dataset.v ? null : el.dataset.v; st.calls[id] = c; rr(); if(c.status === 'yes') toast('Нашёлся! Запишите цену'); return true; }
+  if(a === 'tsub'){ const c = st.calls[id] || {}; c[el.dataset.k] = c[el.dataset.k] === el.dataset.v ? null : el.dataset.v; st.calls[id] = c; rr(); return true; }
+  if(a === 'tchoose'){ st.choice = id; rr(); toast('Выбор сохранён'); return true; }
+  if(a === 'tshowadd'){ U.tAdd = t; render(); const f = $('#ta-seller'); if(f) f.focus(); return true; }
+  if(a === 'thideadd'){ U.tAdd = null; render(); return true; }
+  if(a === 'tdel'){ U.tDel = id; render(); return true; }
+  if(a === 'tdelno'){ U.tDel = null; render(); return true; }
+  if(a === 'tdelyes'){ st.custom = st.custom.filter(o => o.id !== id); delete st.calls[id]; if(st.choice === id) st.choice = null; U.tDel = null; rr(); toast('Удалено'); return true; }
+  if(a === 'treset'){ U.tReset = t; render(); return true; }
+  if(a === 'tresetno'){ U.tReset = null; render(); return true; }
+  if(a === 'tresetyes'){ P[t] = tfresh(t); U.tReset = null; psave(); render(); window.scrollTo(0, 0); toast('Начинаем заново'); return true; }
+  return false;
+}
+function tInput(a, el){
+  const t = el.dataset.t, st = P[t]; if(!st) return;
+  if(a === 'tprice' || a === 'tnote'){ const c = st.calls[el.dataset.id] || {}; if(a === 'tprice') c.price = el.value === '' ? null : +el.value; else c.note = el.value; st.calls[el.dataset.id] = c; psave(); return; }
+  if(a === 'tcost'){ st.costs[el.dataset.key] = el.value === '' ? 0 : +el.value; psave(); }
+}
+function tAdd(t){
+  const seller = $('#ta-seller').value.trim(), phone = $('#ta-phone').value.trim();
+  if(!seller || !phone){ toast('Впишите продавца и телефон'); return; }
+  const price = +$('#ta-price').value || null, group = $('#ta-group').value, link = $('#ta-link').value.trim();
+  P[t].custom.push({id:'c' + Date.now(), custom:true, group, seller, what:TASK[t].groups[group].label, price, phones:[[phone, '']], includes:'', address:'', hours:'', delivery:'', link:/^https?:\/\//.test(link) ? link : ''});
+  U.tAdd = null; psave(); render(); toast('Вариант добавлен');
+}
+
 /* ---------- Отрисовка ---------- */
 function render(){
+  if(P.view === 'pdc' || P.view === 'glass'){ $('#app').innerHTML = tRender(P.view); return; }
+  if(P.view !== 'bumper'){ $('#app').innerHTML = hub(); return; }
   const v = S.screen;
   let h;
   if(v === 'home') h = home();
@@ -803,6 +1347,7 @@ function render(){
   $('#app').innerHTML = h;
 }
 function go(to){
+  P.view = 'bumper'; psave();
   S.screen = String(to); U.confirmReset = false; U.confirmDel = null; U.showAdd = false;
   save(); render(); window.scrollTo(0, 0);
 }
@@ -814,8 +1359,10 @@ document.addEventListener('click', e => {
   const a = el.dataset.act;
   if(a === 'tg'){ el.href = tgLink(); return; }
   if(a === 'copy'){ copyText(el.dataset.text || ''); return; }
-  if(a === 'copyreport'){ copyText('Бампер RAV4 — отчёт от ' + new Date().toLocaleDateString('ru-RU') + '\n' + report()); return; }
+  if(a === 'copyreport'){ copyText('Ремонт RAV4 — отчёт от ' + new Date().toLocaleDateString('ru-RU') + '\n' + fullReport()); return; }
   if(a === 'go'){ go(el.dataset.to); return; }
+  if(a === 'view'){ U.confirmReset = false; if(el.dataset.v === 'bumper' && el.dataset.to){ go(el.dataset.to); return; } P.view = el.dataset.v; psave(); render(); window.scrollTo(0, 0); return; }
+  if(a.charAt(0) === 't' && el.dataset.t && tClick(a, el)) return;
   if(a === 'next'){
     const n = +el.dataset.n; const first = !S.done[n]; S.done[n] = true;
     if(n === 7){ S.finished = true; go('finish'); confetti(); return; }
@@ -845,6 +1392,7 @@ document.addEventListener('click', e => {
 document.addEventListener('input', e => {
   const el = e.target, a = el.dataset && el.dataset.act;
   if(!a) return;
+  if(el.dataset.t){ tInput(a, el); return; }
   if(a === 'field'){ S[el.dataset.key] = el.value.trim().toUpperCase(); save(); return; }
   if(a === 'price' || a === 'note'){ const c = S.calls[el.dataset.id] || {}; if(a === 'price') c.price = el.value === '' ? null : +el.value; else c.note = el.value; S.calls[el.dataset.id] = c; save(); return; }
   if(a === 'cost'){ S.costs[el.dataset.key] = el.value === '' ? 0 : +el.value; save(); return; }
@@ -852,10 +1400,12 @@ document.addEventListener('input', e => {
 document.addEventListener('change', e => {
   const el = e.target, a = el.dataset && el.dataset.act;
   if(!a) return;
+  if(el.dataset.t){ if(a === 'tprice' || a === 'tcost'){ const y = window.scrollY; render(); window.scrollTo(0, y); } return; }
   if(a === 'chk'){ S.checks[el.dataset.key] = el.checked; save(); return; }
   if(a === 'price' || a === 'cost' || a === 'field'){ const y = window.scrollY; render(); window.scrollTo(0, y); }
 });
 document.addEventListener('submit', e => {
+  if(e.target.id === 'taddform'){ e.preventDefault(); tAdd(e.target.dataset.t); return; }
   if(e.target.id !== 'addform') return;
   e.preventDefault();
   const seller = $('#a-seller').value.trim(), phone = $('#a-phone').value.trim();
@@ -886,9 +1436,10 @@ function confetti(){
 /* ---------- Запуск ---------- */
 function start(data){
   S = (data && data.S && data.S.v === 1) ? data.S : load();
+  P = (data && data.P && data.P.v === 1) ? data.P : pload();
   render(); renderChat();
   fetch('data.json?t=' + Date.now(), {cache:'no-store'}).then(r => r.ok ? r.json() : null).then(d => {
-    if(d && d.offers){ applyData(d); render(); renderChat(); }
+    if(d && d.offers){ applyData(d); const y = window.scrollY; render(); window.scrollTo(0, y); renderChat(); }
   }).catch(() => {});
 }
 
@@ -905,7 +1456,7 @@ function renderChat(){
   if(!on){ box.hidden = true; fab.hidden = true; return; }
   fab.hidden = !box.hidden;
   const log = $('#chat-log');
-  log.innerHTML = (CHAT.length ? '' : '<div class="msg bot">Здравствуйте! Я знаю всё про ваш бампер: продавцов, цены, номер детали и шаги. Спросите, например: «Что сказать продавцу?» или «Какой вариант дешевле?»</div>') +
+  log.innerHTML = (CHAT.length ? '' : '<div class="msg bot">Здравствуйте! Я знаю про ваш ремонт: парктроники, лобовое стекло и бампер — продавцов, цены, номера деталей и шаги. Спросите, например: «Что сказать продавцу стекла?» или «Какой датчик дешевле?»</div>') +
     CHAT.map(m => '<div class="msg ' + (m.role === 'user' ? 'me' : 'bot') + '">' + esc(m.content).replace(/\n/g, '<br>') + '</div>').join('') +
     (chatBusy ? '<div class="msg bot">Думаю…</div>' : '');
   log.scrollTop = log.scrollHeight;
@@ -917,7 +1468,7 @@ async function chatSend(text){
   let reply = '';
   try{
     const r = await fetch(DATA.chatEndpoint, {method:'POST', headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({messages:CHAT.filter(m => !m.err).slice(-12).map(m => ({role:m.role, content:m.content})), state:report()})});
+      body:JSON.stringify({messages:CHAT.filter(m => !m.err).slice(-12).map(m => ({role:m.role, content:m.content})), state:fullReport()})});
     const j = await r.json().catch(() => ({}));
     reply = j.reply || '';
   }catch(e){}
@@ -928,7 +1479,7 @@ document.addEventListener('click', e => {
   if(e.target.closest('#chat-open')){ $('#chat').hidden = false; renderChat(); const i = $('#chat-input'); if(i) i.focus(); }
   else if(e.target.closest('#chat-close')){ $('#chat').hidden = true; renderChat(); }
   else if(e.target.closest('[data-act=askchat]')){
-    const o = findOffer(e.target.closest('[data-act=askchat]').dataset.id); if(!o) return;
+    const o = findAny(e.target.closest('[data-act=askchat]').dataset.id); if(!o) return;
     $('#chat').hidden = false; renderChat();
     chatSend('Расскажите про вариант «' + o.seller + '» (' + (o.what || '') + (o.link ? ', ' + o.link : '') + '): что известно из объявления, чего не хватает и что спросить у продавца?');
   }
@@ -938,7 +1489,7 @@ document.addEventListener('submit', e => {
   if(e.target.id !== 'chat-form') return;
   e.preventDefault(); const i = $('#chat-input'); const v = i.value; i.value = ''; chatSend(v);
 });
-try{ window.claude && window.claude.hot && window.claude.hot.snapshot && window.claude.hot.snapshot(() => ({S})); }catch(e){}
+try{ window.claude && window.claude.hot && window.claude.hot.snapshot && window.claude.hot.snapshot(() => ({S, P})); }catch(e){}
 if(window.claude && window.claude.hot && window.claude.hot.ready){ window.claude.hot.ready(start); }
 else { start((window.claude && window.claude.hot && window.claude.hot.data) || {}); }
 })();

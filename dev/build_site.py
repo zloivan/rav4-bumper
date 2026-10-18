@@ -1,4 +1,4 @@
-"""Собирает site/index.html и site/data.json из dev/site_template.html + dev/data.py.
+"""Собирает site/index.html и site/data.json из dev/site_template.html + dev/tasks.js + dev/data.py.
 ВНИМАНИЕ: перезаписывает site/data.json данными из data.py (свежие объявления из fresh пропадут).
 Обычно достаточно править site/data.json напрямую; этот скрипт нужен, когда меняется вёрстка/код страницы.
 Запуск из корня репозитория:  python3 dev/build_site.py [--keep-data]
@@ -15,6 +15,7 @@ if keep and os.path.exists(data_path):
 else:
     data = dict(DATA); data.setdefault('chatEndpoint', None); data.setdefault('sources', {})
 s = open(os.path.join(HERE, 'site_template.html'), encoding='utf-8').read()
+s = s.replace('/*__TASKS__*/', open(os.path.join(HERE, 'tasks.js'), encoding='utf-8').read().strip())   # парктроники и стекло
 s = s.replace('__DAMAGE_B64__', open(os.path.join(HERE, 'damage.b64')).read().strip()).replace('__DATA__', dump(data))
 s = s.replace("window.__quest = {total, issues, OFFERS, get S(){ return S; }};\n", "")
 cut = s.index('<div class="wrap" id="app"')

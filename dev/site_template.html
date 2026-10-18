@@ -1,4 +1,4 @@
-<title>Бампер для RAV4</title>
+<title>Ремонт RAV4</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -185,6 +185,18 @@ details.more[open] summary{margin-bottom:6px}
 .badge{display:inline-block; background:var(--mark); color:var(--on-mark); border-radius:6px; padding:2px 8px; font-size:13px; font-weight:700; letter-spacing:.04em; text-transform:uppercase}
 .costs{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px}
 
+/* Главная: задачи */
+.task{gap:12px}
+.task-head{display:flex; gap:14px; align-items:flex-start}
+.task-ico{flex:none; width:52px; height:52px; border-radius:14px; display:grid; place-items:center; background:var(--accent-soft); color:var(--accent)}
+.task-head > div{min-width:0; display:flex; flex-direction:column; gap:4px}
+.facts{font-size:16px; color:var(--muted); display:flex; flex-direction:column; gap:2px}
+.closed{background:var(--surface-2); border-style:dashed; gap:10px}
+.closed h3{font-size:18px}
+.closed .row .btn{flex:1 1 140px}
+.opts.qty{grid-template-columns:repeat(4,1fr)}
+.opts.qty .opt:last-child{grid-column:1 / -1}
+
 /* Тост и конфетти */
 .toast{position:fixed; left:0; right:0; margin-inline:auto; width:fit-content; bottom:calc(18px + env(safe-area-inset-bottom, 0px)); z-index:20;
   background:var(--ink); color:var(--bg); border-radius:12px; padding:12px 18px; font-weight:600; max-width:calc(100% - 32px); box-shadow:0 8px 24px rgba(0,0,0,.25)}
@@ -214,8 +226,8 @@ details.more[open] summary{margin-bottom:6px}
 <div class="wrap" id="app" lang="ru"></div>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 <button id="chat-open" class="btn chat-fab" hidden>Спросить помощника</button>
-<section id="chat" class="chat" hidden aria-label="Помощник по бамперу">
-  <div class="chat-head"><strong>Помощник по бамперу</strong><span class="row" style="gap:6px"><button class="btn quiet" id="chat-clear" type="button">Очистить</button><button class="btn quiet" id="chat-close" type="button">Закрыть</button></span></div>
+<section id="chat" class="chat" hidden aria-label="Помощник по ремонту">
+  <div class="chat-head"><strong>Помощник по ремонту</strong><span class="row" style="gap:6px"><button class="btn quiet" id="chat-clear" type="button">Очистить</button><button class="btn quiet" id="chat-close" type="button">Закрыть</button></span></div>
   <div id="chat-log" class="chat-log" aria-live="polite"></div>
   <form id="chat-form" class="chat-form"><label for="chat-input" class="sr">Вопрос</label><input id="chat-input" type="text" placeholder="Напишите вопрос…" autocomplete="off"><button class="btn" type="submit">Отправить</button></form>
   <p class="small muted chat-note">Помощник может ошибаться. Цены и наличие уточняйте по телефону.</p>
@@ -234,6 +246,7 @@ try{ DATA = JSON.parse(document.getElementById('quest-data').textContent); }catc
 let VIN, CHECKED, OFFERS, FRESH;
 function applyData(d){
   DATA = d || DATA; VIN = DATA.vin || {}; CHECKED = DATA.checked || '';
+  DATA.pdc = DATA.pdc || {}; DATA.glass = DATA.glass || {};
   OFFERS = DATA.offers || [];
   FRESH = (DATA.fresh || []).map(o => Object.assign({holes:{washers:null, pdc:null}, phones:[]}, o, {auto:true}));
 }
@@ -311,6 +324,7 @@ const digits = p => String(p).replace(/[^\d+]/g, '');
 const doneCount = () => STEPS.filter(s => S.done[s.n]).length;
 const allOffers = () => OFFERS.concat(FRESH, S.custom || []);
 const findOffer = id => allOffers().find(o => o.id === id);
+const findAny = id => findOffer(id) || ['pdc', 'glass'].map(t => tOffers(t).find(o => o.id === id)).find(Boolean);
 const nextStep = () => { const s = STEPS.find(x => !S.done[x.n]); return s ? s.n : null; };
 
 const I = {
@@ -409,7 +423,7 @@ function report(){
   return L.join('\n');
 }
 function tgLink(){
-  return 'https://t.me/share/url?url=' + encodeURIComponent('Бампер RAV4 — отчёт от ' + new Date().toLocaleDateString('ru-RU')) + '&text=' + encodeURIComponent(report());
+  return 'https://t.me/share/url?url=' + encodeURIComponent('Ремонт RAV4 — отчёт от ' + new Date().toLocaleDateString('ru-RU')) + '&text=' + encodeURIComponent(fullReport());
 }
 
 /* ---------- Куски интерфейса ---------- */
@@ -428,7 +442,7 @@ function phoneRow(p, label, wa){
 function reportBlock(){
   return '<div class="card soft">' +
     '<h3>Отправить отчёт Ване</h3>' +
-    '<p class="small muted">Что отмечено на этой странице: шаги, звонки, выбор. Ваня увидит всё в Telegram.</p>' +
+    '<p class="small muted">Что отмечено на этой странице: парктроники, стекло, бампер — шаги, звонки, выбор. Ваня увидит всё в Telegram.</p>' +
     '<a class="btn block" data-act="tg" href="' + esc(tgLink()) + '" target="_blank" rel="noopener">Отправить в Telegram</a>' +
     '<button class="btn ghost block" data-act="copyreport">Скопировать отчёт</button>' +
   '</div>';
@@ -448,7 +462,9 @@ function choice(key, value, label, extra){
 /* ---------- Экраны ---------- */
 function home(){
   const n = nextStep(), d = doneCount();
-  let h = '<header class="hero">' +
+  let h = '<div class="topbar"><button class="btn quiet" data-act="view" data-v="hub">← Все задачи</button><span></span></div>';
+  if(DATA.bumperClosed) h += '<div class="note good">' + I.check + '<span><strong>Бампер нашли (' + esc(DATA.bumperClosed) + ').</strong> Поиск закрыт. Здесь всё сохранено — пригодится, если на бампере найдут дефекты. Новые объявления продолжают собираться каждое утро.</span></div>';
+  h += '<header class="hero">' +
     '<p class="eyebrow">Toyota RAV4 2018 · гибрид</p>' +
     '<h1>Бампер для RAV4</h1>' +
     '<p class="lead">Семь шагов от разбитого бампера до целого. Идите по дороге сверху вниз — на каждом шаге всё подскажем.</p>' +
@@ -607,7 +623,7 @@ function script(){
 // Какая это ссылка: само объявление, страница машины-донора на разборке или что-то другое.
 // Те же правила — в scripts/check-links.mjs.
 function linkKind(url){
-  if(/^https:\/\/(auto\.)?kufar\.by\/(vi\/[^/?#]+|item)\/\d+\/?$/.test(url)) return 'ad';
+  if(/^https:\/\/(auto\.)?kufar\.by\/(vi\/([^/?#]+\/)?|item\/)\d+\/?$/.test(url)) return 'ad';
   if(/^https:\/\/bamper\.by\/zapchast_[a-z-]+\/[\w-]+\/?$/.test(url)) return 'ad';
   if(/^https:\/\/bamper\.by\/zchbu\/vin_[A-HJ-NPR-Z0-9]{17}\/?$/.test(url)) return 'donor';
   return 'other';
@@ -618,7 +634,7 @@ function adInfo(o){
   let site = 'сайт продавца', num = '';
   try{ site = new URL(url).hostname.replace(/^(www|auto)\./, ''); }catch(e){}
   const kind = linkKind(url);
-  const m = url.match(/kufar\.by\/(?:vi\/[^/]+|item)\/(\d+)/) || url.match(/bamper\.by\/zapchast_[^/]+\/([^/?#]+)/);
+  const m = url.match(/kufar\.by\/(?:vi\/(?:[^/]+\/)?|item\/)(\d+)/) || url.match(/bamper\.by\/zapchast_[^/]+\/([^/?#]+)/);
   if(kind === 'ad' && m) num = m[1];
   return {url, site, num, kind};
 }
@@ -784,8 +800,12 @@ function finish(){
   return h;
 }
 
+/*__TASKS__*/
+
 /* ---------- Отрисовка ---------- */
 function render(){
+  if(P.view === 'pdc' || P.view === 'glass'){ $('#app').innerHTML = tRender(P.view); return; }
+  if(P.view !== 'bumper'){ $('#app').innerHTML = hub(); return; }
   const v = S.screen;
   let h;
   if(v === 'home') h = home();
@@ -794,6 +814,7 @@ function render(){
   $('#app').innerHTML = h;
 }
 function go(to){
+  P.view = 'bumper'; psave();
   S.screen = String(to); U.confirmReset = false; U.confirmDel = null; U.showAdd = false;
   save(); render(); window.scrollTo(0, 0);
 }
@@ -805,8 +826,10 @@ document.addEventListener('click', e => {
   const a = el.dataset.act;
   if(a === 'tg'){ el.href = tgLink(); return; }
   if(a === 'copy'){ copyText(el.dataset.text || ''); return; }
-  if(a === 'copyreport'){ copyText('Бампер RAV4 — отчёт от ' + new Date().toLocaleDateString('ru-RU') + '\n' + report()); return; }
+  if(a === 'copyreport'){ copyText('Ремонт RAV4 — отчёт от ' + new Date().toLocaleDateString('ru-RU') + '\n' + fullReport()); return; }
   if(a === 'go'){ go(el.dataset.to); return; }
+  if(a === 'view'){ U.confirmReset = false; if(el.dataset.v === 'bumper' && el.dataset.to){ go(el.dataset.to); return; } P.view = el.dataset.v; psave(); render(); window.scrollTo(0, 0); return; }
+  if(a.charAt(0) === 't' && el.dataset.t && tClick(a, el)) return;
   if(a === 'next'){
     const n = +el.dataset.n; const first = !S.done[n]; S.done[n] = true;
     if(n === 7){ S.finished = true; go('finish'); confetti(); return; }
@@ -836,6 +859,7 @@ document.addEventListener('click', e => {
 document.addEventListener('input', e => {
   const el = e.target, a = el.dataset && el.dataset.act;
   if(!a) return;
+  if(el.dataset.t){ tInput(a, el); return; }
   if(a === 'field'){ S[el.dataset.key] = el.value.trim().toUpperCase(); save(); return; }
   if(a === 'price' || a === 'note'){ const c = S.calls[el.dataset.id] || {}; if(a === 'price') c.price = el.value === '' ? null : +el.value; else c.note = el.value; S.calls[el.dataset.id] = c; save(); return; }
   if(a === 'cost'){ S.costs[el.dataset.key] = el.value === '' ? 0 : +el.value; save(); return; }
@@ -843,10 +867,12 @@ document.addEventListener('input', e => {
 document.addEventListener('change', e => {
   const el = e.target, a = el.dataset && el.dataset.act;
   if(!a) return;
+  if(el.dataset.t){ if(a === 'tprice' || a === 'tcost'){ const y = window.scrollY; render(); window.scrollTo(0, y); } return; }
   if(a === 'chk'){ S.checks[el.dataset.key] = el.checked; save(); return; }
   if(a === 'price' || a === 'cost' || a === 'field'){ const y = window.scrollY; render(); window.scrollTo(0, y); }
 });
 document.addEventListener('submit', e => {
+  if(e.target.id === 'taddform'){ e.preventDefault(); tAdd(e.target.dataset.t); return; }
   if(e.target.id !== 'addform') return;
   e.preventDefault();
   const seller = $('#a-seller').value.trim(), phone = $('#a-phone').value.trim();
@@ -877,9 +903,10 @@ function confetti(){
 /* ---------- Запуск ---------- */
 function start(data){
   S = (data && data.S && data.S.v === 1) ? data.S : load();
+  P = (data && data.P && data.P.v === 1) ? data.P : pload();
   render(); renderChat();
   fetch('data.json?t=' + Date.now(), {cache:'no-store'}).then(r => r.ok ? r.json() : null).then(d => {
-    if(d && d.offers){ applyData(d); render(); renderChat(); }
+    if(d && d.offers){ applyData(d); const y = window.scrollY; render(); window.scrollTo(0, y); renderChat(); }
   }).catch(() => {});
 }
 
@@ -896,7 +923,7 @@ function renderChat(){
   if(!on){ box.hidden = true; fab.hidden = true; return; }
   fab.hidden = !box.hidden;
   const log = $('#chat-log');
-  log.innerHTML = (CHAT.length ? '' : '<div class="msg bot">Здравствуйте! Я знаю всё про ваш бампер: продавцов, цены, номер детали и шаги. Спросите, например: «Что сказать продавцу?» или «Какой вариант дешевле?»</div>') +
+  log.innerHTML = (CHAT.length ? '' : '<div class="msg bot">Здравствуйте! Я знаю про ваш ремонт: парктроники, лобовое стекло и бампер — продавцов, цены, номера деталей и шаги. Спросите, например: «Что сказать продавцу стекла?» или «Какой датчик дешевле?»</div>') +
     CHAT.map(m => '<div class="msg ' + (m.role === 'user' ? 'me' : 'bot') + '">' + esc(m.content).replace(/\n/g, '<br>') + '</div>').join('') +
     (chatBusy ? '<div class="msg bot">Думаю…</div>' : '');
   log.scrollTop = log.scrollHeight;
@@ -908,7 +935,7 @@ async function chatSend(text){
   let reply = '';
   try{
     const r = await fetch(DATA.chatEndpoint, {method:'POST', headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({messages:CHAT.filter(m => !m.err).slice(-12).map(m => ({role:m.role, content:m.content})), state:report()})});
+      body:JSON.stringify({messages:CHAT.filter(m => !m.err).slice(-12).map(m => ({role:m.role, content:m.content})), state:fullReport()})});
     const j = await r.json().catch(() => ({}));
     reply = j.reply || '';
   }catch(e){}
@@ -919,7 +946,7 @@ document.addEventListener('click', e => {
   if(e.target.closest('#chat-open')){ $('#chat').hidden = false; renderChat(); const i = $('#chat-input'); if(i) i.focus(); }
   else if(e.target.closest('#chat-close')){ $('#chat').hidden = true; renderChat(); }
   else if(e.target.closest('[data-act=askchat]')){
-    const o = findOffer(e.target.closest('[data-act=askchat]').dataset.id); if(!o) return;
+    const o = findAny(e.target.closest('[data-act=askchat]').dataset.id); if(!o) return;
     $('#chat').hidden = false; renderChat();
     chatSend('Расскажите про вариант «' + o.seller + '» (' + (o.what || '') + (o.link ? ', ' + o.link : '') + '): что известно из объявления, чего не хватает и что спросить у продавца?');
   }
@@ -929,7 +956,7 @@ document.addEventListener('submit', e => {
   if(e.target.id !== 'chat-form') return;
   e.preventDefault(); const i = $('#chat-input'); const v = i.value; i.value = ''; chatSend(v);
 });
-try{ window.claude && window.claude.hot && window.claude.hot.snapshot && window.claude.hot.snapshot(() => ({S})); }catch(e){}
+try{ window.claude && window.claude.hot && window.claude.hot.snapshot && window.claude.hot.snapshot(() => ({S, P})); }catch(e){}
 if(window.claude && window.claude.hot && window.claude.hot.ready){ window.claude.hot.ready(start); }
 else { start((window.claude && window.claude.hot && window.claude.hot.data) || {}); }
 window.__quest = {total, issues, OFFERS, get S(){ return S; }};
