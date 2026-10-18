@@ -57,6 +57,10 @@ jobs:
         continue-on-error: true
         run: node scripts/update.mjs
 
+      - name: Проверить ссылки на объявления
+        continue-on-error: true
+        run: node scripts/check-links.mjs
+
       - name: Сохранить изменения данных
         run: |
           git config user.name "rav4-bumper-bot"

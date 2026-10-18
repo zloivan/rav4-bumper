@@ -26,7 +26,7 @@ function offerLine(o) {
   return '- ' + o.seller + ' — ' + (G[o.group] || o.group) + '. ' + o.what + '. Цена: ' + price + '. Тел.: ' + phones +
     (o.address ? '. Адрес: ' + o.address : '') + (o.hours ? '. Часы: ' + o.hours : '') + (o.delivery ? '. Наличие: ' + o.delivery : '') +
     (o.say ? '. ' + o.say : '') + (o.includes ? '. Подробности: ' + o.includes : '') + (o.gone ? '. ВНИМАНИЕ: объявление, похоже, снято ' + o.gone : '') +
-    (o.link ? '. Ссылка: ' + o.link : '');
+    (o.link ? (o.linkKind === 'donor' ? '. Объявления на бампер нет, только страница разборки со всеми запчастями этой машины: ' : '. Объявление: ') + o.link : '. Объявления нет');
 }
 
 function systemPrompt(d, state) {

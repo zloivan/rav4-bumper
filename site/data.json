@@ -104,8 +104,9 @@
    "address": "д. Малиновка, ул. Промысловая, 11",
    "hours": "ежедневно 8:30–20:00",
    "delivery": "спросить",
-   "link": "https://bamper.by/zchbu/vin_JTMWRREVX0D090002/?PAGEN_1=1",
-   "top": 2
+   "link": "https://bamper.by/zchbu/vin_JTMWRREVX0D090002/",
+   "top": 2,
+   "linkKind": "donor"
   },
   {
    "id": "kuzov",

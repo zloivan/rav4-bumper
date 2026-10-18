@@ -33,7 +33,7 @@ OFFERS = [
    "say":"Скажите: «У вас разбирают RAV4 2018 гибрид, VIN JTMWRREVX0D090002. Есть с него передний бампер?»",
    "includes":"Бампер пока не выставлен — спросите, цел ли он и сколько стоит. Машина чёрная, бампер придётся красить. Эсэмэски не читают — только звонок.",
    "holes":{"washers":False,"pdc":True},"address":"д. Малиновка, ул. Промысловая, 11","hours":"ежедневно 8:30–20:00","delivery":"спросить",
-   "link":"https://bamper.by/zchbu/vin_JTMWRREVX0D090002/?PAGEN_1=1","top":2},
+   "link":"https://bamper.by/zchbu/vin_JTMWRREVX0D090002/","linkKind":"donor","top":2},
   {"id":"kuzov","group":"copy","seller":"KUZOV.BY","what":"Новый бампер (копия) для RAV4 2016–2018",
    "price":209,"pricePdc":375,"pdcNote":"версия с отверстиями под парктроники — 375 BYN",
    "phones":[["+375 29 655-10-47",""],["+375 29 776-61-80","МТС, Viber"],["+375 29 666-26-38","A1"]],

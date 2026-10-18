@@ -604,27 +604,52 @@ function script(){
   t += ' Он есть в наличии? Какого цвета? Есть ли отверстия под омыватели фар и под парктроники? Целы ли крепления, нет ли трещин? Что входит в комплект и сколько стоит? Пришлите, пожалуйста, фото внутренней стороны в Viber.';
   return t;
 }
+// Какая это ссылка: само объявление, страница машины-донора на разборке или что-то другое.
+// Те же правила — в scripts/check-links.mjs.
+function linkKind(url){
+  if(/^https:\/\/(auto\.)?kufar\.by\/(vi\/[^/?#]+|item)\/\d+\/?$/.test(url)) return 'ad';
+  if(/^https:\/\/bamper\.by\/zapchast_[a-z-]+\/[\w-]+\/?$/.test(url)) return 'ad';
+  if(/^https:\/\/bamper\.by\/zchbu\/vin_[A-HJ-NPR-Z0-9]{17}\/?$/.test(url)) return 'donor';
+  return 'other';
+}
 function adInfo(o){
   if(!o.link) return null;
+  const url = o.link.replace(/\?PAGEN_1=\d+$/, '');
   let site = 'сайт продавца', num = '';
-  try{ site = new URL(o.link).hostname.replace(/^(www|auto)\./, ''); }catch(e){}
-  let m = o.link.match(/kufar\.by\/vi\/[^/]+\/(\d+)/) || o.link.match(/bamper\.by\/zapchast_[^/]+\/([^/?#]+)/);
-  if(m) num = m[1];
-  else if(/\/vin_/.test(o.link)) site += ' (страница разборки этой машины)';
-  return {site, num};
+  try{ site = new URL(url).hostname.replace(/^(www|auto)\./, ''); }catch(e){}
+  const kind = linkKind(url);
+  const m = url.match(/kufar\.by\/(?:vi\/[^/]+|item)\/(\d+)/) || url.match(/bamper\.by\/zapchast_[^/]+\/([^/?#]+)/);
+  if(kind === 'ad' && m) num = m[1];
+  return {url, site, num, kind};
 }
 function adBlock(o){
   const a = adInfo(o), p = basePrice(o);
   if(!a) return '<div class="ad"><p class="small"><strong>Объявления нет.</strong> Спросите продавца номер детали, цвет и фото, или попросите Ваню найти объявление.</p></div>';
-  const where = a.site + (a.num ? ', № ' + a.num : '');
-  const phrase = o.say || ('Скажите: «Здравствуйте, я по вашему объявлению на ' + where + ' — передний бампер на Toyota RAV4' + (o.partno ? ', номер ' + o.partno : '') + (o.pricePdc ? ', версия под парктроники' : '') + (p > 0 ? ', цена ' + fmt(p) + ' р.' : '.') + ' Он ещё есть?»');
   const when = o.custom ? 'добавлено вами' : o.auto ? 'найдено ' + (o.found || 'автоматически') : 'проверено ' + CHECKED;
-  return '<div class="ad"><p class="small"><strong>Объявление:</strong> ' + esc(where) + ' · ' + esc(when) + '</p>' +
+  let head, btn, phrase, hint;
+  if(a.kind === 'ad'){
+    const where = a.site + (a.num ? ', № ' + a.num : '');
+    head = '<strong>Объявление:</strong> ' + esc(where) + ' · ' + esc(when);
+    btn = 'Открыть объявление';
+    phrase = o.say || ('Скажите: «Здравствуйте, я по вашему объявлению на ' + where + ' — передний бампер на Toyota RAV4' + (o.partno ? ', номер ' + o.partno : '') + (o.pricePdc ? ', версия под парктроники' : '') + (p > 0 ? ', цена ' + fmt(p) + ' р.' : '.') + ' Он ещё есть?»');
+    hint = 'Чего-то не хватает — откройте объявление: там фото, описание и телефоны. Ссылку можно переслать продавцу в Viber.';
+  } else if(a.kind === 'donor'){
+    head = '<strong>Объявления на бампер нет.</strong> Есть только страница разборки на ' + esc(a.site) + ' со всеми запчастями этой машины · ' + esc(when);
+    btn = 'Запчасти этой машины';
+    phrase = o.say || 'Скажите: «Вы разбираете Toyota RAV4 2018 — есть с неё передний бампер?»';
+    hint = 'Бампера в списке пока нет — его надо спросить по телефону.';
+  } else {
+    head = '<strong>Ссылка не на объявление</strong> (' + esc(a.site) + ') · ' + esc(when);
+    btn = 'Открыть страницу';
+    phrase = o.say || 'Скажите: «Мне нужен передний бампер на Toyota RAV4 2018, рестайлинг, гибрид. Есть в наличии?»';
+    hint = 'Объявление могли не сохранить — спросите у продавца номер детали, цвет и фото.';
+  }
+  return '<div class="ad"><p class="small">' + head + '</p>' +
     '<p class="say">' + esc(phrase) + '</p>' +
-    '<div class="row" style="gap:8px"><a class="btn quiet" href="' + esc(o.link) + '" target="_blank" rel="noopener">Открыть объявление ' + I.ext + '</a>' +
-    '<button class="btn quiet" data-act="copy" data-text="' + esc(o.link) + '">Копировать ссылку</button>' +
+    '<div class="row" style="gap:8px"><a class="btn quiet" href="' + esc(a.url) + '" target="_blank" rel="noopener">' + btn + ' ' + I.ext + '</a>' +
+    '<button class="btn quiet" data-act="copy" data-text="' + esc(a.url) + '">Копировать ссылку</button>' +
     (DATA.chatEndpoint ? '<button class="btn quiet" data-act="askchat" data-id="' + esc(o.id) + '">Спросить помощника</button>' : '') + '</div>' +
-    '<p class="small muted">Чего-то не хватает — откройте объявление: там фото, описание и телефоны. Ссылку можно переслать продавцу в Viber.</p></div>';
+    '<p class="small muted">' + hint + '</p></div>';
 }
 function offerCard(o){
   const c = S.calls[o.id] || {}, g = GROUPS[o.group] || GROUPS.cover, iss = issues(o), ask = asks(o), t = total(o);
