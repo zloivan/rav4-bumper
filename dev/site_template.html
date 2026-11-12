@@ -625,6 +625,8 @@ function script(){
 function linkKind(url){
   if(/^https:\/\/(auto\.)?kufar\.by\/(vi\/([^/?#]+\/)?|item\/)\d+\/?$/.test(url)) return 'ad';
   if(/^https:\/\/bamper\.by\/zapchast_[a-z-]+\/[\w-]+\/?$/.test(url)) return 'ad';
+  if(/^https:\/\/allegro\.pl\/(oferta\/[\w-]+-\d{8,}\/?|produkt\/[\w-]+\?offerId=\d+)$/.test(url)) return 'ad';   // Польша
+  if(/^https:\/\/(www\.)?(olx|otomoto)\.pl\/(d\/|czesci\/)?oferta\/[\w-]+-ID\w+\.html$/.test(url)) return 'ad';
   if(/^https:\/\/bamper\.by\/zchbu\/vin_[A-HJ-NPR-Z0-9]{17}\/?$/.test(url)) return 'donor';
   return 'other';
 }

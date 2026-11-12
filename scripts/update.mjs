@@ -1,5 +1,6 @@
 // Ежедневное обновление site/data.json: новые объявления с Kufar и проверка, не сняты ли старые.
 // Три детали: бампер (data.fresh), парктроники (data.pdc.fresh), лобовое стекло (data.glass.fresh).
+// Польша (датчики и стекло, привезёт Лена): Otomoto.pl, курс злотого НБРБ (data.plnRate), живость польских ссылок.
 // Запускается GitHub Actions (node scripts/update.mjs). Внешних зависимостей нет.
 import { readFile, writeFile } from 'node:fs/promises';
 
@@ -146,6 +147,140 @@ const glass = {
 
 const TASKS = [bumper, pdc, glass];
 
+/* ---------- Польша (купит и привезёт Лена): Otomoto.pl ----------
+   Otomoto отдаёт поиск обычным HTTP (__NEXT_DATA__ → urqlState → advertSearch).
+   Allegro и OLX роботам отвечают 403 — их проверяет облачная задача Claude (OLX) или человек (Allegro). Защиту не обходить. */
+const PL_RAV = /rav\s*-?\s*4/i;
+const PL_NOT40 = /xa50|xa30|xa20|rav\s*-?\s*4\s*(iii|ii|v)\b|rav\s*-?\s*4\s*[235]\b|60060-|\b20(19|2\d)\b|\b19\s*-\s*2\d\b/i;   // III, V, 2019+
+const PL_IS40 = /\biv\b|xa40|ca40|as40|201[3-8]|\b1[2-6]\s*-\s*1[5-8]\b|lift/i;
+const isNew = t => /\b(nowy|nowa|nowe|new)\b/i.test(t);
+const plPdc = {
+  key: 'pdc', name: 'парктроники',
+  searches: ['https://www.otomoto.pl/czesci/q-czujnik-parkowania-rav4', 'https://www.otomoto.pl/czesci/q-89341-42060', 'https://www.otomoto.pl/czesci/toyota/rav4/q-czujnik-parkowania'],
+  accept(t) {
+    if (P_RIGHT.test(t)) return true;
+    if (/89341-?[0-9A-Z]{5}/i.test(t)) return false;   // другой номер датчика
+    return PL_RAV.test(t) && /czujnik|pdc|parktronik/i.test(t) && /parkow|pdc|cofani/i.test(t) && !PL_NOT40.test(t) && PL_IS40.test(t);
+  },
+  item: t => ({
+    group: isNew(t) ? 'new' : 'used',
+    partno: P_RIGHT.test(t) ? t.match(/89341-?42060(-?[A-Z][0-9])?/i)[0].toUpperCase().replace(/^89341-?42060-?/, '89341-42060-').replace(/-$/, '') : null,
+    painted: /42060-?B2|1G3/i.test(t) ? true : null, exact: P_RIGHT.test(t) || undefined,
+    sayPl: 'Dzień dobry! Czy czujnik ma numer 89341-42060? Jaki ma kolor? Czy jest sprawny i z jakiego auta (rocznik)?'
+  }),
+  maxPln: 450,   // дороже — не выгоднее минского B2 (348 BYN), не показываем
+  max: 8
+};
+const plGlass = {
+  key: 'glass', name: 'стекло',
+  searches: ['https://www.otomoto.pl/czesci/q-szyba-czolowa-rav4', 'https://www.otomoto.pl/czesci/q-szyba-przednia-rav4'],
+  accept(t) {
+    if (G_RIGHT.test(t)) return true;
+    if (/56101-?[0-9A-Z]{5}/i.test(t)) return false;   // другой номер стекла
+    return PL_RAV.test(t) && /szyba\s+(czo[łl]owa|przednia|prz[óo]d)|(czo[łl]owa|przednia)\s+szyba/i.test(t) && !/kamera\s+szyby|uszczel|listw|wycieracz|lusterk/i.test(t) &&
+      !PL_NOT40.test(t) && PL_IS40.test(t);
+  },
+  item: t => ({
+    group: isNew(t) ? 'new' : 'used', partno: G_RIGHT.test(t) ? '56101-42511' : null, exact: G_RIGHT.test(t) || undefined,
+    camera: /kamer/i.test(t) ? true : null,
+    warn: 'Стекло везти из Польши тяжело: 1,5 метра и 15 кг, нужна машина. Сравните с минскими ценами.',
+    sayPl: 'Dzień dobry! Czy szyba pasuje do Toyota RAV4 2016–2018 (lift) z kamerą i czujnikiem deszczu? Czy ma uchwyt kamery? Czy jest podgrzewana?'
+  }),
+  maxPln: 550,   // дороже — не выгоднее минского Fuyao (423 BYN), не показываем
+  max: 6
+};
+function otoNext(html) {
+  const m = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
+  return m ? JSON.parse(m[1]) : null;
+}
+function otoSearch(html) {
+  const st = otoNext(html)?.props?.pageProps?.urqlState;
+  if (!st) return null;
+  for (const v of Object.values(st)) {
+    try { const d = JSON.parse(v.data); if (d.advertSearch) return d.advertSearch.edges.map(e => e.node); } catch (e) {}
+  }
+  return null;
+}
+const byn = pln => Math.round(pln * PL.rate);
+const PL = { rate: 0.761 };
+
+async function updateRate(data) {
+  try {
+    const r = await fetch('https://api.nbrb.by/exrates/rates/PLN?parammode=2');
+    const j = await r.json();
+    if (j.Cur_OfficialRate > 0) {
+      PL.rate = Math.round(j.Cur_OfficialRate / j.Cur_Scale * 10000) / 10000;
+      data.plnRate = { byn: PL.rate, date: String(j.Date).slice(0, 10).split('-').reverse().join('.'), source: 'НБРБ' };
+    }
+  } catch (e) { console.log('Курс НБРБ не получен', e.message); if (data.plnRate?.byn) PL.rate = data.plnRate.byn; }
+  // Пересчёт польских цен в BYN
+  for (const box of [data, data.pdc, data.glass].filter(Boolean)) {
+    for (const o of [...(box.offers || []), ...(box.fresh || [])]) {
+      if (o.pricePln > 0) o.price = byn(o.pricePln);
+      if (o.shippingPln > 0) o.shipping = byn(o.shippingPln);
+    }
+  }
+}
+
+async function runPoland(data, task) {
+  const box = data[task.key];
+  if (!box) return { ok: 0 };
+  const known = (box.offers || []).map(o => o.link || '');
+  const prevFresh = new Map((box.fresh || []).map(o => [o.id, o]));
+  const found = new Map();
+  let ok = 0;
+  for (const url of task.searches) {
+    try {
+      const { status, text } = await get(url);
+      const nodes = text && otoSearch(text);
+      if (!Array.isArray(nodes)) { console.log('Otomoto (' + task.name + '): нет данных', status, url); continue; }
+      ok++;
+      for (const n of nodes) {
+        const t = [n.title, n.shortDescription].filter(Boolean).join(' ');
+        const idm = (n.url || '').match(/-ID(\w+)\.html/);
+        if (!idm || !task.accept(t) || known.some(k => k.includes('-ID' + idm[1] + '.html'))) continue;
+        const id = 'otomoto-' + idm[1], prev = prevFresh.get(id);
+        const pln = Number(n.price?.amount?.value || n.price?.amount?.units || 0);
+        if (pln > task.maxPln) continue;
+        const loc = n.location ? [n.location.city?.name, n.location.region?.name].filter(Boolean).join(', ') : '';
+        found.set(id, Object.assign({
+          id, source: 'otomoto', country: 'pl',
+          seller: 'Otomoto — ' + (n.seller?.__typename === 'PrivateSeller' ? 'частное лицо' : 'фирма'),
+          what: n.title, pricePln: pln > 0 ? pln : null, price: pln > 0 ? byn(pln) : null, phones: [], link: n.url,
+          found: prev?.found || dm(new Date(n.createdAt || now)),
+          includes: (n.shortDescription && n.shortDescription !== n.title ? n.shortDescription.replace(/\s+/g, ' ').trim().slice(0, 200) + ' ' : '') + 'Объявление на польском, описание и фото — по ссылке.',
+          city: loc ? 'Польша, ' + loc : 'Польша'
+        }, task.item(t)));
+      }
+    } catch (e) { console.log('Otomoto (' + task.name + '): ошибка', url, e.message); }
+  }
+
+  // Живы ли польские объявления из основного списка (Otomoto и OLX; Allegro роботам не отвечает)
+  let gone = 0;
+  for (const o of box.offers || []) {
+    if (!/(otomoto|olx)\.pl\//.test(o.link || '')) continue;
+    try {
+      const { status, text } = await get(o.link);
+      if (status === 403 || status === 429) continue;   // закрыто для робота — не знаем, оставляем как есть
+      let alive = status < 400;
+      if (alive && /otomoto\.pl/.test(o.link)) alive = otoNext(text)?.props?.pageProps?.advert?.status === 'ACTIVE';
+      if (alive && /olx\.pl/.test(o.link)) alive = !/Ogłoszenie (nie jest już dostępne|zostało zakończone)|To ogłoszenie jest nieaktywne/i.test(text);
+      if (!alive) { o.gone = o.gone || dm(now); gone++; } else delete o.gone;
+    } catch (e) { console.log('Проверка не удалась', o.link, e.message); }
+  }
+
+  box.sources = box.sources || {};
+  if (ok) {
+    const others = (box.fresh || []).filter(o => o.source !== 'otomoto');
+    const oto = [...found.values()].sort((a, b) => (b.exact ? 1 : 0) - (a.exact ? 1 : 0) || (a.price || 1e9) - (b.price || 1e9));
+    box.fresh = others.concat(oto.slice(0, task.max));
+    box.sources.otomoto = { updated: stamp, ok: true, count: oto.length };
+    return { ok, count: oto.length, newOnes: oto.filter(k => !prevFresh.has(k.id)).length, gone };
+  }
+  box.sources.otomoto = { updated: stamp, ok: false, count: 0 };
+  return { ok: 0, gone };
+}
+
 async function runTask(data, task) {
   const box = task.list(data);
   if (!box) return { ok: 0 };
@@ -193,8 +328,9 @@ async function runTask(data, task) {
 
 async function main() {
   const data = JSON.parse(await readFile(DATA_PATH, 'utf8'));
-  const notes = [];
-  let any = false;
+  const notes = [], notesPl = [];
+  let any = false, anyPl = false;
+  await updateRate(data);
   for (const task of TASKS) {
     const r = await runTask(data, task);
     if (r.ok) {
@@ -202,9 +338,17 @@ async function main() {
       notes.push(task.name + ' — ' + r.count + (r.newOnes ? ' (новых ' + r.newOnes + ')' : '') + (r.gone ? ', снято из списка ' + r.gone : ''));
     } else notes.push(task.name + ' — Kufar не ответил');
   }
-  if (any) {
+  for (const task of [plPdc, plGlass]) {
+    const r = await runPoland(data, task);
+    if (r.ok) {
+      anyPl = true;
+      notesPl.push(task.name + ' — ' + r.count + (r.newOnes ? ' (новых ' + r.newOnes + ')' : '') + (r.gone ? ', снято из списка ' + r.gone : ''));
+    } else notesPl.push(task.name + ' — Otomoto не ответил');
+  }
+  if (any || anyPl) {
     data.updated = stamp;
-    data.updateNote = 'Kufar проверен. Подходящих объявлений вне основного списка: ' + notes.join('; ') + '.';
+    data.updateNote = (any ? 'Kufar проверен. Подходящих объявлений вне основного списка: ' + notes.join('; ') + '.' : 'Kufar не ответил.') +
+      ' Польша (Otomoto): ' + notesPl.join('; ') + '.';
   }
   await writeFile(DATA_PATH, JSON.stringify(data, null, 1) + '\n');
   console.log(data.updateNote || 'Kufar недоступен');

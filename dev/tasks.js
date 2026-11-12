@@ -21,6 +21,12 @@ const TASK = {
     live:[
       {name:'Kufar: датчики парктроника Toyota', url:'https://auto.kufar.by/l/zapchasti/z~toyota?spg=193'},
       {name:'Kufar: поиск по номеру 89341-42060', url:'https://auto.kufar.by/l/zapchasti?query=89341-42060'}
+    ],
+    livePl:[
+      {name:'Allegro: номер 89341-42060, сначала дешёвые', url:'https://allegro.pl/listing?string=89341-42060&order=p'},
+      {name:'Allegro: б/у датчики RAV4', url:'https://allegro.pl/listing?string=czujnik%20parkowania%20rav4%2042060&stan=u%C5%BCywane&order=p'},
+      {name:'OLX: датчики парковки RAV4', url:'https://www.olx.pl/motoryzacja/czesci-samochodowe/q-czujnik-parkowania-toyota-rav4/?search%5Border%5D=filter_float_price%3Aasc'},
+      {name:'Otomoto: датчики парковки RAV4', url:'https://www.otomoto.pl/czesci/q-czujnik-parkowania-rav4'}
     ]
   },
   glass:{
@@ -38,6 +44,10 @@ const TASK = {
     costs:{install:80, calib:200},
     live:[
       {name:'Kufar: лобовые стёкла RAV4', url:'https://auto.kufar.by/l/zapchasti/z~toyota-rav4?spg=918'}
+    ],
+    livePl:[
+      {name:'Allegro: стёкла RAV4 2016 с камерой, сначала дешёвые', url:'https://allegro.pl/listing?string=szyba%20czo%C5%82owa%20rav4%202016%20kamera&order=p'},
+      {name:'Otomoto: лобовые стёкла RAV4', url:'https://www.otomoto.pl/czesci/q-szyba-czolowa-rav4'}
     ]
   }
 };
@@ -76,6 +86,11 @@ const qtyN = () => +P.pdc.qty > 0 ? +P.pdc.qty : 1;
 const qtyTxt = () => +P.pdc.qty > 0 ? P.pdc.qty + ' шт.' : 'не знаю';
 const tOpt = (k, v) => k === 'inst' ? ({yes:'с установкой', no:'без установки'})[v] : k === 'cam' ? ({yes:'кронштейн камеры есть', no:'кронштейна камеры нет'})[v] : colorTxt(v) ? 'цвет: ' + colorTxt(v) : '';
 const range2 = (a, b) => a === b ? fmt(a) : fmt(a) + '–' + fmt(b);
+/* Польша: покупает и привозит Лена. Цены в злотых (pricePln), в BYN — по курсу НБРБ из DATA.plnRate */
+const isPL = o => o.country === 'pl';
+const zl = n => (Math.round(n * 100) / 100).toLocaleString('ru-RU', {maximumFractionDigits:2}) + ' zł';
+const plRateTxt = () => DATA.plnRate ? '1 zł = ' + String(DATA.plnRate.byn).replace('.', ',') + ' BYN (курс НБРБ на ' + DATA.plnRate.date + ')' : '';
+const shipTxt = o => isPL(o) ? 'доставка по Польше ' : 'доставка ';
 
 /* Итог: деталь + покраска / установка + настройка */
 function tTotal(t, o){
@@ -89,7 +104,7 @@ function tTotal(t, o){
     const base = p * q + inst + ship;
     const lines = [(q > 1 ? q + ' × ' + fmt(p) : 'датчик ' + fmt(p)), 'покраска ' + range2(pMin, pMax)];
     if(inst) lines.push('установка ' + fmt(inst));
-    if(ship) lines.push('доставка ' + fmt(ship));
+    if(ship) lines.push(shipTxt(o) + fmt(ship));
     return {price:p, min:base + pMin, max:base + pMax, lines};
   }
   const inc = c.inst === 'yes' ? true : c.inst === 'no' ? false : o.installIncluded;
@@ -102,7 +117,7 @@ function tTotal(t, o){
   const lines = ['стекло ' + fmt(p) + (inc === true ? ' (с установкой)' : '')];
   if(inc !== true) lines.push('установка ' + range2(iMin, iMax));
   lines.push(o.calibIncluded ? 'настройка камеры входит' : 'настройка камеры ' + fmt(cal));
-  if(ship) lines.push('доставка ' + fmt(ship));
+  if(ship) lines.push(shipTxt(o) + fmt(ship));
   const base = p + cal + ship;
   return {price:p, min:base + iMin, max:base + iMax, lines};
 }
@@ -159,7 +174,7 @@ function tReport(t){
   const called = tOffers(t).filter(o => (st.calls[o.id] || {}).status);
   called.forEach(o => {
     const c = st.calls[o.id], subs = ['color', 'inst', 'cam'].map(k => c[k] ? tOpt(k, c[k]) : '').filter(Boolean);
-    L.push((c.status === 'yes' ? '✅ ' : c.status === 'no' ? '❌ ' : '⏳ ') + o.seller + (o.what ? ' (' + o.what + ')' : '') + ' — ' + statusTxt(c.status) +
+    L.push((c.status === 'yes' ? '✅ ' : c.status === 'no' ? '❌ ' : '⏳ ') + (isPL(o) ? '[Польша] ' : '') + o.seller + (o.what ? ' (' + o.what + ')' : '') + ' — ' + statusTxt(c.status) +
       (c.status === 'yes' && tPrice(t, o) > 0 ? ', ' + fmt(tPrice(t, o)) + ' BYN' : '') + (subs.length ? ', ' + subs.join(', ') : '') + (c.note ? '. ' + c.note : '') + (o.link ? ' ' + o.link : ''));
   });
   if(!called.length) L.push('Звонков пока не было.');
@@ -181,12 +196,32 @@ function tLive(t){
   return '<div class="card"><h3>Свежие объявления</h3>' +
     '<p class="small muted">Список выше обновляется сам каждое утро. Если хочется посмотреть самой — вот поиск.</p>' +
     '<div class="stack">' + TASK[t].live.map(l => '<a class="btn ghost block" href="' + esc(l.url) + '" target="_blank" rel="noopener">' + esc(l.name) + ' ' + I.ext + '</a>').join('') + '</div>' +
+    ((TASK[t].livePl || []).length ? '<p class="small"><strong>В Польше</strong> — эти ссылки можно переслать Лене:</p><div class="stack">' +
+      TASK[t].livePl.map(l => '<a class="btn ghost block" href="' + esc(l.url) + '" target="_blank" rel="noopener">' + esc(l.name) + ' ' + I.ext + '</a>').join('') + '</div>' : '') +
     '<p class="small muted">Нашли вариант сами — добавьте его в шаге 2 кнопкой «Добавить свой вариант».</p></div>';
+}
+/* Польское объявление: мама не звонит, а пересылает ссылку Лене */
+function lenaText(t, o){
+  return 'Лена, привет! Посмотри, пожалуйста, ' + (t === 'pdc' ? 'датчик парковки' : 'лобовое стекло') + ' для маминой RAV4: ' + o.what +
+    (o.pricePln ? ', ' + zl(o.pricePln) + (t === 'pdc' ? ' за штуку' : '') + (o.shippingPln ? ' + доставка ' + zl(o.shippingPln) : '') : '') +
+    (t === 'pdc' && +P.pdc.qty > 0 ? '. Нужно ' + P.pdc.qty + ' шт.' : '') + '.' +
+    (o.sayPl ? ' Перед покупкой спроси продавца в чате: «' + o.sayPl + '»' : '');
+}
+function tAdBlockPl(t, o, a, when){
+  const msg = lenaText(t, o);
+  return '<div class="ad"><p class="small"><strong>Объявление в Польше:</strong> ' + esc(a.site) + ' · ' + esc(when) + '</p>' +
+    '<p class="say">Звонить не нужно. Перешлите ссылку Лене — она закажет с доставкой на свой адрес в Польше и привезёт.</p>' +
+    '<div class="row" style="gap:8px"><a class="btn" href="https://t.me/share/url?url=' + encodeURIComponent(a.url) + '&text=' + encodeURIComponent(msg) + '" target="_blank" rel="noopener">Отправить Лене в Telegram ' + I.ext + '</a>' +
+    '<a class="btn quiet" href="' + esc(a.url) + '" target="_blank" rel="noopener">Открыть объявление ' + I.ext + '</a>' +
+    '<button class="btn quiet" data-act="copy" data-text="' + esc(msg + ' ' + a.url) + '">Копировать для Лены</button></div>' +
+    (o.sayPl ? '<p class="small muted">Вопрос продавцу по-польски уже в сообщении Лене: «' + esc(o.sayPl) + '»</p>' : '') +
+    '<p class="small muted">Объявление на польском. Цена в BYN — по курсу: ' + esc(plRateTxt()) + '.</p></div>';
 }
 function tAdBlock(t, o){
   const a = adInfo(o), p = tPrice(t, o), d = tData(t);
-  if(!a) return '<div class="ad"><p class="small"><strong>Объявления нет.</strong> Цену и наличие называют по телефону.</p>' + (o.say ? '<p class="say">' + esc(o.say) + '</p>' : '') + '</div>';
+  if(!a) return '<div class="ad"><p class="small"><strong>Объявления нет.</strong> ' + (isPL(o) ? 'Спросите у Лены, где она это нашла.' : 'Цену и наличие называют по телефону.') + '</p>' + (o.say ? '<p class="say">' + esc(o.say) + '</p>' : '') + '</div>';
   const when = o.custom ? 'добавлено вами' : o.auto ? 'найдено ' + (o.found || 'автоматически') : 'проверено ' + (o.checked || d.checked || '');
+  if(isPL(o)) return tAdBlockPl(t, o, a, when);
   const kind = o.linkKind === 'shop' ? 'shop' : a.kind;
   const what = t === 'pdc' ? 'датчик парковки на Toyota RAV4' : 'лобовое стекло на Toyota RAV4 2018';
   let head, btn, phrase, hint;
@@ -223,18 +258,19 @@ function tOfferCard(t, o){
   const c = P[t].calls[o.id] || {}, g = tGroup(t, o), iss = tIssues(t, o), ask = tAsks(t, o), tot = tTotal(t, o), p = tPrice(t, o);
   const id = esc(o.id), dt = ' data-t="' + t + '" data-id="' + id + '"';
   let h = '<article class="card offer' + (c.status ? ' st-' + c.status : '') + '">';
-  h += '<div class="offer-head"><div class="stack" style="gap:6px"><div class="row" style="gap:6px"><span class="chip ' + g.cls + '">' + esc(g.label) + '</span>' +
+  const pl = isPL(o), plPrice = pl && o.pricePln && p === o.price;
+  h += '<div class="offer-head"><div class="stack" style="gap:6px"><div class="row" style="gap:6px">' + (pl ? '<span class="chip g-don">Польша · везёт Лена</span>' : '') + '<span class="chip ' + g.cls + '">' + esc(g.label) + '</span>' +
     (o.exact ? '<span class="chip g-asm">Номер совпадает</span>' : '') + (o.auto ? '<span class="chip g-new">Новое' + (o.found ? ', ' + esc(o.found) : '') + '</span>' : '') +
     '</div><h3>' + esc(o.seller) + '</h3><p class="small">' + esc(o.what) + '</p></div>' +
-    (p > 0 ? '<div class="price">' + fmt(p) + '<small>BYN' + (t === 'pdc' ? ' за штуку' : '') + ' · ' + usd(p) + '</small></div>' : '<div class="price small" style="font-size:18px">цена<small>спросить</small></div>') + '</div>';
+    (p > 0 ? '<div class="price">' + fmt(p) + '<small>BYN' + (t === 'pdc' ? ' за штуку' : '') + ' · ' + (plPrice ? esc(zl(o.pricePln)) : usd(p)) + '</small></div>' : '<div class="price small" style="font-size:18px">цена<small>спросить</small></div>') + '</div>';
   if(o.priceNote) h += '<p class="small muted">' + esc(o.priceNote) + '</p>';
-  if(o.gone) h += '<div class="note bad"><span>Похоже, объявление снято (проверка ' + esc(o.gone) + '). Можно позвонить — вдруг ещё есть.</span></div>';
+  if(o.gone) h += '<div class="note bad"><span>Похоже, объявление снято (проверка ' + esc(o.gone) + ').' + (pl ? ' Посмотрите другие варианты.' : ' Можно позвонить — вдруг ещё есть.') + '</span></div>';
   h += tAdBlock(t, o);
-  h += (o.phones && o.phones.length ? '' : '<p class="small muted">Телефон — в объявлении, кнопка «Открыть» выше.</p>') +
+  h += (pl && !(o.phones || []).length) ? '' : (o.phones && o.phones.length ? '' : '<p class="small muted">Телефон — в объявлении, кнопка «Открыть» выше.</p>') +
     '<div class="phones">' + (o.phones || []).map((ph, i) => phoneRow(ph[0], ph[1] || (i === 0 && o.phones.length > 1 ? 'основной' : ''), /WhatsApp/.test(ph[1] || '') ? o.wa : '')).join('') + '</div>';
   if(iss.length || ask.length){
     h += '<div class="flags">' + iss.map(i => '<div class="note ' + (i.bad ? 'bad' : 'warn') + '"><span>' + esc(i.t) + '</span></div>').join('') +
-      (ask.length ? '<div class="note info"><span>Спросите: ' + esc(ask.join(', ')) + '.</span></div>' : '') + '</div>';
+      (ask.length ? '<div class="note info"><span>' + (pl ? 'Пусть Лена спросит у продавца: ' : 'Спросите: ') + esc(ask.join(', ')) + '.</span></div>' : '') + '</div>';
   }
   h += '<details class="more"><summary>Подробнее: описание, адрес</summary><div class="stack small">' +
     (o.includes ? '<p>' + esc(o.includes) + '</p>' : '') + '<div class="meta">' + (o.address ? '<span>Адрес: ' + esc(o.address) + '</span>' : (o.city ? '<span>Город: ' + esc(o.city) + '</span>' : '')) +
@@ -244,10 +280,10 @@ function tOfferCard(t, o){
       ? '<div class="row"><span>Удалить этот вариант?</span><button class="btn quiet" data-act="tdelyes"' + dt + '>Да, удалить</button><button class="btn quiet" data-act="tdelno"' + dt + '>Нет</button></div>'
       : '<button class="linkbtn" data-act="tdel"' + dt + '>Удалить этот вариант</button>') : '') +
     '</div></details>';
-  h += '<div class="result"><p><strong>Что ответили?</strong></p><div class="opts">' +
-    ['yes', 'no', 'later'].map(v => '<button class="opt ' + v + '" data-act="tcall"' + dt + ' data-v="' + v + '" aria-pressed="' + (c.status === v) + '">' + statusTxt(v).replace(/^./, m => m.toUpperCase()) + '</button>').join('') + '</div>';
+  h += '<div class="result"><p><strong>' + (pl ? 'Что узнала Лена?' : 'Что ответили?') + '</strong></p><div class="opts">' +
+    ['yes', 'no', 'later'].map(v => '<button class="opt ' + v + '" data-act="tcall"' + dt + ' data-v="' + v + '" aria-pressed="' + (c.status === v) + '">' + (pl && v === 'later' ? 'Ждём ответа' : statusTxt(v).replace(/^./, m => m.toUpperCase())) + '</button>').join('') + '</div>';
   if(c.status === 'yes'){
-    h += '<label class="field" for="tp-' + id + '">' + (t === 'pdc' ? 'Цена за один датчик, которую назвали (BYN)' : 'Цена стекла, которую назвали (BYN)') +
+    h += '<label class="field" for="tp-' + id + '">' + (t === 'pdc' ? 'Цена за один датчик, которую назвали (BYN)' : 'Цена стекла, которую назвали (BYN)') + (pl && DATA.plnRate ? '. ' + esc(plRateTxt()) : '') +
       '<input id="tp-' + id + '" type="number" inputmode="decimal" min="0" step="1" data-act="tprice"' + dt + ' value="' + esc(c.price != null ? c.price : (p > 0 ? p : '')) + '"></label>';
     if(t === 'pdc' && o.painted !== true) h += subQ(t, o, 'color', 'Датчик вашего цвета (тёмно-серый)?', [['match', 'Да'], ['nomatch', 'Нет'], ['unknown', 'Не знаю']]);
     if(t === 'glass'){
@@ -265,7 +301,8 @@ function tAddForm(t){
   const G = TASK[t].groups;
   return '<form class="card" id="taddform" data-t="' + t + '"><h3>Новый вариант</h3>' +
     '<label class="field" for="ta-seller">Продавец<input id="ta-seller" type="text" required placeholder="например: магазин на Тимирязева"></label>' +
-    '<label class="field" for="ta-phone">Телефон<input id="ta-phone" type="tel" required placeholder="+375 29 ..."></label>' +
+    '<label class="field" for="ta-where">Где купить<select id="ta-where"><option value="by" selected>В Беларуси</option><option value="pl">В Польше — привезёт Лена</option></select></label>' +
+    '<label class="field" for="ta-phone">Телефон (для Польши можно не писать)<input id="ta-phone" type="tel" placeholder="+375 29 ..."></label>' +
     '<label class="field" for="ta-price">Цена' + (t === 'pdc' ? ' за штуку' : '') + ', BYN<input id="ta-price" type="number" inputmode="decimal" min="0" step="1" placeholder="например ' + (t === 'pdc' ? '120' : '500') + '"></label>' +
     '<label class="field" for="ta-group">Что это<select id="ta-group">' + TASK[t].addGroups.map((k, i) => '<option value="' + k + '"' + (i === 0 ? ' selected' : '') + '>' + esc(G[k].label) + '</option>').join('') + '</select></label>' +
     '<label class="field" for="ta-link">Ссылка на объявление (если есть)<input id="ta-link" type="url" placeholder="https://..."></label>' +
@@ -392,7 +429,8 @@ function glass4(){
   return tShell('glass', 4, b, {lead:'Последний шаг. После него стекло на месте и система защиты работает как раньше.'});
 }
 function tCalls(t){
-  const d = tData(t), list = tOffers(t).slice().sort((a, b) => (a.top || 99) - (b.top || 99)), nf = (d.fresh || []).length;
+  const d = tData(t), all = tOffers(t).slice().sort((a, b) => (a.top || 99) - (b.top || 99)), nf = (d.fresh || []).length;
+  const list = all.filter(o => !isPL(o)), plList = all.filter(isPL);
   let b = '<p class="small muted">Список обновлён: ' + esc(DATA.updated || d.checked || '') + '. Обновляется автоматически каждое утро.' + (nf ? ' Новых объявлений: ' + nf + '.' : '') + '</p>';
   b += '<div class="card soft"><h3>Что сказать продавцу</h3><p>' + esc(tScript(t)) + '</p>' +
     '<button class="btn quiet" data-act="copy" data-text="' + esc(tScript(t)) + '">Скопировать текст</button>' +
@@ -400,6 +438,13 @@ function tCalls(t){
   if(d.tip) b += '<div class="note info"><span><strong>С чего начать:</strong> ' + esc(d.tip) + '</span></div>';
   b += list.length ? '<div class="stack">' + list.map(o => tOfferCard(t, o)).join('') + '</div>'
     : '<div class="note warn"><span>Пока вариантов нет. Ваня ищет, список обновляется каждое утро.</span></div>';
+  b += '<div class="card soft"><p class="eyebrow">Польша</p><h2>Из Польши — купит и привезёт Лена</h2>' +
+    '<p>Лена заказывает на польском сайте с доставкой к себе домой и привозит деталь в Минск. Продавцам звонить не нужно: нажмите «Отправить Лене в Telegram» под вариантом.</p>' +
+    (d.tipPl ? '<p class="small"><strong>Выгодно ли:</strong> ' + esc(d.tipPl) + '</p>' : '') +
+    (t === 'pdc' ? '<p class="small muted">Датчики маленькие и лёгкие. Для себя через границу на машине или автобусе без пошлины можно везти покупки до 500 евро и 25 кг.</p>' : '') +
+    '<p class="small muted">Проверено вручную: ' + esc(d.checkedPl || '') + '. Каждое утро робот ищет новое на польских сайтах. ' + esc(plRateTxt()) + '.</p></div>';
+  b += plList.length ? '<div class="stack">' + plList.map(o => tOfferCard(t, o)).join('') + '</div>'
+    : '<div class="note info"><span>В Польше подходящих вариантов сейчас нет' + (t === 'glass' ? ' — стекло выгоднее брать в Минске' : '') + '. Если появятся — они будут здесь.</span></div>';
   b += tAddForm(t) + tLive(t);
   return tShell(t, 2, b, {lead:'Позвоните, спросите по тексту ниже и отметьте ответ.'});
 }
@@ -413,7 +458,7 @@ function tCompare(t){
     const on = st.choice === r.o.id, g = tGroup(t, r.o);
     return '<div class="card cmp-item' + (on ? ' chosen' : '') + '"><div class="stack" style="gap:4px">' +
       (r.o.id === best ? '<span><span class="badge">Самый дешёвый</span></span>' : '') +
-      '<strong>' + esc(r.o.seller) + '</strong><span class="small">' + esc(r.o.what) + '</span><span class="chip ' + g.cls + '" style="align-self:flex-start">' + esc(g.label) + '</span></div>' +
+      '<strong>' + esc(r.o.seller) + '</strong><span class="small">' + esc(r.o.what) + '</span><span class="row" style="gap:6px">' + (isPL(r.o) ? '<span class="chip g-don">Польша · везёт Лена</span>' : '') + '<span class="chip ' + g.cls + '">' + esc(g.label) + '</span></span></div>' +
       '<div class="sum">' + rangeTxt(r.x) + '<small class="small muted" style="display:block;font-family:var(--font-body)">BYN · ' + usd(r.x.min) + '</small></div>' +
       '<div class="break">' + esc(r.x.lines.join(' + ')) + '</div>' +
       '<button class="btn ' + (on ? '' : 'ghost') + ' block" style="grid-column:1/-1" data-act="tchoose" data-t="' + t + '" data-id="' + esc(r.o.id) + '">' + (on ? 'Выбрано ' + I.check : 'Выбрать этот') + '</button></div>';
@@ -450,7 +495,8 @@ function taskCard(t){
     '<p class="eyebrow">' + (st.finished ? 'Готово' : n ? 'Шаг ' + n + ' из ' + N : 'Все шаги пройдены') + '</p><h2>' + esc(T.title) + '</h2><p class="muted">' + esc(T.sub) + '</p></div></div>';
   h += '<div class="bar" role="progressbar" aria-label="Пройдено шагов" aria-valuemin="0" aria-valuemax="' + N + '" aria-valuenow="' + d + '"><i style="width:' + (d / N * 100) + '%"></i></div>';
   h += '<div class="facts">' + (v.partno ? '<span>Номер по VIN: <strong class="mono">' + esc(v.partno) + '</strong></span>' : '') +
-    '<span>Вариантов: ' + offers.length + (prices.length ? ', от ' + fmt(Math.min.apply(null, prices)) + ' BYN' + (t === 'pdc' ? ' за штуку' : '') : '') + '</span>' +
+    '<span>Вариантов: ' + offers.length + (prices.length ? ', от ' + fmt(Math.min.apply(null, prices)) + ' BYN' + (t === 'pdc' ? ' за штуку' : '') : '') +
+      (offers.some(isPL) ? ' (из Польши — ' + offers.filter(isPL).length + ')' : '') + '</span>' +
     (called ? '<span>Обзвонено: ' + called + '</span>' : '') + (ch ? '<span>Выбрано: <strong>' + esc(ch.seller) + '</strong></span>' : '') + '</div>';
   h += n ? '<button class="btn block" data-act="tgo" data-t="' + t + '" data-to="' + n + '">Шаг ' + n + ': ' + esc(T.steps[n - 1].title) + '</button>' +
       '<button class="btn quiet block" data-act="tgo" data-t="' + t + '" data-to="home">Все шаги</button>'
@@ -475,6 +521,7 @@ function hub(){
     '<p class="lead">' + (DATA.bumperClosed ? 'Бампер нашли. Теперь ищем парктроники и лобовое стекло' : 'Ищем бампер, парктроники и лобовое стекло') + ' — так же: узнаём номер, обзваниваем, сравниваем и ставим.</p></header>';
   if(!DATA.bumperClosed) h += bumperCard();
   h += taskCard('pdc') + taskCard('glass');
+  h += '<div class="note info"><span><strong>Лена в Польше</strong> может купить датчики там и привезти. Польские варианты — в шаге 2, под минскими. Новые оригиналы там дороже, выгодны только б/у.</span></div>';
   h += '<div class="note info"><span><strong>Одна поездка к дилеру:</strong> после бампера настраивают радар, после стекла — камеру. Запишитесь сразу на обе настройки.</span></div>';
   h += (DATA.bumperClosed ? bumperCard() : '') + reportBlock();
   h += '<footer class="foot"><p>Данные обновлены: ' + esc(DATA.updated || CHECKED) + '. Обновляются автоматически каждое утро. Цены и наличие меняются — уточняйте по телефону.</p></footer>';
@@ -517,9 +564,9 @@ function tInput(a, el){
   if(a === 'tcost'){ st.costs[el.dataset.key] = el.value === '' ? 0 : +el.value; psave(); }
 }
 function tAdd(t){
-  const seller = $('#ta-seller').value.trim(), phone = $('#ta-phone').value.trim();
-  if(!seller || !phone){ toast('Впишите продавца и телефон'); return; }
+  const seller = $('#ta-seller').value.trim(), phone = $('#ta-phone').value.trim(), pl = $('#ta-where').value === 'pl';
+  if(!seller || (!phone && !pl)){ toast('Впишите продавца и телефон'); return; }
   const price = +$('#ta-price').value || null, group = $('#ta-group').value, link = $('#ta-link').value.trim();
-  P[t].custom.push({id:'c' + Date.now(), custom:true, group, seller, what:TASK[t].groups[group].label, price, phones:[[phone, '']], includes:'', address:'', hours:'', delivery:'', link:/^https?:\/\//.test(link) ? link : ''});
+  P[t].custom.push(Object.assign({id:'c' + Date.now(), custom:true, group, seller, what:TASK[t].groups[group].label, price, phones:phone ? [[phone, '']] : [], includes:'', address:'', hours:'', delivery:'', link:/^https?:\/\//.test(link) ? link : ''}, pl ? {country:'pl'} : {}));
   U.tAdd = null; psave(); render(); toast('Вариант добавлен');
 }

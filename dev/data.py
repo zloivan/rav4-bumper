@@ -124,6 +124,15 @@ PDC_OFFERS = [
    "delivery":"под заказ, 2 дня (5 шт.)","link":"https://www.ml-auto.by/search/number/?article=8934142060","linkKind":"shop","top":5})
 ]
 
+# Польша: купит и привезёт Лена (сестра Ивана). Проверено вручную 12.11.2026; price/shipping — BYN по курсу plnRate.
+PDC_OFFERS_PL = [
+  {'id': 'pl-ebg-b2', 'country': 'pl', 'group': 'orig', 'seller': 'Allegro — EBG-PERFORMANCE', 'what': 'Новый оригинал Toyota 89341-42060-B2 — уже в цвете 1G3', 'pricePln': 804.99, 'shippingPln': 10.49, 'painted': True, 'exact': True, 'partno': '89341-42060-B2', 'priceNote': '804,99 zł за штуку + доставка по Польше 10,49 zł. Втрое дороже, чем в Минске (МОНЛИБОН — 348 BYN) — брать, только если в Минске не привезут.', 'includes': 'На Allegro: «TOYOTA Corolla Land Cruiser Czujnik parkowania gray 1G3 89341-42060-B2 OE», новый, 25 шт., продавец-фирма, рейтинг 100%. Ещё 3 продавца — по той же цене.', 'city': 'Польша, доставка на адрес Лены', 'delivery': 'в наличии, доставка 17.11 (по сайту)', 'sayPl': 'Dzień dobry! Czy to oryginalny czujnik Toyota 89341-42060 do RAV4 2016–2018? Czy jest dostępny?', 'link': 'https://allegro.pl/produkt/toyota-corolla-land-cruiser-czujnik-parkowania-gray-1g3-89341-42060-b2-oe-4df48b92-af34-4f51-a379-c65d7ef51742?offerId=18806927727', 'top': 15, 'price': 613, 'shipping': 8, 'checked': '12 ноября 2026', 'phones': []},
+  {'id': 'pl-gearium-c0', 'country': 'pl', 'group': 'orig', 'seller': 'Allegro — www_gearium_pl', 'what': 'Новый оригинал Toyota 89341-42060-C0 — чёрный, нужно красить', 'pricePln': 389.53, 'shippingPln': 10.49, 'painted': False, 'exact': True, 'partno': '89341-42060-C0', 'priceNote': '389,53 zł за штуку + доставка 10,49 zł. Почти как в Минске (МОНЛИБОН — 302 BYN), выгоды нет.', 'includes': 'На Allegro: «893414-2060-C0 CZUJNIK PARKOWANIA PDC TOYOTA RAV4 17-», новый, оригинал (OE), европейская версия, перед, 8 шт. Продавец — «Super Sprzedawca», рейтинг 98%. Ещё 15 продавцов этого номера — дороже.', 'city': 'Польша, доставка на адрес Лены', 'delivery': 'в наличии, 8 шт., доставка за 1–2 дня', 'sayPl': 'Dzień dobry! Czy to oryginalny czujnik Toyota 89341-42060 do RAV4 2016–2018? Czy jest dostępny?', 'link': 'https://allegro.pl/produkt/czujnik-parkowania-toyota-8934142060c0-2268e507-dfec-46da-9e40-9811fb2e9866?offerId=19079186464', 'top': 14, 'price': 296, 'shipping': 8, 'checked': '12 ноября 2026', 'phones': []},
+  {'id': 'pl-moto-c0', 'country': 'pl', 'group': 'orig', 'seller': 'Allegro — MotoKomponent', 'what': 'Новый датчик Toyota 89341-42060 — чёрный, нужно красить', 'pricePln': 369, 'shippingPln': 10.95, 'painted': False, 'exact': True, 'partno': '89341-42060', 'priceNote': '369 zł за штуку + доставка 10,95 zł.', 'warn': 'Окончание номера (C0 или другое) продавец не пишет. Пусть Лена спросит полный номер — подойдёт 89341-42060 с любым окончанием.', 'includes': 'На Allegro: «PRZEDNI Czujnik Parkowania Toyota Rav-4 Zderzak Przód PDC Z ramką», новый, оригинал (OE), чёрный, для RAV4 IV (XA40) 2015–2018, 4 шт. Продавец — «Super Sprzedawca», рейтинг 94%.', 'city': 'Польша, доставка на адрес Лены', 'delivery': 'в наличии, 4 шт., доставка за 1–2 дня', 'sayPl': 'Dzień dobry! Czy to oryginalny czujnik Toyota 89341-42060 do RAV4 2016–2018? Czy jest dostępny?', 'link': 'https://allegro.pl/produkt/przedni-czujnik-parkowania-toyota-rav-4-zderzak-przod-pdc-z-ramka-aec4049c-2537-4064-a089-012d9c61c780?offerId=18691334752', 'top': 13, 'price': 281, 'shipping': 8, 'checked': '12 ноября 2026', 'phones': []},
+  {'id': 'pl-hmcars-used', 'country': 'pl', 'group': 'used', 'seller': 'Allegro — hmcars (разборка)', 'what': 'Б/у оригинальный датчик от RAV4 IV 2012–2018', 'pricePln': 179, 'shippingPln': 22, 'painted': None, 'priceNote': '179 zł за штуку + доставка 22 zł. Цвет и точный номер — спросить.', 'warn': 'Номер датчика в объявлении не указан, на фото — коробка разных датчиков (чёрные и серые). Пусть Лена спросит номер 89341-42060 и попросит фото именно того датчика.', 'includes': 'На Allegro: «TOYOTA RAV4 IV 12-18 CZUJNIK PARKOWANIA», б/у, «оригинальные, есть несколько штук, цена за одну». Продавец-фирма, рейтинг 100%, 10 шт., объявление до 12.12.2026.', 'city': 'Польша, доставка на адрес Лены', 'delivery': 'в наличии, доставка 17.11', 'sayPl': 'Dzień dobry! Czy czujnik ma numer 89341-42060? Jaki ma kolor? Czy jest sprawny i z jakiego auta (rocznik)?', 'link': 'https://allegro.pl/produkt/toyota-rav4-iv-12-18-czujnik-parkowania-f4ecd626-b3a5-4753-8568-714f3ba7e6d1?offerId=16967194552', 'top': 12, 'price': 136, 'shipping': 17, 'checked': '12 ноября 2026', 'phones': []},
+  {'id': 'pl-olx-dexter', 'country': 'pl', 'group': 'used', 'seller': 'OLX — Dexter (частное лицо)', 'what': 'Б/у датчик Toyota RAV4, чёрный', 'pricePln': 100, 'shippingPln': 14.49, 'painted': False, 'priceNote': '100 zł за штуку; с доставкой OLX — +7 zł защита покупателя и от 7,49 zł доставка.', 'warn': 'Поколение RAV4 и номер не указаны. Пусть Лена спросит номер (нужен 89341-42060) и с какого года машины.', 'includes': 'На OLX: «Czujnik PDC Toyota Rav4 przód tył wiązka czyjniki parkowania!», б/у, «100% исправны, есть несколько штук». Объявление обновлено 11.11.2026, продавец — рейтинг 4,9.', 'city': 'Польша, Wola Rasztowska (Мазовецкое воеводство), доставка OLX', 'delivery': 'в наличии, несколько штук', 'sayPl': 'Dzień dobry! Czy czujnik ma numer 89341-42060? Jaki ma kolor? Czy jest sprawny i z jakiego auta (rocznik)?', 'link': 'https://www.olx.pl/d/oferta/czujnik-pdc-toyota-rav4-przod-tyl-wiazka-czyjniki-parkowania-CID5-ID19lH1f.html', 'top': 11, 'price': 76, 'shipping': 11, 'checked': '12 ноября 2026', 'phones': []}
+]
+
 PDC = {
   "checked": "18 октября 2026",
   "vin": {
@@ -139,7 +148,9 @@ PDC = {
     "note": "В американском каталоге Toyota 89341-42060-B2 заменён на 89341-0R050-B1 (буква цвета другая — сверить у продавца). Не путать: 89341-42010 и 42030 — от RAV4 2013–2015."
   },
   "tip": "Б/у датчиков от вашей модели в Беларуси сейчас нет. Проще всего — оригинал 89341-42060-B2: он уже в вашем цвете, красить не нужно. МОНЛИБОН — 348 BYN за штуку, 3–4 дня, или zap.by — 351 BYN, к 24.10. Копии по 47 BYN чёрные — их красят, и подходят они только по базе магазина.",
-  "offers": PDC_OFFERS,
+  "offers": PDC_OFFERS + PDC_OFFERS_PL,
+  "checkedPl": '12 ноября 2026',
+  "tipPl": 'Новые оригиналы в Польше не дешевле минских: B2 в цвете — 805 zł (≈613 BYN) против 348 BYN в МОНЛИБОНЕ. Смысл есть только в б/у: от 100 zł (≈76 BYN) за штуку, но Лена должна сначала спросить у продавца номер 89341-42060 и цвет.',
   "fresh": []
 }
 
@@ -207,11 +218,14 @@ GLASS = {
   },
   "tip": "Car-Glass.by работает и в выходные (Вс 10–18): спросите цену Fuyao за 423 BYN вместе с установкой. В будни позвоните в Стеклоавто — они сами настраивают камеру (от 200 BYN). Всем называйте номер 56101-42511 и спрашивайте, подойдёт ли стекло под камеру RAV4 2016–2018.",
   "offers": GLASS_OFFERS,
+  "checkedPl": '12 ноября 2026',
+  "tipPl": 'Стекло из Польши не выгодно: новое под камеру для RAV4 2016–2018 на Allegro — от 690 zł (≈525 BYN) плюс доставка, а в Минске — от 180 BYN. Да и везти его (1,5 метра, 15 кг) неудобно. Берём в Минске. Если в Польше появится дешёвое — оно само появится здесь.',
   "fresh": []
 }
 
 DATA = {
   "bumperClosed": "18.10.2026",
+  "plnRate": {"byn": 0.761, "date": "12.11.2026", "source": "НБРБ"},
   "pdc": PDC,
   "glass": GLASS,
   "checked": "16–17 октября 2026",

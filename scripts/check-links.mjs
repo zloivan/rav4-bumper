@@ -10,6 +10,8 @@ const data = JSON.parse(await readFile(new URL('../site/data.json', import.meta.
 const AD = [
   /^https:\/\/(auto\.)?kufar\.by\/(vi\/([^/?#]+\/)?|item\/)\d+\/?$/,
   /^https:\/\/bamper\.by\/zapchast_[a-z-]+\/[\w-]+\/?$/,
+  /^https:\/\/allegro\.pl\/(oferta\/[\w-]+-\d{8,}\/?|produkt\/[\w-]+\?offerId=\d+)$/,     // Польша: Allegro
+  /^https:\/\/(www\.)?(olx|otomoto)\.pl\/(d\/|czesci\/)?oferta\/[\w-]+-ID\w+\.html$/,    // OLX, Otomoto
 ];
 const DONOR = /^https:\/\/bamper\.by\/zchbu\/vin_[A-HJ-NPR-Z0-9]{17}\/?$/;
 const SHOP_BAD = /[?&](q|query|search|s)=|\/search\b|^https:\/\/[^/]+\/?$/i;
