@@ -1,7 +1,7 @@
 {
  "checked": "16–17 октября 2026",
- "updated": "12.11.2026, 16:58",
- "updateNote": "Kufar проверен. Подходящих объявлений вне основного списка: бампер — 0; парктроники — 0; стекло — 0, снято из списка 1.",
+ "updated": "13.11.2026, 16:24",
+ "updateNote": "Kufar не ответил. Польша (Otomoto): парктроники — 0; стекло — 1 (новых 1).",
  "vin": {
   "source": "VIN из техпаспорта, каталог Toyota для Европы (partsouq), проверено 17.10.2026",
   "model": "RAV4 2018 гибрид, AVA42L-ANXMBW, Европа, выпуск 08.2018",
@@ -76,7 +76,8 @@
    "hours": "Пн–Пт 9–19, Сб 9–17, Вс 9–16",
    "delivery": "был в наличии 16.10",
    "link": "https://auto.kufar.by/vi/zapchasti/1086909644",
-   "top": 1
+   "top": 1,
+   "gone": "13.11"
   },
   {
    "id": "motorland",
@@ -315,7 +316,8 @@
    "address": "Минск, ул. Неманская, 12",
    "hours": "Пн–Чт 9–20, Пт 9–19",
    "delivery": "наличие уточнить",
-   "link": "https://auto.kufar.by/vi/zapchasti/1036694070"
+   "link": "https://auto.kufar.by/vi/zapchasti/1036694070",
+   "gone": "13.11"
   },
   {
    "id": "dtp302",
@@ -529,8 +531,8 @@
    "count": 5
   },
   "kufar": {
-   "updated": "12.11.2026, 16:58",
-   "ok": true,
+   "updated": "13.11.2026, 16:24",
+   "ok": false,
    "count": 0
   }
  },
@@ -744,7 +746,7 @@
     "sayPl": "Dzień dobry! Czy to oryginalny czujnik Toyota 89341-42060 do RAV4 2016–2018? Czy jest dostępny?",
     "link": "https://allegro.pl/produkt/toyota-corolla-land-cruiser-czujnik-parkowania-gray-1g3-89341-42060-b2-oe-4df48b92-af34-4f51-a379-c65d7ef51742?offerId=18806927727",
     "top": 15,
-    "price": 613,
+    "price": 609,
     "shipping": 8,
     "checked": "12 ноября 2026",
     "phones": []
@@ -767,7 +769,7 @@
     "sayPl": "Dzień dobry! Czy to oryginalny czujnik Toyota 89341-42060 do RAV4 2016–2018? Czy jest dostępny?",
     "link": "https://allegro.pl/produkt/czujnik-parkowania-toyota-8934142060c0-2268e507-dfec-46da-9e40-9811fb2e9866?offerId=19079186464",
     "top": 14,
-    "price": 296,
+    "price": 295,
     "shipping": 8,
     "checked": "12 ноября 2026",
     "phones": []
@@ -791,7 +793,7 @@
     "sayPl": "Dzień dobry! Czy to oryginalny czujnik Toyota 89341-42060 do RAV4 2016–2018? Czy jest dostępny?",
     "link": "https://allegro.pl/produkt/przedni-czujnik-parkowania-toyota-rav-4-zderzak-przod-pdc-z-ramka-aec4049c-2537-4064-a089-012d9c61c780?offerId=18691334752",
     "top": 13,
-    "price": 281,
+    "price": 279,
     "shipping": 8,
     "checked": "12 ноября 2026",
     "phones": []
@@ -813,7 +815,7 @@
     "sayPl": "Dzień dobry! Czy czujnik ma numer 89341-42060? Jaki ma kolor? Czy jest sprawny i z jakiego auta (rocznik)?",
     "link": "https://allegro.pl/produkt/toyota-rav4-iv-12-18-czujnik-parkowania-f4ecd626-b3a5-4753-8568-714f3ba7e6d1?offerId=16967194552",
     "top": 12,
-    "price": 136,
+    "price": 135,
     "shipping": 17,
     "checked": "12 ноября 2026",
     "phones": []
@@ -844,7 +846,12 @@
   "fresh": [],
   "sources": {
    "kufar": {
-    "updated": "12.11.2026, 16:58",
+    "updated": "13.11.2026, 16:24",
+    "ok": false,
+    "count": 0
+   },
+   "otomoto": {
+    "updated": "13.11.2026, 16:24",
     "ok": true,
     "count": 0
    }
@@ -1051,20 +1058,45 @@
     "gone": "26.10"
    }
   ],
-  "fresh": [],
+  "fresh": [
+   {
+    "id": "otomoto-6HAaow",
+    "source": "otomoto",
+    "country": "pl",
+    "seller": "Otomoto — фирма",
+    "what": "TOYOTA RAV4 IV SZYBA CZOŁOWA",
+    "pricePln": 460,
+    "price": 348,
+    "phones": [],
+    "link": "https://www.otomoto.pl/czesci/oferta/toyota-rav4-iv-szyba-czolowa-ID6HAaow.html",
+    "found": "07.11",
+    "includes": "Объявление на польском, описание и фото — по ссылке.",
+    "city": "Польша, Łódź, Wielkopolskie",
+    "group": "used",
+    "partno": null,
+    "camera": null,
+    "warn": "Стекло везти из Польши тяжело: 1,5 метра и 15 кг, нужна машина. Сравните с минскими ценами.",
+    "sayPl": "Dzień dobry! Czy szyba pasuje do Toyota RAV4 2016–2018 (lift) z kamerą i czujnikiem deszczu? Czy ma uchwyt kamery? Czy jest podgrzewana?"
+   }
+  ],
   "sources": {
    "kufar": {
-    "updated": "12.11.2026, 16:58",
-    "ok": true,
+    "updated": "13.11.2026, 16:24",
+    "ok": false,
     "count": 0
+   },
+   "otomoto": {
+    "updated": "13.11.2026, 16:24",
+    "ok": true,
+    "count": 1
    }
   },
   "checkedPl": "12 ноября 2026",
   "tipPl": "Стекло из Польши не выгодно: новое под камеру для RAV4 2016–2018 на Allegro — от 690 zł (≈525 BYN) плюс доставка, а в Минске — от 180 BYN. Да и везти его (1,5 метра, 15 кг) неудобно. Берём в Минске. Если в Польше появится дешёвое — оно само появится здесь."
  },
  "plnRate": {
-  "byn": 0.761,
-  "date": "12.11.2026",
+  "byn": 0.7566,
+  "date": "13.11.2026",
   "source": "НБРБ"
  }
 }
