@@ -1,7 +1,7 @@
 {
  "checked": "16–17 октября 2026",
- "updated": "13.11.2026, 16:24",
- "updateNote": "Kufar не ответил. Польша (Otomoto): парктроники — 0; стекло — 1 (новых 1).",
+ "updated": "14.11.2026, 15:29",
+ "updateNote": "Kufar проверен. Подходящих объявлений вне основного списка: бампер — 0; парктроники — 0; стекло — 0, снято из списка 1. Польша (Otomoto): парктроники — 0; стекло — 1.",
  "vin": {
   "source": "VIN из техпаспорта, каталог Toyota для Европы (partsouq), проверено 17.10.2026",
   "model": "RAV4 2018 гибрид, AVA42L-ANXMBW, Европа, выпуск 08.2018",
@@ -76,8 +76,7 @@
    "hours": "Пн–Пт 9–19, Сб 9–17, Вс 9–16",
    "delivery": "был в наличии 16.10",
    "link": "https://auto.kufar.by/vi/zapchasti/1086909644",
-   "top": 1,
-   "gone": "13.11"
+   "top": 1
   },
   {
    "id": "motorland",
@@ -316,8 +315,7 @@
    "address": "Минск, ул. Неманская, 12",
    "hours": "Пн–Чт 9–20, Пт 9–19",
    "delivery": "наличие уточнить",
-   "link": "https://auto.kufar.by/vi/zapchasti/1036694070",
-   "gone": "13.11"
+   "link": "https://auto.kufar.by/vi/zapchasti/1036694070"
   },
   {
    "id": "dtp302",
@@ -531,8 +529,8 @@
    "count": 5
   },
   "kufar": {
-   "updated": "13.11.2026, 16:24",
-   "ok": false,
+   "updated": "14.11.2026, 15:29",
+   "ok": true,
    "count": 0
   }
  },
@@ -846,12 +844,12 @@
   "fresh": [],
   "sources": {
    "kufar": {
-    "updated": "13.11.2026, 16:24",
-    "ok": false,
+    "updated": "14.11.2026, 15:29",
+    "ok": true,
     "count": 0
    },
    "otomoto": {
-    "updated": "13.11.2026, 16:24",
+    "updated": "14.11.2026, 15:29",
     "ok": true,
     "count": 0
    }
@@ -1081,12 +1079,12 @@
   ],
   "sources": {
    "kufar": {
-    "updated": "13.11.2026, 16:24",
-    "ok": false,
+    "updated": "14.11.2026, 15:29",
+    "ok": true,
     "count": 0
    },
    "otomoto": {
-    "updated": "13.11.2026, 16:24",
+    "updated": "14.11.2026, 15:29",
     "ok": true,
     "count": 1
    }
@@ -1096,7 +1094,7 @@
  },
  "plnRate": {
   "byn": 0.7566,
-  "date": "13.11.2026",
+  "date": "14.11.2026",
   "source": "НБРБ"
  }
 }
