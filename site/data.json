@@ -1,6 +1,6 @@
 {
  "checked": "16–17 октября 2026",
- "updated": "27.11.2026, 18:33",
+ "updated": "28.11.2026, 17:29",
  "updateNote": "Kufar проверен. Подходящих объявлений вне основного списка: бампер — 0; парктроники — 0; стекло — 0, снято из списка 1. Польша (Otomoto): парктроники — 0, снято из списка 1; стекло — 1.",
  "vin": {
   "source": "VIN из техпаспорта, каталог Toyota для Европы (partsouq), проверено 17.10.2026",
@@ -529,7 +529,7 @@
    "count": 5
   },
   "kufar": {
-   "updated": "27.11.2026, 18:33",
+   "updated": "28.11.2026, 17:29",
    "ok": true,
    "count": 0
   }
@@ -845,12 +845,12 @@
   "fresh": [],
   "sources": {
    "kufar": {
-    "updated": "27.11.2026, 18:33",
+    "updated": "28.11.2026, 17:29",
     "ok": true,
     "count": 0
    },
    "otomoto": {
-    "updated": "27.11.2026, 18:33",
+    "updated": "28.11.2026, 17:29",
     "ok": true,
     "count": 0
    }
@@ -1064,8 +1064,8 @@
     "country": "pl",
     "seller": "Otomoto — фирма",
     "what": "TOYOTA RAV4 IV SZYBA CZOŁOWA",
-    "pricePln": 460,
-    "price": 339,
+    "pricePln": 414,
+    "price": 305,
     "phones": [],
     "link": "https://www.otomoto.pl/czesci/oferta/toyota-rav4-iv-szyba-czolowa-ID6HAaow.html",
     "found": "07.11",
@@ -1080,12 +1080,12 @@
   ],
   "sources": {
    "kufar": {
-    "updated": "27.11.2026, 18:33",
+    "updated": "28.11.2026, 17:29",
     "ok": true,
     "count": 0
    },
    "otomoto": {
-    "updated": "27.11.2026, 18:33",
+    "updated": "28.11.2026, 17:29",
     "ok": true,
     "count": 1
    }
@@ -1095,7 +1095,7 @@
  },
  "plnRate": {
   "byn": 0.7363,
-  "date": "27.11.2026",
+  "date": "28.11.2026",
   "source": "НБРБ"
  }
 }
